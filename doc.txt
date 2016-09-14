@@ -1,0 +1,28 @@
+Board: {
+    views: []
+}
+
+View: {
+    reports: []
+    input: {}
+    slug: ""
+}
+
+Report: {
+    inputs: []
+    models: []
+    controller: ""
+    slug: ""
+}
+
+Input: {
+    name: ""
+    type: ""
+    default: ""
+    required: false
+}
+
+Model: {
+    endpoint: ""
+    params: {}
+}
