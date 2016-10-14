@@ -8,7 +8,7 @@ export let db_reports = db.collection("reports");
 
 db_views.sync()
 .catch(err => {
-    if (err.message.contains("flushed")) {
+    if (err.message.indexOf("flushed") > -1) {
         return db_views.resetSyncStatus()
         .then(_ => db_views.sync());
     }
@@ -18,7 +18,7 @@ db_views.list().then(console.log.bind(console));
 
 db_reports.sync()
 .catch(err => {
-    if (err.message.contains("flushed")) {
+    if (err.message.indexOf("flushed") > -1) {
         return db_reports.resetSyncStatus()
         .then(_ => db_reports.sync());
     }

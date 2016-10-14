@@ -92,14 +92,7 @@ export function runView(id) {
 
 function runReports(viewId, reports) {
     return dispatch => {
-        let promise = Promise.resolve({
-            params: {
-                models: [
-                    {'bug_ids': '1254527'},
-                    {'bugId': '1254527'},
-                ]
-            }
-        });
+        let promise = Promise.resolve({});
 
         reports.forEach(reportId => {
             promise = promise.then(input => {

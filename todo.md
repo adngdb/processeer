@@ -1,13 +1,17 @@
 # To Do
 
+## Important
+
 - Implement inputs
-- Implement dashboards
 - Multi-users
+- Fork report
+
+# Nice to have
+
 - Add view re-run option
 - Fork view
-- Fork report
+- Implement dashboards
 - Count of report in views
-- Handle multiple values in model params
 - Use slugs in URLs
 - Add kinto to package.json
 - Add jailed to package.json
@@ -18,6 +22,7 @@
 
 - Bug Signatures Status
 - Home Page Graph
+- Marco's correlations report
 - Crashes per Day
 - Top Crashers By Signature
 - Explosive Crashes

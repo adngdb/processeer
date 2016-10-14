@@ -114,7 +114,7 @@ function views(state = {}, action) {
 
 function model(state = {
     endpoint: '',
-    params: {},
+    params: [],
 }, action) {
     switch (action.type) {
         case UPDATE_REPORT_MODEL:

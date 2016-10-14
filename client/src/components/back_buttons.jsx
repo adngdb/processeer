@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const EditNav = ({history}) => {
+const BackButtons = ({history}) => {
     let backToReport = null;
     if (history.report) {
         backToReport = (
@@ -23,4 +23,4 @@ const EditNav = ({history}) => {
     </div>);
 };
 
-export default EditNav;
+export default BackButtons;

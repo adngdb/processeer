@@ -206,21 +206,21 @@ export function deleteReport(id) {
 }
 
 // ----------------------------------------------------------------------------
-export function runReport(params) {
-    let id = params.id;
-    let input = params.input;
+export function runReport(args) {
+    let id = args.id;
+    let input = args.input;
 
     return dispatch => {
         return dispatch(fetchReport(id))
-        .then(report => fetchModels({input, report}))
+        .then(report => fetchModels({params: input, report}))
         .then(runController)
         .catch(console.log.bind(console));
     }
 }
 
-function fetchModels(params) {
-    let input = params.input;
-    let report = params.report;
+function fetchModels(args) {
+    let params = args.params;
+    let report = args.report;
 
     let count = 0;
     let total = report.models.length;
@@ -232,57 +232,89 @@ function fetchModels(params) {
             if (count >= total) {
                 resolve({
                     report,
-                    input,
+                    params,
                     models: results,
                 });
             }
         }
 
-        for (let i = 0, ln = report.models.length; i < ln; i++) {
-            let model = report.models[i];
+        report.models.forEach(model => {
             let url = model.endpoint;
 
-            if (input.params && input.params.models[i]) {
-                let params = input.params.models[i];
+            if (params) {
+                let templateRegex = /\{\{([^}]+)\}\}/;
 
-                Object.keys(params).forEach(elem => {
-                    let paramKey = '{' + elem + '}';
-                    if (model.endpoint.indexOf(paramKey) >= 0) {
-                        url = url.replace(paramKey, params[elem]);
-                        delete params[elem];
+                // First replace templates in the URLs themselves.
+                let matchURL = templateRegex.exec(model.endpoint);
+                while (matchURL) {
+                    let key = matchURL[1];
+                    let paramName = key.trim();
+                    let value = params[paramName] || '';
+
+                    model.endpoint.replace(`{{${key}}}`, value);
+
+                    matchURL = templateRegex.exec(model.endpoint);
+                }
+
+                // Then replace templates in the URL parameters.
+                model.params.forEach(param => {
+                    let match = templateRegex.exec(param.value);
+                    if (match) {
+                        let key = match[1];
+                        let value = params[key.trim()];
+                        console.log(value);
+
+                        // Replace the template with the actual value from params.
+                        if (Array.isArray(value)) {
+                            param.value = value;
+                        }
+                        else if (value) {
+                            param.value.replace(`{{${key}}}`, value);
+                        }
                     }
                 });
-
-                Object.assign(model.params, input.params.models[i]);
             }
 
-            url = url + '?' + qs.stringify(model.params, {indices: false});
+            let urlParams = {};
+            model.params.forEach(param => {
+                if (!urlParams[param.key]) {
+                    urlParams[param.key] = [];
+                }
+                urlParams[param.key].push(param.value);
+            });
+
+            url = url + '?' + qs.stringify(urlParams, {indices: false});
 
             fetch(url)
             .then(response => response.json())
             .then(data => {
-                results[i] = data;
+                results.push(data);
                 finished();
             });
-        }
+        });
     });
 }
 
-function runController(params) {
-    let input = params.input;
-    let report = params.report;
-    let models = params.models;
+function runController(args) {
+    let report = args.report;
+    let params = args.params;
+    let models = args.models;
 
     let modelsData = {
-        input,
+        params,
         models,
     };
 
     return new Promise((resolve, reject) => {
-        let plugin = new jailed.DynamicPlugin(report.controller);
+        let controller = report.controller;
+        controller += ';application.setInterface({execute: (data, cb) => cb(transform(data))})';
+        let plugin = new jailed.DynamicPlugin(controller);
+        console.log('starting jailed');
         plugin.whenConnected(() => {
-            plugin.remote.transform(modelsData, (transformedData) => {
-                resolve(transformedData);
+            console.log('plugin connected');
+            plugin.remote.execute(modelsData, output => {
+                resolve(output);
+                console.log('controller resolved');
             });
         });
     });

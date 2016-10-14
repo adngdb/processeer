@@ -35,23 +35,19 @@ const EditModelPage = React.createClass({
             if (elem.indexOf('param-key-') === 0) {
                 let index = elem.substring('param-key-'.length);
                 if (!paramsTmp[index]) {
-                    paramsTmp[index] = [];
+                    paramsTmp[index] = {};
                 }
-                paramsTmp[index][0] = this.refs[elem].getValue();
+                paramsTmp[index].key = this.refs[elem].getValue();
             }
             else if (elem.indexOf('param-value-') === 0) {
                 let index = elem.substring('param-value-'.length);
                 if (!paramsTmp[index]) {
-                    paramsTmp[index] = [];
+                    paramsTmp[index] = {};
                 }
-                paramsTmp[index][1] = this.refs[elem].getValue();
+                paramsTmp[index].value = this.refs[elem].getValue();
             }
         });
-        let params = {};
-        paramsTmp.forEach(elem => {
-            params[elem[0]] = elem[1];
-        });
-        return params;
+        return paramsTmp;
     },
 
     updateModel() {
@@ -89,7 +85,7 @@ const EditModelPage = React.createClass({
         let params = this.getParams();
 
         // Add a new, empty parameter.
-        params[''] = '';
+        params.push({key: '', value: ''});
 
         this.props.dispatch(updateReportModel(
             reportId,
@@ -99,14 +95,14 @@ const EditModelPage = React.createClass({
         ));
     },
 
-    removeParam(field) {
+    removeParam(index) {
         let reportId = this.props.params.reportId;
         let modelIndex = this.props.params.modelIndex;
 
         let endpoint = this.refs.endpoint.getValue();
         let params = this.props.reports[this.props.params.reportId].models[modelIndex].params;
 
-        delete params[field];
+        delete params[index];
 
         this.props.dispatch(updateReportModel(
             reportId,
@@ -130,14 +126,12 @@ const EditModelPage = React.createClass({
             model.params = model.params || [];
             model.endpoint = model.endpoint || '';
 
-            let params = Object.entries(model.params).map((entry, i) => {
-                let key, value;
-                [key, value] = entry;
+            let params = model.params.map((entry, i) => {
                 return (<Row key={i}>
                     <Col xs={4}>
                         <Input
                             type="text"
-                            value={key}
+                            value={entry.key}
                             ref={"param-key-" + i}
                             onChange={this.updateModel}
                         />
@@ -148,13 +142,13 @@ const EditModelPage = React.createClass({
                     <Col xs={6}>
                         <Input
                             type="text"
-                            value={value}
+                            value={entry.value}
                             ref={"param-value-" + i}
                             onChange={this.updateModel}
                         />
                     </Col>
                     <Col xs={1}>
-                        <Button onClick={() => this.removeParam(key)} title="Remove this parameter">
+                        <Button onClick={() => this.removeParam(i)} title="Remove this parameter">
                             <Glyphicon glyph="remove" />
                         </Button>
                     </Col>
