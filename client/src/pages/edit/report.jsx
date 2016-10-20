@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
-import { createReport, fetchReport, updateReport, saveReport } from '../../actions.jsx';
+import { createReport, fetchReport, updateReport, saveReport, updateReportParam } from '../../actions.jsx';
 import { visitEditReportPage } from '../../actions/history.jsx';
 import Loader from '../../components/loader.jsx';
 import EditNav from '../../components/edit_nav.jsx';
@@ -35,12 +35,63 @@ const EditReportPage = React.createClass({
         }
     },
 
+    addParam() {
+        let reportId = this.props.params.reportId || '_new';
+        let report = this.props.reports[reportId];
+        let params = report.params || [];
+
+        params.push({});
+
+        this.props.dispatch(updateReport(reportId, {
+            params,
+        }));
+    },
+
+    removeParam(index) {
+        let reportId = this.props.params.reportId || '_new';
+        let report = this.props.reports[reportId];
+        let params = report.params;
+
+        params.splice(index, 1);
+
+        this.props.dispatch(updateReport(reportId, {
+            params,
+        }));
+    },
+
+    updateParam(paramIndex) {
+        let reportId = this.props.params.reportId || '_new';
+
+        let param = {};
+        param.name = this.refs[`param-name-${paramIndex}`].getValue();
+        param.defaultValue = this.refs[`param-default-${paramIndex}`].getValue();
+        param.required = this.refs[`param-required-${paramIndex}`].getValue();
+
+        this.props.dispatch(updateReportParam(
+            reportId,
+            paramIndex,
+            param,
+        ));
+    },
+
     addModel() {
         let reportId = this.props.params.reportId || '_new';
         let report = this.props.reports[reportId];
         let models = report.models;
 
         models.push({});
+
+        this.props.dispatch(updateReport(reportId, {
+            models,
+        }));
+    },
+
+    removeModel(index) {
+        let reportId = this.props.params.reportId || '_new';
+        let report = this.props.reports[reportId];
+        let models = report.models;
+
+        models.splice(index, 1);
 
         this.props.dispatch(updateReport(reportId, {
             models,
@@ -70,18 +121,6 @@ const EditReportPage = React.createClass({
         }
     },
 
-    removeModel(index) {
-        let reportId = this.props.params.reportId || '_new';
-        let report = this.props.reports[reportId];
-        let models = report.models;
-
-        models.splice(index, 1);
-
-        this.props.dispatch(updateReport(reportId, {
-            models,
-        }));
-    },
-
     render() {
         let reportId = this.props.params.reportId || '_new';
         let title = this.props.params.reportId || 'New Report';;
@@ -89,6 +128,7 @@ const EditReportPage = React.createClass({
         let report = this.props.reports[reportId];
         if (!report) {
             report = {
+                params: [],
                 models: [],
             };
         }
@@ -100,7 +140,37 @@ const EditReportPage = React.createClass({
         else {
             title = report.name || report.slug || title;
 
-            let links = report.models.map((model, i) => {
+            let paramLines = (report.params || []).map((param, i) => {
+                return (<tr key={i}>
+                    <td>
+                        <Input
+                            type="text"
+                            value={param.name}
+                            ref={"param-name-" + i}
+                            onChange={ () => this.updateParam(i) }
+                        />
+                    </td>
+                    <td>
+                        <Input
+                            type="text"
+                            value={param.defaultValue}
+                            ref={"param-default-" + i}
+                            onChange={ () => this.updateParam(i) }
+                        />
+                    </td>
+                    <td>
+                        <Input
+                            type="text"
+                            value={param.required}
+                            ref={"param-required-" + i}
+                            onChange={ () => this.updateParam(i) }
+                        />
+                    </td>
+                    <td><Button onClick={() => this.removeParam(i)}>Remove</Button></td>
+                </tr>);
+            });
+
+            let modelLines = (report.models || []).map((model, i) => {
                 let endpoint = model.endpoint || '';
                 let params = model.params || {};
                 return (<tr key={i}>
@@ -119,10 +189,25 @@ const EditReportPage = React.createClass({
                     <td><Button onClick={() => this.removeModel(i)}>Remove</Button></td>
                 </tr>);
             });
+
             content = (<div>
                 <Input ref="name" type="text" label="Name" value={report.name} onChange={this.updateReport} />
                 <Input ref="slug" type="text" label="Slug" value={report.slug} onChange={this.updateReport} />
-                <p>Models: </p>
+                <h3>Params: </h3>
+                <Table striped hover>
+                    <thead>
+                        <tr>
+                            <td>Name</td>
+                            <td>Default</td>
+                            <td>Required?</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {paramLines}
+                    </tbody>
+                </Table>
+                <h3>Models: </h3>
                 <Table striped hover>
                     <thead>
                         <tr>
@@ -134,13 +219,14 @@ const EditReportPage = React.createClass({
                         </tr>
                     </thead>
                     <tbody>
-                        {links}
+                        {modelLines}
                     </tbody>
                 </Table>
-                <p>
+                <h3>
                     <Link to={ {pathname: '/edit/report/'+reportId+'/controller'} }>Controller</Link>
-                </p>
+                </h3>
                 <ButtonGroup>
+                    <Button bsStyle="primary" onClick={this.addParam}><Glyphicon glyph="plus" /> Add Param</Button>
                     <Button bsStyle="primary" onClick={this.addModel}><Glyphicon glyph="plus" /> Add Model</Button>
                     <Button bsStyle="primary" onClick={this.saveReport}><Glyphicon glyph="hdd" /> Save</Button>
                 </ButtonGroup>

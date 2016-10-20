@@ -90,6 +90,16 @@ export function updateReportModel(id, modelIndex, endpoint, params) {
     };
 }
 
+export const UPDATE_REPORT_PARAM = 'UPDATE_REPORT_PARAM';
+export function updateReportParam(id, paramIndex, param) {
+    return {
+        type: UPDATE_REPORT_PARAM,
+        id,
+        paramIndex,
+        param,
+    };
+}
+
 // ----------------------------------------------------------------------------
 export const REQUEST_CREATE_REPORT = 'REQUEST_CREATE_REPORT';
 function requestCreateReport() {
@@ -153,6 +163,7 @@ export function saveReport(id, report) {
         db_reports.get(id)
         .then((obj) => {
             console.log('saving report ' + id);
+            obj.data.params = report.params;
             obj.data.models = report.models;
             obj.data.controller = report.controller;
             obj.data.name = report.name;
@@ -206,18 +217,43 @@ export function deleteReport(id) {
 }
 
 // ----------------------------------------------------------------------------
+/**
+ * Return the output of a report.
+ *
+ * Fetches the report metadata, prepare its parameters based on the input,
+ * fetches the models and then run the controller and return its output.
+ */
 export function runReport(args) {
     let id = args.id;
     let input = args.input;
 
     return dispatch => {
         return dispatch(fetchReport(id))
-        .then(report => fetchModels({params: input, report}))
+        .then(report => prepareParams(report, input))
+        .then(fetchModels)
         .then(runController)
         .catch(console.log.bind(console));
     }
 }
 
+/**
+ * Return an object containing the report and its parameters filled with the
+ * values passed as input.
+ */
+function prepareParams(report, input) {
+    let params = {};
+
+    report.params.forEach(param => {
+        params[param.name] = input[param.name] || param.defaultValue;
+    });
+
+    return {report, params};
+}
+
+/**
+ * Return an object containing the report, its parameters and the results of
+ * fetching the models of that report.
+ */
 function fetchModels(args) {
     let params = args.params;
     let report = args.report;
@@ -251,7 +287,7 @@ function fetchModels(args) {
                     let paramName = key.trim();
                     let value = params[paramName] || '';
 
-                    model.endpoint.replace(`{{${key}}}`, value);
+                    model.endpoint = model.endpoint.replace(`{{${key}}}`, value);
 
                     matchURL = templateRegex.exec(model.endpoint);
                 }
@@ -262,14 +298,13 @@ function fetchModels(args) {
                     if (match) {
                         let key = match[1];
                         let value = params[key.trim()];
-                        console.log(value);
 
                         // Replace the template with the actual value from params.
                         if (Array.isArray(value)) {
                             param.value = value;
                         }
                         else if (value) {
-                            param.value.replace(`{{${key}}}`, value);
+                            param.value = param.value.replace(`{{${key}}}`, value);
                         }
                     }
                 });
@@ -307,14 +342,11 @@ function runController(args) {
 
     return new Promise((resolve, reject) => {
         let controller = report.controller;
-        controller += ';application.setInterface({execute: (data, cb) => cb(transform(data))})';
+        controller += ';application.setInterface({execute: (data, cb) => cb(transform(data))});';
         let plugin = new jailed.DynamicPlugin(controller);
-        console.log('starting jailed');
         plugin.whenConnected(() => {
-            console.log('plugin connected');
             plugin.remote.execute(modelsData, output => {
                 resolve(output);
-                console.log('controller resolved');
             });
         });
     });

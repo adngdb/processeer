@@ -8,6 +8,7 @@ import {
     UPDATE_REPORT,
     UPDATE_REPORT_CONTROLLER,
     UPDATE_REPORT_MODEL,
+    UPDATE_REPORT_PARAM,
 } from './actions.jsx';
 import {
     VISIT_EDIT_VIEW_PAGE,
@@ -127,10 +128,28 @@ function model(state = {
     }
 }
 
+function param(state = {
+    name: '',
+    defaultValue: null,
+    required: false,
+}, action) {
+    switch (action.type) {
+        case UPDATE_REPORT_PARAM:
+            return Object.assign({}, state, {
+                name: action.param.name,
+                defaultValue: action.param.defaultValue,
+                required: action.param.required,
+            });
+        default:
+            return state;
+    }
+}
+
 function report(state = {
     isFetching: false,
     didInvalidate: false,
     id: null,
+    params: [],
     models: [],
     controller: '',
     name: '',
@@ -142,6 +161,7 @@ function report(state = {
         case RECEIVE_REPORT_META:
             return Object.assign({}, state, {
                 id: action.id,
+                params: action.report.params,
                 models: action.report.models,
                 controller: action.report.controller,
                 name: action.report.name,
@@ -163,6 +183,15 @@ function report(state = {
                     return item;
                 })
             });
+        case UPDATE_REPORT_PARAM:
+            return Object.assign({}, state, {
+                params: state.params.map((item, index) => {
+                    if (index === action.paramIndex) {
+                        return param(item, action);
+                    }
+                    return item;
+                }),
+            });
         default:
             return state;
     }
@@ -176,6 +205,7 @@ function reports(state = {}, action) {
         case UPDATE_REPORT:
         case UPDATE_REPORT_CONTROLLER:
         case UPDATE_REPORT_MODEL:
+        case UPDATE_REPORT_PARAM:
             return Object.assign({}, state, {
                 [action.id]: report(state[action.id], action)
             });

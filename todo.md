@@ -2,7 +2,7 @@
 
 ## Important
 
-- Implement inputs
+- Implement inputs / parameters
 - Multi-users
 - Fork report
 
