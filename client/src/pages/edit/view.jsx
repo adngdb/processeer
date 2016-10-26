@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonGroup, Input, Glyphicon, PageHeader, Panel } from 'react-bootstrap';
+import { Button, ButtonGroup, FormGroup, FormControl, ControlLabel, Glyphicon, PageHeader, Panel } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
@@ -124,8 +124,14 @@ const EditViewPage = React.createClass({
                 }
             );
             content = (<div>
-                <Input ref="name" type="text" label="Name" value={view.name} onChange={this.updateView} />
-                <Input ref="slug" type="text" label="Slug" value={view.slug} onChange={this.updateView} />
+                <FormGroup controlId='viewName'>
+                    <ControlLabel>Name</ControlLabel>
+                    <FormControl value={view.name} onChange={this.updateView} />
+                </FormGroup>
+                <FormGroup controlId='viewSlug'>
+                    <ControlLabel>Slug</ControlLabel>
+                    <FormControl value={view.slug} onChange={this.updateView} />
+                </FormGroup>
                 <p>Reports: </p>
                 <ul>
                     {links}

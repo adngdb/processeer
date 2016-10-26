@@ -14,10 +14,22 @@ function receiveReportMeta(id, report) {
     };
 }
 
+export const FETCHING_REPORT_META = 'FETCHING_REPORT_META';
+function requestReport(id) {
+    return {
+        type: FETCHING_REPORT_META,
+        id,
+    };
+}
+
 export function fetchReport(id) {
     return dispatch => {
+        dispatch(requestReport(id));
         return db_reports.get(id)
         .then((report) => {
+            if (!report.data.params) {
+                report.data.params = [];
+            }
             if (!report.data.models) {
                 report.data.models = [];
             }
@@ -273,6 +285,10 @@ function fetchModels(args) {
                 });
             }
         }
+
+        // Call finished() right away to account for the case where
+        // there are no models to fetch.
+        finished();
 
         report.models.forEach(model => {
             let url = model.endpoint;

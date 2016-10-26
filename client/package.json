@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --content-base dist/ --history-api-fallback --devtool eval",
+    "start": "webpack-dev-server --content-base dist/ --history-api-fallback",
     "build": "webpack --production --optimize-minimize --optimize-dedup --devtool hidden-sourcemap"
   },
   "author": "Adrian Gaudebert <adrian@gaudebert.fr>",
@@ -33,7 +33,7 @@
     "kinto": "1.2.0",
     "qs": "^6.1.0",
     "react": "^0.14.3",
-    "react-bootstrap": "^0.28.1",
+    "react-bootstrap": "^0.30.5",
     "react-chartjs": "^0.7.3",
     "react-codemirror": "^0.2.5",
     "react-dom": "^0.14.3",

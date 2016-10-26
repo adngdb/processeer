@@ -1,6 +1,6 @@
-var webpack = require('webpack'),
-path = require('path'),
-srcPath = path.join(__dirname, 'src');
+var webpack = require('webpack');
+var path = require('path');
+var srcPath = path.join(__dirname, 'src');
 
 module.exports = {
     target: 'web',
@@ -43,16 +43,16 @@ module.exports = {
         //         'NODE_ENV': JSON.stringify('production'),
         //     },
         // }),
-        new webpack.optimize.UglifyJsPlugin({
-            minimize: true,
-            compressor: {
-                warnings: false
-            }
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     minimize: true,
+        //     compressor: {
+        //         warnings: false
+        //     }
+        // }),
     ],
 
     debug: true,
-    devtool: 'eval-cheap-module-source-map',
+    devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
         historyApiFallback: true

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import {
+    FETCHING_REPORT_META,
     RECEIVE_REPORTS,
     RECEIVE_REPORT_META,
     RECEIVE_REPORT_DELETED,
@@ -18,6 +19,7 @@ import {
     CLEAR_NEW_VIEW_DATA,
     RECEIVE_CREATED_VIEW,
     RECEIVE_VIEW_CONTENT,
+    REMOVE_VIEW_CONTENT,
     RECEIVE_VIEW_DELETED,
     RECEIVE_VIEW_META,
     RECEIVE_VIEWS,
@@ -25,6 +27,7 @@ import {
     REQUEST_RUNNING_VIEW,
     UPDATE_VIEW,
     UPDATE_VIEW_META,
+    UPDATE_VIEW_INPUT,
 } from './actions/views.jsx';
 
 
@@ -37,6 +40,7 @@ function view(state = {
     reports: [],
     name: '',
     slug: '',
+    input: {},
     title: '',
     content: '',
 }, action) {
@@ -47,6 +51,10 @@ function view(state = {
                 id: action.id,
                 content: action.content,
                 title: action.title,
+            });
+        case REMOVE_VIEW_CONTENT:
+            return Object.assign({}, state, {
+                content: null,
             });
         case UPDATE_VIEW:
             return Object.assign({}, state, action.view);
@@ -77,6 +85,10 @@ function view(state = {
                 name: '',
                 slug: '',
             });
+        case UPDATE_VIEW_INPUT:
+            return Object.assign({}, state, {
+                input: action.input,
+            });
         default:
             return state;
     }
@@ -92,6 +104,7 @@ function views(state = {}, action) {
         case REQUEST_RUNNING_VIEW:
         case UPDATE_VIEW:
         case CLEAR_NEW_VIEW_DATA:
+        case UPDATE_VIEW_INPUT:
             return Object.assign({}, state, {
                 [action.id]: view(state[action.id], action)
             });
@@ -158,8 +171,13 @@ function report(state = {
     content: '',
 }, action) {
     switch (action.type) {
+        case FETCHING_REPORT_META:
+            return Object.assign({}, state, {
+                isFetching: true,
+            });
         case RECEIVE_REPORT_META:
             return Object.assign({}, state, {
+                isFetching: false,
                 id: action.id,
                 params: action.report.params,
                 models: action.report.models,
@@ -201,6 +219,7 @@ function reports(state = {}, action) {
     let newReports;
 
     switch (action.type) {
+        case FETCHING_REPORT_META:
         case RECEIVE_REPORT_META:
         case UPDATE_REPORT:
         case UPDATE_REPORT_CONTROLLER:

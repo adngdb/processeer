@@ -73,30 +73,27 @@ export function fetchView(id) {
 }
 
 // ----------------------------------------------------------------------------
-export function runView(id) {
+export function runView(view) {
+    console.log('view: ' + view);
     return dispatch => {
-        dispatch(requestRunningView(id));
-        dispatch(requestViewMeta(id));
-
-        db_views.get(id)
-        .then((view) => {
-            dispatch(receiveViewMeta(
-                id,
-                view.data
-            ));
-            dispatch(runReports(id, view.data.reports));
-        })
-        .catch(console.log.bind(console));
+        dispatch(requestRunningView(view.id));
+        dispatch(runReports(view.id, view.reports, view.input));
     };
 }
 
-function runReports(viewId, reports) {
+function runReports(viewId, reports, input) {
+    input = input || {};
+
     return dispatch => {
-        let promise = Promise.resolve({});
+        console.log(input);
+        let promise = Promise.resolve(input);
 
         reports.forEach(reportId => {
-            promise = promise.then(input => {
-                return dispatch(runReport({id: reportId, input}));
+            promise = promise.then(outputOfPreviousReport => {
+                return dispatch(runReport({
+                    id: reportId,
+                    input: outputOfPreviousReport
+                }));
             });
         });
 
@@ -229,11 +226,29 @@ function receiveViewContent(id, content, title) {
     };
 }
 
+export const REMOVE_VIEW_CONTENT = 'REMOVE_VIEW_CONTENT';
+export function removeViewContent(id) {
+    return {
+        type: REMOVE_VIEW_CONTENT,
+        id,
+    };
+}
+
 export const UPDATE_VIEW = 'UPDATE_VIEW';
 export function updateView(id, view) {
     return {
         type: UPDATE_VIEW,
         id,
         view,
+    };
+}
+
+// ----------------------------------------------------------------------------
+export const UPDATE_VIEW_INPUT = 'UPDATE_VIEW_INPUT';
+export function updateViewInput(id, input) {
+    return {
+        type: UPDATE_VIEW_INPUT,
+        id,
+        input,
     };
 }
