@@ -1,27 +1,31 @@
-let db = new Kinto({
-    remote: "http://localhost:8888/v1/",
-    headers: {Authorization: "Basic " + btoa("user:pass")}
+/* global Kinto */
+
+const db = new Kinto({
+    remote: 'http://localhost:8888/v1/',
+    headers: {
+        Authorization: `Basic ${btoa('user:pass')}`,
+    },
 });
 
-export let db_views = db.collection("views");
-export let db_reports = db.collection("reports");
+export const dbViews = db.collection('views');
+export const dbReports = db.collection('reports');
 
-db_views.sync()
-.catch(err => {
-    if (err.message.indexOf("flushed") > -1) {
-        return db_views.resetSyncStatus()
-        .then(_ => db_views.sync());
+dbViews.sync()
+.catch((err) => {
+    if (err.message.indexOf('flushed') > -1) {
+        return dbViews.resetSyncStatus()
+        .then(dbViews.sync.bind(dbViews));
     }
     throw err;
 });
-db_views.list().then(console.log.bind(console));
+dbViews.list().then(console.log.bind(console));
 
-db_reports.sync()
-.catch(err => {
-    if (err.message.indexOf("flushed") > -1) {
-        return db_reports.resetSyncStatus()
-        .then(_ => db_reports.sync());
+dbReports.sync()
+.catch((err) => {
+    if (err.message.indexOf('flushed') > -1) {
+        return dbReports.resetSyncStatus()
+        .then(dbReports.sync.bind(dbReports));
     }
     throw err;
 });
-db_reports.list().then(console.log.bind(console));
+dbReports.list().then(console.log.bind(console));

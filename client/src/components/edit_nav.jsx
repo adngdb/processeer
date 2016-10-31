@@ -8,7 +8,7 @@ const EditNav = React.createClass({
         let backToView = null;
         if (this.props.history.report) {
             backToReport = (
-                <LinkContainer to={ {pathname: '/edit/report/' + this.props.history.report} }>
+                <LinkContainer to={{ pathname: `/edit/report/${this.props.history.report}` }}>
                     <Button>
                         <Glyphicon glyph="chevron-left" /> Back to report
                     </Button>
@@ -17,7 +17,7 @@ const EditNav = React.createClass({
         }
         if (this.props.history.view) {
             backToView = (
-                <LinkContainer to={ {pathname: '/edit/view/' + this.props.history.view} }>
+                <LinkContainer to={{ pathname: `/edit/view/${this.props.history.view}` }}>
                     <Button>
                         <Glyphicon glyph="chevron-left" /> Back to view
                     </Button>
@@ -28,7 +28,7 @@ const EditNav = React.createClass({
             {backToReport}
             {backToView}
         </div>);
-    }
+    },
 });
 
 export default EditNav;

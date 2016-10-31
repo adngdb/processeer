@@ -10,10 +10,10 @@ const ReportPicker = React.createClass({
     },
 
     render() {
-        let reports = Object.keys(this.props.reports).map((id, i) => {
-            let report = this.props.reports[id];
-            let title = report.name || report.slug || id;
-            return <li key={i}><a href="#" onClick={(e) => this.pickReport(e, id)}>{title}</a></li>;
+        const reports = Object.keys(this.props.reports).map((id, i) => {
+            const report = this.props.reports[id];
+            const title = report.name || report.slug || id;
+            return <li key={i}><a href="#" onClick={e => this.pickReport(e, id)}>{title}</a></li>;
         });
 
         return (

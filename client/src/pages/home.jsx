@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, PageHeader, Panel, Table } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Button, PageHeader } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
@@ -18,37 +17,37 @@ const HomePage = React.createClass({
                     Mozilla Reports Builder <small>User documentation</small>
                 </PageHeader>
 
-                <LinkContainer to={ {pathname: '/edit/view/'} }>
-                    <Button bsStyle='primary'>Create new view</Button>
+                <LinkContainer to={{ pathname: '/edit/view/' }}>
+                    <Button bsStyle="primary">Create new view</Button>
                 </LinkContainer>
 
                 <h2>All Views</h2>
                 <Views
-                    views={this.props.views}
-                    fetchViews={() => this.props.dispatch(fetchViews())}
-                    deleteView={id => this.props.dispatch(deleteView(id))}
+                  views={this.props.views}
+                  fetchViews={() => this.props.dispatch(fetchViews())}
+                  deleteView={id => this.props.dispatch(deleteView(id))}
                 />
 
-                <LinkContainer to={ {pathname: '/edit/report/'} }>
-                    <Button bsStyle='primary'>Create new report</Button>
+                <LinkContainer to={{ pathname: '/edit/report/' }}>
+                    <Button bsStyle="primary">Create new report</Button>
                 </LinkContainer>
 
                 <h2>All Reports</h2>
                 <Reports
-                    reports={this.props.reports}
-                    fetchReports={() => this.props.dispatch(fetchReports())}
-                    deleteReport={id => this.props.dispatch(deleteReport(id))}
+                  reports={this.props.reports}
+                  fetchReports={() => this.props.dispatch(fetchReports())}
+                  deleteReport={id => this.props.dispatch(deleteReport(id))}
                 />
             </div>
         );
-    }
+    },
 });
 
-const mapStateToProps = (state) => {
-    return {
-        views: state.views,
-        reports: state.reports,
-    };
-}
+const mapStateToProps = state =>
+     ({
+         views: state.views,
+         reports: state.reports,
+     })
+;
 
 export default connect(mapStateToProps)(HomePage);

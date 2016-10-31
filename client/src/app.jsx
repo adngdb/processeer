@@ -22,15 +22,15 @@ import EditControllerPage from './pages/edit/controller.jsx';
 import EditModelPage from './pages/edit/model.jsx';
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     const loggerMiddleware = createLogger();
 
     const createStoreWithMiddleware = applyMiddleware(
-      thunkMiddleware,
-      loggerMiddleware
+        thunkMiddleware,
+        loggerMiddleware
     )(createStore);
 
-    let store = createStoreWithMiddleware(rootReducer);
+    const store = createStoreWithMiddleware(rootReducer);
 
     render((
         <Provider store={store}>

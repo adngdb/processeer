@@ -4,7 +4,6 @@ import 'codemirror/mode/javascript/javascript';
 
 import React from 'react';
 import { Button, ButtonGroup, PageHeader, Panel } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 import Codemirror from 'react-codemirror';
 
@@ -23,7 +22,7 @@ const EditControllerPage = React.createClass({
     },
 
     checkReport(props) {
-        let reportId = props.params.reportId;
+        const reportId = props.params.reportId;
 
         if (!props.reports[reportId]) {
             props.dispatch(fetchReport(reportId));
@@ -31,15 +30,15 @@ const EditControllerPage = React.createClass({
     },
 
     updateController(newCode) {
-        let reportId = this.props.params.reportId;
+        const reportId = this.props.params.reportId;
         this.props.dispatch(updateReportController(reportId, newCode));
     },
 
     saveController() {
-        let reportId = this.props.params.reportId;
-        let report = this.props.reports[reportId];
+        const reportId = this.props.params.reportId;
+        const report = this.props.reports[reportId];
 
-        if (reportId == '_new') {
+        if (reportId === '_new') {
             this.props.dispatch(createReport(report));
         }
         else {
@@ -48,8 +47,8 @@ const EditControllerPage = React.createClass({
     },
 
     render() {
-        let reportId = this.props.params.reportId;
-        let report = this.props.reports[reportId];
+        const reportId = this.props.params.reportId;
+        const report = this.props.reports[reportId];
 
         let content;
         if (!report || report.isFetching) {
@@ -57,7 +56,7 @@ const EditControllerPage = React.createClass({
         }
         else {
             let controller = report.controller;
-            if (typeof(controller) === undefined) {
+            if (typeof controller === 'undefined') {
                 controller = `let transform = (data, callback) => {
     // Add your code here.
 
@@ -78,10 +77,10 @@ application.setInterface({transform: transform});`;
             };
             content = (<Panel header={reportId}>
                 <Codemirror
-                    value={controller}
-                    options={options}
-                    onChange={this.updateController}
-                    fill
+                  value={controller}
+                  options={options}
+                  onChange={this.updateController}
+                  fill
                 />
                 <ButtonGroup>
                     <Button bsStyle="primary" onClick={this.saveController}>Save</Button>
@@ -89,7 +88,7 @@ application.setInterface({transform: transform});`;
             </Panel>);
         }
 
-        let history = {
+        const history = {
             view: this.props.history.view,
             report: reportId,
         };
@@ -101,14 +100,14 @@ application.setInterface({transform: transform});`;
                 {content}
             </div>
         );
-    }
+    },
 });
 
-const mapStateToProps = (state) => {
-    return {
-        reports: state.reports,
-        history: state.history,
-    };
-}
+const mapStateToProps = state =>
+     ({
+         reports: state.reports,
+         history: state.history,
+     })
+;
 
 export default connect(mapStateToProps)(EditControllerPage);

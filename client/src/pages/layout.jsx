@@ -1,7 +1,7 @@
 import React from 'react';
-import { Alert, Button, Input, Navbar, Nav, NavItem, Grid, Row } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Grid, Row } from 'react-bootstrap';
 import { Link } from 'react-router';
-import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
+import { IndexLinkContainer } from 'react-router-bootstrap';
 
 import { connect } from 'react-redux';
 
@@ -18,12 +18,14 @@ const Header = React.createClass({
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav>
-                        <IndexLinkContainer to="/"><NavItem>Documentation</NavItem></IndexLinkContainer>
+                        <IndexLinkContainer to="/">
+                            <NavItem>Documentation</NavItem>
+                        </IndexLinkContainer>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
         );
-    }
+    },
 });
 
 
@@ -43,7 +45,7 @@ const Footer = React.createClass({
                 </a>
             </p>
         );
-    }
+    },
 });
 
 
@@ -61,7 +63,7 @@ const Layout = React.createClass({
                 </Grid>
             </div>
         );
-    }
+    },
 });
 
 export default connect(x => x)(Layout);

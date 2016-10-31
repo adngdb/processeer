@@ -20,8 +20,8 @@ const ViewPage = React.createClass({
     },
 
     checkView(props) {
-        let viewId = props.params.viewId;
-        let view = props.views[viewId];
+        const viewId = props.params.viewId;
+        const view = props.views[viewId];
 
         if (!view) {
             props.dispatch(fetchView(viewId));
@@ -37,24 +37,24 @@ const ViewPage = React.createClass({
     },
 
     runView() {
-        let viewId = this.props.params.viewId;
-        let view = this.props.views[viewId];
+        const viewId = this.props.params.viewId;
+        const view = this.props.views[viewId];
 
         this.props.dispatch(removeViewContent(viewId));
         this.props.dispatch(runView(view));
     },
 
     updateInput(key, value) {
-        let viewId = this.props.params.viewId;
-        let input = this.props.views[viewId].input || {};
+        const viewId = this.props.params.viewId;
+        const input = this.props.views[viewId].input || {};
 
         input[key] = value;
         this.props.dispatch(updateViewInput(viewId, input));
     },
 
     render() {
-        let viewId = this.props.params.viewId;
-        let view = this.props.views[viewId];
+        const viewId = this.props.params.viewId;
+        const view = this.props.views[viewId];
 
         let title = 'View';
 
@@ -65,7 +65,7 @@ const ViewPage = React.createClass({
         }
         else {
             if (view.reports.length) {
-                let firstReport = this.props.reports[view.reports[0]];
+                const firstReport = this.props.reports[view.reports[0]];
                 if (firstReport && !firstReport.isFetching) {
                     params = <ViewInput report={firstReport} input={view.input} updateInput={this.updateInput} />;
                 }
@@ -79,7 +79,7 @@ const ViewPage = React.createClass({
             <Panel header={title}>
                 <ButtonGroup>
                     <Button onClick={this.runView}><Glyphicon glyph="refresh" /> Run</Button>
-                    <LinkContainer to={ {pathname: '/edit/view/'+viewId} }>
+                    <LinkContainer to={{ pathname: `/edit/view/${viewId}` }}>
                         <Button><Glyphicon glyph="edit" /> Edit</Button>
                     </LinkContainer>
                 </ButtonGroup>
@@ -87,14 +87,14 @@ const ViewPage = React.createClass({
                 {content}
             </Panel>
         );
-    }
+    },
 });
 
-const mapStateToProps = (state) => {
-    return {
-        views: state.views,
-        reports: state.reports,
-    };
-}
+const mapStateToProps = state =>
+     ({
+         views: state.views,
+         reports: state.reports,
+     })
+;
 
 export default connect(mapStateToProps)(ViewPage);

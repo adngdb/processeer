@@ -17,14 +17,14 @@ const EditHomePage = React.createClass({
                 </p>
             </div>
         );
-    }
+    },
 });
 
-const mapStateToProps = (state) => {
-    return {
-        views: state.views,
-        reports: state.reports,
-    };
-}
+const mapStateToProps = state =>
+     ({
+         views: state.views,
+         reports: state.reports,
+     })
+;
 
 export default connect(mapStateToProps)(EditHomePage);

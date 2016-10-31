@@ -1,11 +1,6 @@
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/monokai.css';
-import 'codemirror/mode/javascript/javascript';
-
 import React from 'react';
 import { Button, ButtonGroup, Glyphicon, ControlLabel, FormControl, FormGroup, PageHeader, Panel, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import Codemirror from 'react-codemirror';
 
 import { createReport, fetchReport, updateReportModel, saveReport } from '../../actions.jsx';
 import Loader from '../../components/loader.jsx';
@@ -22,7 +17,7 @@ const EditModelPage = React.createClass({
     },
 
     checkReport(props) {
-        let reportId = props.params.reportId;
+        const reportId = props.params.reportId;
 
         if (!props.reports[reportId]) {
             props.dispatch(fetchReport(reportId));
@@ -30,23 +25,23 @@ const EditModelPage = React.createClass({
     },
 
     getReport() {
-        let reportId = this.props.params.reportId;
+        const reportId = this.props.params.reportId;
         return this.props.reports[reportId];
     },
 
     getModel() {
-        let report = this.getReport();
-        let modelIndex = this.props.params.modelIndex;
+        const report = this.getReport();
+        const modelIndex = this.props.params.modelIndex;
         return report.models[modelIndex];
     },
 
     updateModel(data) {
-        let reportId = this.props.params.reportId;
-        let modelIndex = this.props.params.modelIndex;
-        let model = this.getModel();
+        const reportId = this.props.params.reportId;
+        const modelIndex = this.props.params.modelIndex;
+        const model = this.getModel();
 
-        let endpoint = data.endpoint || model.endpoint;
-        let params = data.params || model.params;
+        const endpoint = data.endpoint || model.endpoint;
+        const params = data.params || model.params;
 
         this.props.dispatch(updateReportModel(
             reportId,
@@ -63,30 +58,30 @@ const EditModelPage = React.createClass({
     },
 
     updateModelParamKey(e) {
-        let model = this.getModel();
-        let params = model.params;
+        const model = this.getModel();
+        const params = model.params;
 
-        let paramIndex = e.target.dataset.index;
+        const paramIndex = e.target.dataset.index;
 
         params[paramIndex].key = e.target.value;
         this.updateModel({ params });
     },
 
     updateModelParamValue(e) {
-        let model = this.getModel();
-        let params = model.params;
+        const model = this.getModel();
+        const params = model.params;
 
-        let paramIndex = e.target.dataset.index;
+        const paramIndex = e.target.dataset.index;
 
         params[paramIndex].value = e.target.value;
         this.updateModel({ params });
     },
 
     saveModel() {
-        let reportId = this.props.params.reportId;
-        let report = this.props.reports[reportId];
+        const reportId = this.props.params.reportId;
+        const report = this.props.reports[reportId];
 
-        if (reportId == '_new') {
+        if (reportId === '_new') {
             this.props.dispatch(createReport(report));
         }
         else {
@@ -95,52 +90,52 @@ const EditModelPage = React.createClass({
     },
 
     addParam() {
-        let model = this.getModel();
-        let params = model.params;
+        const model = this.getModel();
+        const params = model.params;
 
         // Add a new, empty parameter.
-        params.push({key: '', value: ''});
+        params.push({ key: '', value: '' });
         this.updateModel({ params });
     },
 
     removeParam(index) {
-        let model = this.getModel();
-        let params = model.params;
+        const model = this.getModel();
+        const params = model.params;
 
         params.splice(index, 1);
         this.updateModel({ params });
     },
 
     render() {
-        let reportId = this.props.params.reportId;
-        let modelIndex = this.props.params.modelIndex;
-        let report = this.props.reports[reportId];
+        const reportId = this.props.params.reportId;
+        const modelIndex = this.props.params.modelIndex;
+        const report = this.props.reports[reportId];
 
         let content;
         if (!report || report.isFetching) {
             content = <Loader />;
         }
         else {
-            let model = report.models[modelIndex];
+            const model = report.models[modelIndex];
             model.params = model.params || [];
             model.endpoint = model.endpoint || '';
 
-            let params = model.params.map((entry, i) => {
-                return (<tr key={i}>
+            const params = model.params.map((entry, i) =>
+                 (<tr key={i}>
                     <td>
                         <FormControl
-                            type="text"
-                            value={entry.key}
-                            data-index={i}
-                            onChange={this.updateModelParamKey}
+                          type="text"
+                          value={entry.key}
+                          data-index={i}
+                          onChange={this.updateModelParamKey}
                         />
                     </td>
                     <td>
                         <FormControl
-                            type="text"
-                            value={entry.value}
-                            data-index={i}
-                            onChange={this.updateModelParamValue}
+                          type="text"
+                          value={entry.value}
+                          data-index={i}
+                          onChange={this.updateModelParamValue}
                         />
                     </td>
                     <td>
@@ -148,18 +143,17 @@ const EditModelPage = React.createClass({
                             <Glyphicon glyph="remove" />
                         </Button>
                     </td>
-                </tr>);
-            });
+                </tr>)
+            );
 
             content = (<Panel header={reportId}>
                 <form>
                     <FormGroup controlId="modelEndpoint">
                         <ControlLabel>URL</ControlLabel>
                         <FormControl
-                            type="text"
-                            value={model.endpoint}
-                            ref="endpoint"
-                            onChange={this.updateModelEndpoint}
+                          type="text"
+                          value={model.endpoint}
+                          onChange={this.updateModelEndpoint}
                         />
                     </FormGroup>
                     <h2>Parameters</h2>
@@ -168,7 +162,7 @@ const EditModelPage = React.createClass({
                             <tr>
                                 <td>Key</td>
                                 <td>Value</td>
-                                <td></td>
+                                <td />
                             </tr>
                         </thead>
                         <tbody>
@@ -176,14 +170,18 @@ const EditModelPage = React.createClass({
                         </tbody>
                     </Table>
                     <ButtonGroup>
-                        <Button onClick={this.addParam}><Glyphicon glyph="plus" /> Add Param</Button>
-                        <Button bsStyle="primary" onClick={this.saveModel}><Glyphicon glyph="hdd" /> Save</Button>
+                        <Button onClick={this.addParam}>
+                            <Glyphicon glyph="plus" /> Add Param
+                        </Button>
+                        <Button bsStyle="primary" onClick={this.saveModel}>
+                            <Glyphicon glyph="hdd" /> Save
+                        </Button>
                     </ButtonGroup>
                 </form>
             </Panel>);
         }
 
-        let history = {
+        const history = {
             view: this.props.history.view,
             report: reportId,
         };
@@ -198,11 +196,11 @@ const EditModelPage = React.createClass({
     },
 });
 
-const mapStateToProps = (state) => {
-    return {
-        reports: state.reports,
-        history: state.history,
-    };
-};
+const mapStateToProps = state =>
+     ({
+         reports: state.reports,
+         history: state.history,
+     })
+;
 
 export default connect(mapStateToProps)(EditModelPage);

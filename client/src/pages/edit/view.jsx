@@ -22,13 +22,13 @@ const EditViewPage = React.createClass({
     },
 
     checkView(props) {
-        let viewId = props.params.viewId;
+        const viewId = props.params.viewId;
 
         if (!viewId) {
             return;
         }
 
-        if (props.history.view != viewId) {
+        if (props.history.view !== viewId) {
             props.dispatch(visitEditViewPage(viewId));
         }
 
@@ -38,7 +38,7 @@ const EditViewPage = React.createClass({
     },
 
     updateView(data) {
-        let viewId = this.props.params.viewId || '_new';
+        const viewId = this.props.params.viewId || '_new';
 
         this.props.dispatch(updateView(viewId, data));
     },
@@ -52,10 +52,10 @@ const EditViewPage = React.createClass({
     },
 
     saveView() {
-        let viewId = this.props.params.viewId || '_new';
-        let view = this.props.views[viewId];
+        const viewId = this.props.params.viewId || '_new';
+        const view = this.props.views[viewId];
 
-        if (viewId == '_new') {
+        if (viewId === '_new') {
             this.props.dispatch(createView(
                 view.reports,
                 view.name,
@@ -73,11 +73,11 @@ const EditViewPage = React.createClass({
     },
 
     addReport(id) {
-        let viewId = this.props.params.viewId || '_new';
-        let view = this.props.views[viewId];
+        const viewId = this.props.params.viewId || '_new';
+        const view = this.props.views[viewId];
 
-        let newView = {
-            reports: view.reports
+        const newView = {
+            reports: view.reports,
         };
         newView.reports.push(id);
 
@@ -85,21 +85,21 @@ const EditViewPage = React.createClass({
     },
 
     openReportPicker() {
-        let viewId = this.props.params.viewId || '_new';
+        const viewId = this.props.params.viewId || '_new';
         this.props.dispatch(updateView(viewId, {
             isPickingReport: true,
         }));
     },
 
     closeReportPicker() {
-        let viewId = this.props.params.viewId || '_new';
+        const viewId = this.props.params.viewId || '_new';
         this.props.dispatch(updateView(viewId, {
             isPickingReport: false,
         }));
     },
 
     render() {
-        let viewId = this.props.params.viewId || '_new';
+        const viewId = this.props.params.viewId || '_new';
         let title = this.props.params.viewId || 'New View';
 
         let view = this.props.views[viewId];
@@ -116,22 +116,20 @@ const EditViewPage = React.createClass({
         else {
             title = view.name || view.slug || title;
 
-            let links = view.reports.map(
-                (id, i) => {
-                    let report = this.props.reports[id];
-                    let title = id;
-                    if (report) {
-                        title = report.name || report.slug || id;
-                    }
-                    return <li key={i}><Link to={ {pathname: '/edit/report/' + id} }>{title}</Link></li>
+            const links = view.reports.map((id, i) => {
+                const report = this.props.reports[id];
+                title = id;
+                if (report) {
+                    title = report.name || report.slug || id;
                 }
-            );
+                return <li key={i}><Link to={{ pathname: `/edit/report/${id}` }}>{title}</Link></li>;
+            });
             content = (<div>
-                <FormGroup controlId='viewName'>
+                <FormGroup controlId="viewName">
                     <ControlLabel>Name</ControlLabel>
                     <FormControl value={view.name} onChange={this.updateViewName} />
                 </FormGroup>
-                <FormGroup controlId='viewSlug'>
+                <FormGroup controlId="viewSlug">
                     <ControlLabel>Slug</ControlLabel>
                     <FormControl value={view.slug} onChange={this.updateViewSlug} />
                 </FormGroup>
@@ -140,17 +138,21 @@ const EditViewPage = React.createClass({
                     {links}
                 </ul>
                 <ButtonGroup>
-                    <Button bsStyle="primary" onClick={this.openReportPicker}><Glyphicon glyph="plus" /> Add Report</Button>
-                    <Button bsStyle="primary" onClick={this.saveView}><Glyphicon glyph="hdd" /> Save</Button>
-                    <LinkContainer to={{pathname: '/view/' + viewId}}>
+                    <Button bsStyle="primary" onClick={this.openReportPicker}>
+                        <Glyphicon glyph="plus" /> Add Report
+                    </Button>
+                    <Button bsStyle="primary" onClick={this.saveView}>
+                        <Glyphicon glyph="hdd" /> Save
+                    </Button>
+                    <LinkContainer to={{ pathname: `/view/${viewId}` }}>
                         <Button bsStyle="primary"><Glyphicon glyph="refresh" /> Run</Button>
                     </LinkContainer>
                 </ButtonGroup>
                 <ReportPicker
-                    reports={this.props.reports}
-                    show={view.isPickingReport}
-                    onHide={this.closeReportPicker}
-                    addReport={this.addReport}
+                  reports={this.props.reports}
+                  show={view.isPickingReport}
+                  onHide={this.closeReportPicker}
+                  addReport={this.addReport}
                 />
             </div>);
         }
@@ -163,16 +165,16 @@ const EditViewPage = React.createClass({
                 </Panel>
             </div>
         );
-    }
+    },
 });
 
-const mapStateToProps = (state) => {
-    return {
-        views: state.views,
-        reports: state.reports,
-        history: state.history,
-        created: state.created,
-    };
-};
+const mapStateToProps = state =>
+     ({
+         views: state.views,
+         reports: state.reports,
+         history: state.history,
+         created: state.created,
+     })
+;
 
 export default connect(mapStateToProps)(EditViewPage);

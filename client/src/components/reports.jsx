@@ -16,15 +16,15 @@ const Reports = React.createClass({
     },
 
     render() {
-        let reports = Object.keys(this.props.reports).map((id, i) => {
-            let report = this.props.reports[id];
-            let title = report.name || report.slug || id;
+        const reports = Object.keys(this.props.reports).map((id, i) => {
+            const report = this.props.reports[id];
+            const title = report.name || report.slug || id;
             return (<tr key={i}>
                 <td>
-                    <Link to={ {pathname: '/edit/report/' + id} }>{title}</Link>
+                    <Link to={{ pathname: `/edit/report/${id}` }}>{title}</Link>
                 </td>
                 <td>
-                    <LinkContainer to={ {pathname: '/edit/report/' + id} }>
+                    <LinkContainer to={{ pathname: `/edit/report/${id}` }}>
                         <Button>Edit</Button>
                     </LinkContainer>
                 </td>
@@ -37,8 +37,8 @@ const Reports = React.createClass({
                 <thead>
                     <tr>
                         <td>Name</td>
-                        <td></td>
-                        <td></td>
+                        <td />
+                        <td />
                     </tr>
                 </thead>
                 <tbody>
@@ -46,7 +46,7 @@ const Reports = React.createClass({
                 </tbody>
             </Table>
         );
-    }
+    },
 });
 
 export default Reports;

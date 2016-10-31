@@ -20,13 +20,13 @@ const EditReportPage = React.createClass({
     },
 
     checkReport(props) {
-        let reportId = props.params.reportId;
+        const reportId = props.params.reportId;
 
         if (!reportId) {
             return;
         }
 
-        if (props.history.report != reportId) {
+        if (props.history.report !== reportId) {
             props.dispatch(visitEditReportPage(reportId));
         }
 
@@ -36,19 +36,19 @@ const EditReportPage = React.createClass({
     },
 
     getReport() {
-        let reportId = this.props.params.reportId || '_new';
+        const reportId = this.props.params.reportId || '_new';
         return this.props.reports[reportId];
     },
 
     getParam(paramIndex) {
-        let report = this.getReport();
+        const report = this.getReport();
         return report.params[paramIndex];
     },
 
     addParam() {
-        let reportId = this.props.params.reportId || '_new';
-        let report = this.getReport();
-        let params = report.params || [];
+        const reportId = this.props.params.reportId || '_new';
+        const report = this.getReport();
+        const params = report.params || [];
 
         params.push({});
 
@@ -58,9 +58,9 @@ const EditReportPage = React.createClass({
     },
 
     removeParam(index) {
-        let reportId = this.props.params.reportId || '_new';
-        let report = this.props.reports[reportId];
-        let params = report.params;
+        const reportId = this.props.params.reportId || '_new';
+        const report = this.props.reports[reportId];
+        const params = report.params;
 
         params.splice(index, 1);
 
@@ -70,7 +70,7 @@ const EditReportPage = React.createClass({
     },
 
     updateParam(paramIndex, param) {
-        let reportId = this.props.params.reportId || '_new';
+        const reportId = this.props.params.reportId || '_new';
 
         this.props.dispatch(updateReportParam(
             reportId,
@@ -81,7 +81,7 @@ const EditReportPage = React.createClass({
 
     updateParamName(e) {
         const paramIndex = e.target.dataset.index;
-        let param = this.getParam(paramIndex);
+        const param = this.getParam(paramIndex);
 
         param.name = e.target.value;
         this.updateParam(paramIndex, param);
@@ -89,7 +89,7 @@ const EditReportPage = React.createClass({
 
     updateParamDefault(e) {
         const paramIndex = e.target.dataset.index;
-        let param = this.getParam(paramIndex);
+        const param = this.getParam(paramIndex);
 
         param.defaultValue = e.target.value;
         this.updateParam(paramIndex, param);
@@ -97,16 +97,16 @@ const EditReportPage = React.createClass({
 
     updateParamRequired(e) {
         const paramIndex = e.target.dataset.index;
-        let param = this.getParam(paramIndex);
+        const param = this.getParam(paramIndex);
 
         param.required = e.target.value;
         this.updateParam(paramIndex, param);
     },
 
     addModel() {
-        let reportId = this.props.params.reportId || '_new';
-        let report = this.props.reports[reportId];
-        let models = report.models;
+        const reportId = this.props.params.reportId || '_new';
+        const report = this.props.reports[reportId];
+        const models = report.models;
 
         models.push({});
 
@@ -116,9 +116,9 @@ const EditReportPage = React.createClass({
     },
 
     removeModel(index) {
-        let reportId = this.props.params.reportId || '_new';
-        let report = this.props.reports[reportId];
-        let models = report.models;
+        const reportId = this.props.params.reportId || '_new';
+        const report = this.props.reports[reportId];
+        const models = report.models;
 
         models.splice(index, 1);
 
@@ -128,7 +128,7 @@ const EditReportPage = React.createClass({
     },
 
     updateReport(data) {
-        let reportId = this.props.params.reportId || '_new';
+        const reportId = this.props.params.reportId || '_new';
         this.props.dispatch(updateReport(reportId, data));
     },
 
@@ -145,10 +145,10 @@ const EditReportPage = React.createClass({
     },
 
     saveReport() {
-        let reportId = this.props.params.reportId || '_new';
-        let report = this.props.reports[reportId];
+        const reportId = this.props.params.reportId || '_new';
+        const report = this.props.reports[reportId];
 
-        if (reportId == '_new') {
+        if (reportId === '_new') {
             this.props.dispatch(createReport(report));
         }
         else {
@@ -157,8 +157,8 @@ const EditReportPage = React.createClass({
     },
 
     render() {
-        let reportId = this.props.params.reportId || '_new';
-        let title = this.props.params.reportId || 'New Report';;
+        const reportId = this.props.params.reportId || '_new';
+        let title = this.props.params.reportId || 'New Report';
 
         let report = this.props.reports[reportId];
         if (!report) {
@@ -175,30 +175,30 @@ const EditReportPage = React.createClass({
         else {
             title = report.name || report.slug || title;
 
-            let paramLines = (report.params || []).map((param, i) => {
-                return (<tr key={i}>
+            const paramLines = (report.params || []).map((param, i) =>
+                 (<tr key={i}>
                     <td>
                         <FormControl
-                            type="text"
-                            value={param.name}
-                            data-index={i}
-                            onChange={this.updateParamName}
+                          type="text"
+                          value={param.name}
+                          data-index={i}
+                          onChange={this.updateParamName}
                         />
                     </td>
                     <td>
                         <FormControl
-                            type="text"
-                            value={param.defaultValue}
-                            data-index={i}
-                            onChange={this.updateParamDefault}
+                          type="text"
+                          value={param.defaultValue}
+                          data-index={i}
+                          onChange={this.updateParamDefault}
                         />
                     </td>
                     <td>
                         <FormControl
-                            type="text"
-                            value={param.required}
-                            data-index={i}
-                            onChange={this.updateParamRequired}
+                          type="text"
+                          value={param.required}
+                          data-index={i}
+                          onChange={this.updateParamRequired}
                         />
                     </td>
                     <td>
@@ -206,22 +206,22 @@ const EditReportPage = React.createClass({
                             <Glyphicon glyph="remove" />
                         </Button>
                     </td>
-                </tr>);
-            });
+                </tr>)
+            );
 
-            let modelLines = (report.models || []).map((model, i) => {
-                let endpoint = model.endpoint || '';
-                let params = model.params || {};
+            const modelLines = (report.models || []).map((model, i) => {
+                const endpoint = model.endpoint || '';
+                const params = model.params || {};
                 return (<tr key={i}>
                     <td>
-                        <Link to={ {pathname: '/edit/report/' + reportId + '/model/' + i} }>
+                        <Link to={{ pathname: `/edit/report/${reportId}/model/${i}` }}>
                             #{i}
                         </Link>
                     </td>
                     <td>{endpoint}</td>
                     <td>{Object.keys(params).length}</td>
                     <td>
-                        <LinkContainer to={ {pathname: '/edit/report/' + reportId + '/model/' + i} }>
+                        <LinkContainer to={{ pathname: `/edit/report/${reportId}/model/${i}` }}>
                             <Button>Edit</Button>
                         </LinkContainer>
                     </td>
@@ -246,7 +246,7 @@ const EditReportPage = React.createClass({
                             <td>Name</td>
                             <td>Default</td>
                             <td>Required?</td>
-                            <td></td>
+                            <td />
                         </tr>
                     </thead>
                     <tbody>
@@ -260,8 +260,8 @@ const EditReportPage = React.createClass({
                             <td>Index</td>
                             <td>Endpoint</td>
                             <td># of params</td>
-                            <td></td>
-                            <td></td>
+                            <td />
+                            <td />
                         </tr>
                     </thead>
                     <tbody>
@@ -269,20 +269,26 @@ const EditReportPage = React.createClass({
                     </tbody>
                 </Table>
                 <h3>
-                    <Link to={ {pathname: '/edit/report/'+reportId+'/controller'} }>Controller</Link>
+                    <Link to={{ pathname: `/edit/report/${reportId}/controller` }}>Controller</Link>
                 </h3>
                 <ButtonGroup>
-                    <Button bsStyle="primary" onClick={this.addParam}><Glyphicon glyph="plus" /> Add Param</Button>
-                    <Button bsStyle="primary" onClick={this.addModel}><Glyphicon glyph="plus" /> Add Model</Button>
-                    <Button bsStyle="primary" onClick={this.saveReport}><Glyphicon glyph="hdd" /> Save</Button>
+                    <Button bsStyle="primary" onClick={this.addParam}>
+                        <Glyphicon glyph="plus" /> Add Param
+                    </Button>
+                    <Button bsStyle="primary" onClick={this.addModel}>
+                        <Glyphicon glyph="plus" /> Add Model
+                    </Button>
+                    <Button bsStyle="primary" onClick={this.saveReport}>
+                        <Glyphicon glyph="hdd" /> Save
+                    </Button>
                 </ButtonGroup>
             </div>);
         }
 
         // New history without the report, because we know it's the current one.
-        let history = {
+        const history = {
             view: this.props.history.view,
-        }
+        };
 
         return (
             <div>
@@ -293,14 +299,14 @@ const EditReportPage = React.createClass({
                 </Panel>
             </div>
         );
-    }
+    },
 });
 
-const mapStateToProps = (state) => {
-    return {
-        reports: state.reports,
-        history: state.history,
-    };
-}
+const mapStateToProps = state =>
+     ({
+         reports: state.reports,
+         history: state.history,
+     })
+;
 
 export default connect(mapStateToProps)(EditReportPage);

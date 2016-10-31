@@ -1,0 +1,38 @@
+rules:
+  indent:
+    - "error"
+    - 4
+  quotes:
+    - "warn"
+    - single
+  linebreak-style:
+    - "error"
+    - unix
+  semi:
+    - "error"
+    - always
+  comma-dangle:
+    - "warn"
+    - always-multiline
+  no-extra-semi:
+    - "error"
+  react/jsx-indent:
+    - 0
+  import/extensions:
+    - 0
+  brace-style:
+    - 2
+    - "stroustrup"
+  react/prefer-es6-class:
+    - 1
+    - "never"
+  no-console:
+    - 0
+env:
+  browser: true
+  es6: true
+parserOptions:
+  sourceType: "module"
+  ecmaFeatures:
+    jsx: true
+extends: 'eslint-config-airbnb'

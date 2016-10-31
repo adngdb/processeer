@@ -1,11 +1,11 @@
 import history from './history.jsx';
-import { db_views } from './../db.jsx';
+import { dbViews } from './../db.jsx';
 import { runReport } from '../actions.jsx';
 
 
 // ----------------------------------------------------------------------------
 export const REQUEST_VIEWS = 'REQUEST_VIEWS';
-function requestViews(views) {
+function requestViews() {
     return {
         type: REQUEST_VIEWS,
     };
@@ -20,10 +20,10 @@ function receiveViews(views) {
 }
 
 export function fetchViews() {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(requestViews());
 
-        db_views.list()
+        dbViews.list()
         .then(views => dispatch(receiveViews(views.data)))
         .catch(console.log.bind(console));
     };
@@ -58,158 +58,15 @@ function receiveViewMeta(id, view) {
 }
 
 export function fetchView(id) {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(requestViewMeta(id));
 
-        db_views.get(id)
+        dbViews.get(id)
         .then((view) => {
             dispatch(receiveViewMeta(
                 id,
                 view.data
             ));
-        })
-        .catch(console.log.bind(console));
-    };
-}
-
-// ----------------------------------------------------------------------------
-export function runView(view) {
-    console.log('view: ' + view);
-    return dispatch => {
-        dispatch(requestRunningView(view.id));
-        dispatch(runReports(view.id, view.reports, view.input));
-    };
-}
-
-function runReports(viewId, reports, input) {
-    input = input || {};
-
-    return dispatch => {
-        console.log(input);
-        let promise = Promise.resolve(input);
-
-        reports.forEach(reportId => {
-            promise = promise.then(outputOfPreviousReport => {
-                return dispatch(runReport({
-                    id: reportId,
-                    input: outputOfPreviousReport
-                }));
-            });
-        });
-
-        promise.then(content => {
-            dispatch(receiveViewContent(viewId, content, content.title))
-        })
-        .catch(console.log.bind(console));
-    }
-}
-
-// ----------------------------------------------------------------------------
-export const REQUEST_CREATE_VIEW = 'REQUEST_CREATE_VIEW';
-function requestCreateView() {
-    return {
-        type: REQUEST_CREATE_VIEW,
-    };
-}
-
-export const RECEIVE_CREATED_VIEW = 'RECEIVE_CREATED_VIEW';
-function receiveViewCreated(view) {
-    return {
-        type: RECEIVE_CREATED_VIEW,
-        id: view.id,
-    };
-}
-
-export const CLEAR_NEW_VIEW_DATA = 'CLEAR_NEW_VIEW_DATA';
-function clearNewViewData() {
-    return {
-        type: CLEAR_NEW_VIEW_DATA,
-        id: '_new',
-    };
-}
-
-export function createView(reports, name, slug) {
-    return dispatch => {
-        dispatch(requestCreateView());
-
-        let view = {
-            reports,
-            name,
-            slug,
-        };
-
-        db_views.create(view)
-        .then(res => {
-            dispatch(receiveViewCreated(res.data));
-            dispatch(clearNewViewData());
-            history.push('/edit/view/' + res.data.id);
-            return res.data;
-        })
-        .catch(console.log.bind(console));
-    }
-}
-
-// ----------------------------------------------------------------------------
-export const REQUEST_SAVE_VIEW = 'REQUEST_SAVE_VIEW';
-function requestSaveView(id) {
-    return {
-        type: REQUEST_SAVE_VIEW,
-        id,
-    };
-}
-
-export const RECEIVE_SAVED_VIEW = 'RECEIVE_SAVED_VIEW';
-function receiveViewSaved(view) {
-    return {
-        type: RECEIVE_SAVED_VIEW,
-        id: view.id,
-    };
-}
-
-export function saveView(id, reports, name, slug) {
-    return dispatch => {
-        dispatch(requestSaveView(id));
-
-        db_views.get(id)
-        .then((view) => {
-            view.data.reports = reports;
-            view.data.name = name;
-            view.data.slug = slug;
-
-            db_views.update(view.data)
-            .then(receiveViewSaved)
-            .catch(console.log.bind(console));
-        })
-        .catch(console.log.bind(console));
-    };
-}
-
-// ----------------------------------------------------------------------------
-export const REQUEST_DELETE_VIEW = 'REQUEST_DELETE_VIEW';
-function requestDeleteView(id) {
-    return {
-        type: REQUEST_DELETE_VIEW,
-        id,
-    };
-}
-
-export const RECEIVE_VIEW_DELETED = 'RECEIVE_VIEW_DELETED';
-function receiveViewDeleted(id) {
-    return {
-        type: RECEIVE_VIEW_DELETED,
-        id,
-    };
-}
-
-export function deleteView(id) {
-    return dispatch => {
-        dispatch(requestDeleteView(id));
-
-        db_views.delete(id)
-        .then(() => {
-            db_views.sync()
-            .then(() => dispatch(receiveViewDeleted(id)))
-            .catch(console.log.bind(console));
         })
         .catch(console.log.bind(console));
     };
@@ -240,6 +97,147 @@ export function updateView(id, view) {
         type: UPDATE_VIEW,
         id,
         view,
+    };
+}
+
+// ----------------------------------------------------------------------------
+function runReports(viewId, reports, input) {
+    return (dispatch) => {
+        let promise = Promise.resolve(input || {});
+
+        reports.forEach((reportId) => {
+            promise = promise.then(outputOfPreviousReport =>
+                 dispatch(runReport({
+                     id: reportId,
+                     input: outputOfPreviousReport,
+                 }))
+            );
+        });
+
+        promise.then((content) => {
+            dispatch(receiveViewContent(viewId, content, content.title));
+        })
+        .catch(console.log.bind(console));
+    };
+}
+
+export function runView(view) {
+    return (dispatch) => {
+        dispatch(requestRunningView(view.id));
+        dispatch(runReports(view.id, view.reports, view.input));
+    };
+}
+
+// ----------------------------------------------------------------------------
+export const REQUEST_CREATE_VIEW = 'REQUEST_CREATE_VIEW';
+function requestCreateView() {
+    return {
+        type: REQUEST_CREATE_VIEW,
+    };
+}
+
+export const RECEIVE_CREATED_VIEW = 'RECEIVE_CREATED_VIEW';
+function receiveViewCreated(view) {
+    return {
+        type: RECEIVE_CREATED_VIEW,
+        id: view.id,
+    };
+}
+
+export const CLEAR_NEW_VIEW_DATA = 'CLEAR_NEW_VIEW_DATA';
+function clearNewViewData() {
+    return {
+        type: CLEAR_NEW_VIEW_DATA,
+        id: '_new',
+    };
+}
+
+export function createView(reports, name, slug) {
+    return (dispatch) => {
+        dispatch(requestCreateView());
+
+        const view = {
+            reports,
+            name,
+            slug,
+        };
+
+        dbViews.create(view)
+        .then((res) => {
+            dispatch(receiveViewCreated(res.data));
+            dispatch(clearNewViewData());
+            history.push(`/edit/view/${res.data.id}`);
+            return res.data;
+        })
+        .catch(console.log.bind(console));
+    };
+}
+
+// ----------------------------------------------------------------------------
+export const REQUEST_SAVE_VIEW = 'REQUEST_SAVE_VIEW';
+function requestSaveView(id) {
+    return {
+        type: REQUEST_SAVE_VIEW,
+        id,
+    };
+}
+
+export const RECEIVE_SAVED_VIEW = 'RECEIVE_SAVED_VIEW';
+function receiveViewSaved(view) {
+    return {
+        type: RECEIVE_SAVED_VIEW,
+        id: view.id,
+    };
+}
+
+export function saveView(id, reports, name, slug) {
+    return (dispatch) => {
+        dispatch(requestSaveView(id));
+
+        dbViews.get(id)
+        .then((res) => {
+            const view = Object.assign({}, res.data, {
+                reports,
+                name,
+                slug,
+            });
+
+            dbViews.update(view.data)
+            .then(receiveViewSaved)
+            .catch(console.log.bind(console));
+        })
+        .catch(console.log.bind(console));
+    };
+}
+
+// ----------------------------------------------------------------------------
+export const REQUEST_DELETE_VIEW = 'REQUEST_DELETE_VIEW';
+function requestDeleteView(id) {
+    return {
+        type: REQUEST_DELETE_VIEW,
+        id,
+    };
+}
+
+export const RECEIVE_VIEW_DELETED = 'RECEIVE_VIEW_DELETED';
+function receiveViewDeleted(id) {
+    return {
+        type: RECEIVE_VIEW_DELETED,
+        id,
+    };
+}
+
+export function deleteView(id) {
+    return (dispatch) => {
+        dispatch(requestDeleteView(id));
+
+        dbViews.delete(id)
+        .then(() => {
+            dbViews.sync()
+            .then(() => dispatch(receiveViewDeleted(id)))
+            .catch(console.log.bind(console));
+        })
+        .catch(console.log.bind(console));
     };
 }
 

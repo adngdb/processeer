@@ -1,5 +1,4 @@
 import React from 'react';
-import { Panel } from 'react-bootstrap';
 
 import Loader from './loader.jsx';
 import ViewContent from './view-content.jsx';
@@ -7,8 +6,8 @@ import ViewContent from './view-content.jsx';
 
 const View = React.createClass({
     render() {
-        let view = this.props.view;
-        let title = view.title || view.name || view.slug || view.id;
+        const view = this.props.view;
+        const title = view.title || view.name || view.slug || view.id;
 
         let content;
         if (view.isRunning) {
@@ -24,7 +23,7 @@ const View = React.createClass({
                 { content }
             </div>
         );
-    }
+    },
 });
 
 export default View;

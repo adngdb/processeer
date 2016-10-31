@@ -16,15 +16,15 @@ const Views = React.createClass({
     },
 
     render() {
-        let views = Object.keys(this.props.views).map((id, i) => {
-            let view = this.props.views[id];
-            let title = view.name || view.slug || id;
+        const views = Object.keys(this.props.views).map((id, i) => {
+            const view = this.props.views[id];
+            const title = view.name || view.slug || id;
             return (<tr key={i}>
                 <td>
-                    <Link to={ {pathname: '/view/' + id} }>{title}</Link>
+                    <Link to={{ pathname: `/view/${id}` }}>{title}</Link>
                 </td>
                 <td>
-                    <LinkContainer to={ {pathname: '/edit/view/' + id} }>
+                    <LinkContainer to={{ pathname: `/edit/view/${id}` }}>
                         <Button>Edit</Button>
                     </LinkContainer>
                 </td>
@@ -37,8 +37,8 @@ const Views = React.createClass({
                 <thead>
                     <tr>
                         <td>Name</td>
-                        <td></td>
-                        <td></td>
+                        <td />
+                        <td />
                     </tr>
                 </thead>
                 <tbody>
@@ -46,7 +46,7 @@ const Views = React.createClass({
                 </tbody>
             </Table>
         );
-    }
+    },
 });
 
 export default Views;
