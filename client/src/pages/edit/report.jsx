@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonGroup, Input, Glyphicon, PageHeader, Panel, Table } from 'react-bootstrap';
+import { Button, ButtonGroup, ControlLabel, FormControl, FormGroup, Glyphicon, PageHeader, Panel, Table } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
@@ -35,9 +35,19 @@ const EditReportPage = React.createClass({
         }
     },
 
+    getReport() {
+        let reportId = this.props.params.reportId || '_new';
+        return this.props.reports[reportId];
+    },
+
+    getParam(paramIndex) {
+        let report = this.getReport();
+        return report.params[paramIndex];
+    },
+
     addParam() {
         let reportId = this.props.params.reportId || '_new';
-        let report = this.props.reports[reportId];
+        let report = this.getReport();
         let params = report.params || [];
 
         params.push({});
@@ -59,19 +69,38 @@ const EditReportPage = React.createClass({
         }));
     },
 
-    updateParam(paramIndex) {
+    updateParam(paramIndex, param) {
         let reportId = this.props.params.reportId || '_new';
-
-        let param = {};
-        param.name = this.refs[`param-name-${paramIndex}`].getValue();
-        param.defaultValue = this.refs[`param-default-${paramIndex}`].getValue();
-        param.required = this.refs[`param-required-${paramIndex}`].getValue();
 
         this.props.dispatch(updateReportParam(
             reportId,
             paramIndex,
-            param,
+            param
         ));
+    },
+
+    updateParamName(e) {
+        const paramIndex = e.target.dataset.index;
+        let param = this.getParam(paramIndex);
+
+        param.name = e.target.value;
+        this.updateParam(paramIndex, param);
+    },
+
+    updateParamDefault(e) {
+        const paramIndex = e.target.dataset.index;
+        let param = this.getParam(paramIndex);
+
+        param.defaultValue = e.target.value;
+        this.updateParam(paramIndex, param);
+    },
+
+    updateParamRequired(e) {
+        const paramIndex = e.target.dataset.index;
+        let param = this.getParam(paramIndex);
+
+        param.required = e.target.value;
+        this.updateParam(paramIndex, param);
     },
 
     addModel() {
@@ -98,15 +127,21 @@ const EditReportPage = React.createClass({
         }));
     },
 
-    updateReport() {
+    updateReport(data) {
         let reportId = this.props.params.reportId || '_new';
+        this.props.dispatch(updateReport(reportId, data));
+    },
 
-        let newReport = {
-            name: this.refs.name.getValue(),
-            slug: this.refs.slug.getValue(),
-        };
+    updateReportName(e) {
+        this.updateReport({
+            name: e.target.value,
+        });
+    },
 
-        this.props.dispatch(updateReport(reportId, newReport));
+    updateReportSlug(e) {
+        this.updateReport({
+            slug: e.target.value,
+        });
     },
 
     saveReport() {
@@ -143,30 +178,34 @@ const EditReportPage = React.createClass({
             let paramLines = (report.params || []).map((param, i) => {
                 return (<tr key={i}>
                     <td>
-                        <Input
+                        <FormControl
                             type="text"
                             value={param.name}
-                            ref={"param-name-" + i}
-                            onChange={ () => this.updateParam(i) }
+                            data-index={i}
+                            onChange={this.updateParamName}
                         />
                     </td>
                     <td>
-                        <Input
+                        <FormControl
                             type="text"
                             value={param.defaultValue}
-                            ref={"param-default-" + i}
-                            onChange={ () => this.updateParam(i) }
+                            data-index={i}
+                            onChange={this.updateParamDefault}
                         />
                     </td>
                     <td>
-                        <Input
+                        <FormControl
                             type="text"
                             value={param.required}
-                            ref={"param-required-" + i}
-                            onChange={ () => this.updateParam(i) }
+                            data-index={i}
+                            onChange={this.updateParamRequired}
                         />
                     </td>
-                    <td><Button onClick={() => this.removeParam(i)}>Remove</Button></td>
+                    <td>
+                        <Button onClick={() => this.removeParam(i)}>
+                            <Glyphicon glyph="remove" />
+                        </Button>
+                    </td>
                 </tr>);
             });
 
@@ -191,8 +230,15 @@ const EditReportPage = React.createClass({
             });
 
             content = (<div>
-                <Input ref="name" type="text" label="Name" value={report.name} onChange={this.updateReport} />
-                <Input ref="slug" type="text" label="Slug" value={report.slug} onChange={this.updateReport} />
+                <FormGroup controlId="reportName">
+                    <ControlLabel>Name</ControlLabel>
+                    <FormControl type="text" value={report.name} onChange={this.updateReportName} />
+                </FormGroup>
+                <FormGroup controlId="reportSlug">
+                    <ControlLabel>Slug</ControlLabel>
+                    <FormControl type="text" value={report.slug} onChange={this.updateReportSlug} />
+                </FormGroup>
+
                 <h3>Params: </h3>
                 <Table striped hover>
                     <thead>

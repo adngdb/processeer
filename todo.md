@@ -2,13 +2,11 @@
 
 ## Important
 
-- Implement inputs / parameters
 - Multi-users
 - Fork report
 
 # Nice to have
 
-- Add view re-run option
 - Fork view
 - Implement dashboards
 - Count of report in views

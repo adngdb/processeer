@@ -37,15 +37,18 @@ const EditViewPage = React.createClass({
         }
     },
 
-    updateView() {
+    updateView(data) {
         let viewId = this.props.params.viewId || '_new';
 
-        let view = {
-            name: this.refs.name.getValue(),
-            slug: this.refs.slug.getValue(),
-        }
+        this.props.dispatch(updateView(viewId, data));
+    },
 
-        this.props.dispatch(updateView(viewId, view));
+    updateViewName(e) {
+        this.updateView({ name: e.target.value });
+    },
+
+    updateViewSlug(e) {
+        this.updateView({ slug: e.target.value });
     },
 
     saveView() {
@@ -126,11 +129,11 @@ const EditViewPage = React.createClass({
             content = (<div>
                 <FormGroup controlId='viewName'>
                     <ControlLabel>Name</ControlLabel>
-                    <FormControl value={view.name} onChange={this.updateView} />
+                    <FormControl value={view.name} onChange={this.updateViewName} />
                 </FormGroup>
                 <FormGroup controlId='viewSlug'>
                     <ControlLabel>Slug</ControlLabel>
-                    <FormControl value={view.slug} onChange={this.updateView} />
+                    <FormControl value={view.slug} onChange={this.updateViewSlug} />
                 </FormGroup>
                 <p>Reports: </p>
                 <ul>
@@ -170,6 +173,6 @@ const mapStateToProps = (state) => {
         history: state.history,
         created: state.created,
     };
-}
+};
 
 export default connect(mapStateToProps)(EditViewPage);
