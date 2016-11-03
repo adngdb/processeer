@@ -4,16 +4,16 @@ import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
-import { fetchReports } from '../../actions.jsx';
+import { fetchBlocks } from '../../actions.jsx';
 import { visitEditViewPage } from '../../actions/history.jsx';
 import { createView, fetchView, saveView, updateView } from '../../actions/views.jsx';
 import Loader from '../../components/loader.jsx';
-import ReportPicker from '../../components/report-picker.jsx';
+import BlockPicker from '../../components/block-picker.jsx';
 
 
 const EditViewPage = React.createClass({
     componentWillMount() {
-        this.props.dispatch(fetchReports());
+        this.props.dispatch(fetchBlocks());
         this.checkView(this.props);
     },
 
@@ -57,7 +57,7 @@ const EditViewPage = React.createClass({
 
         if (viewId === '_new') {
             this.props.dispatch(createView(
-                view.reports,
+                view.blocks,
                 view.name,
                 view.slug
             ));
@@ -65,36 +65,36 @@ const EditViewPage = React.createClass({
         else {
             this.props.dispatch(saveView(
                 viewId,
-                view.reports,
+                view.blocks,
                 view.name,
                 view.slug
             ));
         }
     },
 
-    addReport(id) {
+    addBlock(id) {
         const viewId = this.props.params.viewId || '_new';
         const view = this.props.views[viewId];
 
         const newView = {
-            reports: view.reports,
+            blocks: view.blocks,
         };
-        newView.reports.push(id);
+        newView.blocks.push(id);
 
         this.props.dispatch(updateView(viewId, newView));
     },
 
-    openReportPicker() {
+    openBlockPicker() {
         const viewId = this.props.params.viewId || '_new';
         this.props.dispatch(updateView(viewId, {
-            isPickingReport: true,
+            isPickingBlock: true,
         }));
     },
 
-    closeReportPicker() {
+    closeBlockPicker() {
         const viewId = this.props.params.viewId || '_new';
         this.props.dispatch(updateView(viewId, {
-            isPickingReport: false,
+            isPickingBlock: false,
         }));
     },
 
@@ -105,7 +105,7 @@ const EditViewPage = React.createClass({
         let view = this.props.views[viewId];
         if (!view) {
             view = {
-                reports: [],
+                blocks: [],
             };
         }
 
@@ -116,13 +116,13 @@ const EditViewPage = React.createClass({
         else {
             title = view.name || view.slug || title;
 
-            const links = view.reports.map((id, i) => {
-                const report = this.props.reports[id];
+            const links = view.blocks.map((id, i) => {
+                const block = this.props.blocks[id];
                 title = id;
-                if (report) {
-                    title = report.name || report.slug || id;
+                if (block) {
+                    title = block.name || block.slug || id;
                 }
-                return <li key={i}><Link to={{ pathname: `/edit/report/${id}` }}>{title}</Link></li>;
+                return <li key={i}><Link to={{ pathname: `/edit/block/${id}` }}>{title}</Link></li>;
             });
             content = (<div>
                 <FormGroup controlId="viewName">
@@ -133,13 +133,13 @@ const EditViewPage = React.createClass({
                     <ControlLabel>Slug</ControlLabel>
                     <FormControl value={view.slug} onChange={this.updateViewSlug} />
                 </FormGroup>
-                <p>Reports: </p>
+                <p>Blocks: </p>
                 <ul>
                     {links}
                 </ul>
                 <ButtonGroup>
-                    <Button bsStyle="primary" onClick={this.openReportPicker}>
-                        <Glyphicon glyph="plus" /> Add Report
+                    <Button bsStyle="primary" onClick={this.openBlockPicker}>
+                        <Glyphicon glyph="plus" /> Add Block
                     </Button>
                     <Button bsStyle="primary" onClick={this.saveView}>
                         <Glyphicon glyph="hdd" /> Save
@@ -148,11 +148,11 @@ const EditViewPage = React.createClass({
                         <Button bsStyle="primary"><Glyphicon glyph="refresh" /> Run</Button>
                     </LinkContainer>
                 </ButtonGroup>
-                <ReportPicker
-                  reports={this.props.reports}
-                  show={view.isPickingReport}
-                  onHide={this.closeReportPicker}
-                  addReport={this.addReport}
+                <BlockPicker
+                  blocks={this.props.blocks}
+                  show={view.isPickingBlock}
+                  onHide={this.closeBlockPicker}
+                  addBlock={this.addBlock}
                 />
             </div>);
         }
@@ -171,7 +171,7 @@ const EditViewPage = React.createClass({
 const mapStateToProps = state =>
      ({
          views: state.views,
-         reports: state.reports,
+         blocks: state.blocks,
          history: state.history,
          created: state.created,
      })

@@ -4,13 +4,13 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 const EditNav = React.createClass({
     render() {
-        let backToReport = null;
+        let backToBlock = null;
         let backToView = null;
-        if (this.props.history.report) {
-            backToReport = (
-                <LinkContainer to={{ pathname: `/edit/report/${this.props.history.report}` }}>
+        if (this.props.history.block) {
+            backToBlock = (
+                <LinkContainer to={{ pathname: `/edit/block/${this.props.history.block}` }}>
                     <Button>
-                        <Glyphicon glyph="chevron-left" /> Back to report
+                        <Glyphicon glyph="chevron-left" /> Back to block
                     </Button>
                 </LinkContainer>
             );
@@ -25,7 +25,7 @@ const EditNav = React.createClass({
             );
         }
         return (<div>
-            {backToReport}
+            {backToBlock}
             {backToView}
         </div>);
     },

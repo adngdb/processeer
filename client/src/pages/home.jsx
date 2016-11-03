@@ -3,10 +3,10 @@ import { Button, PageHeader } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
-import { deleteReport, fetchReports } from '../actions.jsx';
+import { deleteBlock, fetchBlocks } from '../actions.jsx';
 import { deleteView, fetchViews } from '../actions/views.jsx';
 import Views from '../components/views.jsx';
-import Reports from '../components/reports.jsx';
+import Blocks from '../components/blocks.jsx';
 
 
 const HomePage = React.createClass({
@@ -28,15 +28,15 @@ const HomePage = React.createClass({
                   deleteView={id => this.props.dispatch(deleteView(id))}
                 />
 
-                <LinkContainer to={{ pathname: '/edit/report/' }}>
-                    <Button bsStyle="primary">Create new report</Button>
+                <LinkContainer to={{ pathname: '/edit/block/' }}>
+                    <Button bsStyle="primary">Create new block</Button>
                 </LinkContainer>
 
-                <h2>All Reports</h2>
-                <Reports
-                  reports={this.props.reports}
-                  fetchReports={() => this.props.dispatch(fetchReports())}
-                  deleteReport={id => this.props.dispatch(deleteReport(id))}
+                <h2>All Blocks</h2>
+                <Blocks
+                  blocks={this.props.blocks}
+                  fetchBlocks={() => this.props.dispatch(fetchBlocks())}
+                  deleteBlock={id => this.props.dispatch(deleteBlock(id))}
                 />
             </div>
         );
@@ -46,7 +46,7 @@ const HomePage = React.createClass({
 const mapStateToProps = state =>
      ({
          views: state.views,
-         reports: state.reports,
+         blocks: state.blocks,
      })
 ;
 

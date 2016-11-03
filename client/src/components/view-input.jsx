@@ -11,7 +11,7 @@ const ViewInput = React.createClass({
     },
 
     render() {
-        const params = this.props.report.params || [];
+        const params = this.props.block.params || [];
         const input = this.props.input || {};
 
         const ui = params.map((param, i) =>

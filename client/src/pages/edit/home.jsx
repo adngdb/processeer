@@ -23,7 +23,7 @@ const EditHomePage = React.createClass({
 const mapStateToProps = state =>
      ({
          views: state.views,
-         reports: state.reports,
+         blocks: state.blocks,
      })
 ;
 

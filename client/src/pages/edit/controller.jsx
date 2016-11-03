@@ -7,62 +7,62 @@ import { Button, ButtonGroup, PageHeader, Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Codemirror from 'react-codemirror';
 
-import { createReport, fetchReport, updateReportController, saveReport } from '../../actions.jsx';
+import { createBlock, fetchBlock, updateBlockController, saveBlock } from '../../actions.jsx';
 import Loader from '../../components/loader.jsx';
 import EditNav from '../../components/edit_nav.jsx';
 
 
 const EditControllerPage = React.createClass({
     componentWillMount() {
-        this.checkReport(this.props);
+        this.checkBlock(this.props);
     },
 
     componentWillReceiveProps(nextProps) {
-        this.checkReport(nextProps);
+        this.checkBlock(nextProps);
     },
 
-    checkReport(props) {
-        const reportId = props.params.reportId;
+    checkBlock(props) {
+        const blockId = props.params.blockId;
 
-        if (!props.reports[reportId]) {
-            props.dispatch(fetchReport(reportId));
+        if (!props.blocks[blockId]) {
+            props.dispatch(fetchBlock(blockId));
         }
     },
 
     updateController(newCode) {
-        const reportId = this.props.params.reportId;
-        this.props.dispatch(updateReportController(reportId, newCode));
+        const blockId = this.props.params.blockId;
+        this.props.dispatch(updateBlockController(blockId, newCode));
     },
 
     saveController() {
-        const reportId = this.props.params.reportId;
-        const report = this.props.reports[reportId];
+        const blockId = this.props.params.blockId;
+        const block = this.props.blocks[blockId];
 
-        if (reportId === '_new') {
-            this.props.dispatch(createReport(report));
+        if (blockId === '_new') {
+            this.props.dispatch(createBlock(block));
         }
         else {
-            this.props.dispatch(saveReport(reportId, report));
+            this.props.dispatch(saveBlock(blockId, block));
         }
     },
 
     render() {
-        const reportId = this.props.params.reportId;
-        const report = this.props.reports[reportId];
+        const blockId = this.props.params.blockId;
+        const block = this.props.blocks[blockId];
 
         let content;
-        if (!report || report.isFetching) {
+        if (!block || block.isFetching) {
             content = <Loader />;
         }
         else {
-            let controller = report.controller;
+            let controller = block.controller;
             if (typeof controller === 'undefined') {
                 controller = `let transform = (data, callback) => {
     // Add your code here.
 
     let td = {
         type: 'table',
-        title: 'My report title',
+        title: 'My block title',
         data: [],
     };
     callback(td);
@@ -75,7 +75,7 @@ application.setInterface({transform: transform});`;
                 lineNumbers: true,
                 indentUnit: 4,
             };
-            content = (<Panel header={reportId}>
+            content = (<Panel header={blockId}>
                 <Codemirror
                   value={controller}
                   options={options}
@@ -90,7 +90,7 @@ application.setInterface({transform: transform});`;
 
         const history = {
             view: this.props.history.view,
-            report: reportId,
+            block: blockId,
         };
 
         return (
@@ -105,7 +105,7 @@ application.setInterface({transform: transform});`;
 
 const mapStateToProps = state =>
      ({
-         reports: state.reports,
+         blocks: state.blocks,
          history: state.history,
      })
 ;

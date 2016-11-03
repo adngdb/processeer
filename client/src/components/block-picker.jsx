@@ -2,18 +2,18 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
 
-const ReportPicker = React.createClass({
-    pickReport(e, id) {
+const BlockPicker = React.createClass({
+    pickBlock(e, id) {
         e.preventDefault();
         this.props.onHide();
-        this.props.addReport(id);
+        this.props.addBlock(id);
     },
 
     render() {
-        const reports = Object.keys(this.props.reports).map((id, i) => {
-            const report = this.props.reports[id];
-            const title = report.name || report.slug || id;
-            return <li key={i}><a href="#" onClick={e => this.pickReport(e, id)}>{title}</a></li>;
+        const blocks = Object.keys(this.props.blocks).map((id, i) => {
+            const block = this.props.blocks[id];
+            const title = block.name || block.slug || id;
+            return <li key={i}><a href="#" onClick={e => this.pickBlock(e, id)}>{title}</a></li>;
         });
 
         return (
@@ -22,9 +22,9 @@ const ReportPicker = React.createClass({
                     <Modal.Title id="contained-modal-title-lg">Modal heading</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h4>Choose a Report</h4>
+                    <h4>Choose a Block</h4>
                     <ul>
-                        {reports}
+                        {blocks}
                     </ul>
                 </Modal.Body>
                 <Modal.Footer>
@@ -35,4 +35,4 @@ const ReportPicker = React.createClass({
     },
 });
 
-export default ReportPicker;
+export default BlockPicker;

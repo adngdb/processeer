@@ -4,76 +4,76 @@ import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
-import { createReport, fetchReport, updateReport, saveReport, updateReportParam } from '../../actions.jsx';
-import { visitEditReportPage } from '../../actions/history.jsx';
+import { createBlock, fetchBlock, updateBlock, saveBlock, updateBlockParam } from '../../actions.jsx';
+import { visitEditBlockPage } from '../../actions/history.jsx';
 import Loader from '../../components/loader.jsx';
 import EditNav from '../../components/edit_nav.jsx';
 
 
-const EditReportPage = React.createClass({
+const EditBlockPage = React.createClass({
     componentWillMount() {
-        this.checkReport(this.props);
+        this.checkBlock(this.props);
     },
 
     componentWillReceiveProps(nextProps) {
-        this.checkReport(nextProps);
+        this.checkBlock(nextProps);
     },
 
-    checkReport(props) {
-        const reportId = props.params.reportId;
+    checkBlock(props) {
+        const blockId = props.params.blockId;
 
-        if (!reportId) {
+        if (!blockId) {
             return;
         }
 
-        if (props.history.report !== reportId) {
-            props.dispatch(visitEditReportPage(reportId));
+        if (props.history.block !== blockId) {
+            props.dispatch(visitEditBlockPage(blockId));
         }
 
-        if (!props.reports[reportId]) {
-            props.dispatch(fetchReport(reportId));
+        if (!props.blocks[blockId]) {
+            props.dispatch(fetchBlock(blockId));
         }
     },
 
-    getReport() {
-        const reportId = this.props.params.reportId || '_new';
-        return this.props.reports[reportId];
+    getBlock() {
+        const blockId = this.props.params.blockId || '_new';
+        return this.props.blocks[blockId];
     },
 
     getParam(paramIndex) {
-        const report = this.getReport();
-        return report.params[paramIndex];
+        const block = this.getBlock();
+        return block.params[paramIndex];
     },
 
     addParam() {
-        const reportId = this.props.params.reportId || '_new';
-        const report = this.getReport();
-        const params = report.params || [];
+        const blockId = this.props.params.blockId || '_new';
+        const block = this.getBlock();
+        const params = block.params || [];
 
         params.push({});
 
-        this.props.dispatch(updateReport(reportId, {
+        this.props.dispatch(updateBlock(blockId, {
             params,
         }));
     },
 
     removeParam(index) {
-        const reportId = this.props.params.reportId || '_new';
-        const report = this.props.reports[reportId];
-        const params = report.params;
+        const blockId = this.props.params.blockId || '_new';
+        const block = this.props.blocks[blockId];
+        const params = block.params;
 
         params.splice(index, 1);
 
-        this.props.dispatch(updateReport(reportId, {
+        this.props.dispatch(updateBlock(blockId, {
             params,
         }));
     },
 
     updateParam(paramIndex, param) {
-        const reportId = this.props.params.reportId || '_new';
+        const blockId = this.props.params.blockId || '_new';
 
-        this.props.dispatch(updateReportParam(
-            reportId,
+        this.props.dispatch(updateBlockParam(
+            blockId,
             paramIndex,
             param
         ));
@@ -104,78 +104,78 @@ const EditReportPage = React.createClass({
     },
 
     addModel() {
-        const reportId = this.props.params.reportId || '_new';
-        const report = this.props.reports[reportId];
-        const models = report.models;
+        const blockId = this.props.params.blockId || '_new';
+        const block = this.props.blocks[blockId];
+        const models = block.models;
 
         models.push({});
 
-        this.props.dispatch(updateReport(reportId, {
+        this.props.dispatch(updateBlock(blockId, {
             models,
         }));
     },
 
     removeModel(index) {
-        const reportId = this.props.params.reportId || '_new';
-        const report = this.props.reports[reportId];
-        const models = report.models;
+        const blockId = this.props.params.blockId || '_new';
+        const block = this.props.blocks[blockId];
+        const models = block.models;
 
         models.splice(index, 1);
 
-        this.props.dispatch(updateReport(reportId, {
+        this.props.dispatch(updateBlock(blockId, {
             models,
         }));
     },
 
-    updateReport(data) {
-        const reportId = this.props.params.reportId || '_new';
-        this.props.dispatch(updateReport(reportId, data));
+    updateBlock(data) {
+        const blockId = this.props.params.blockId || '_new';
+        this.props.dispatch(updateBlock(blockId, data));
     },
 
-    updateReportName(e) {
-        this.updateReport({
+    updateBlockName(e) {
+        this.updateBlock({
             name: e.target.value,
         });
     },
 
-    updateReportSlug(e) {
-        this.updateReport({
+    updateBlockSlug(e) {
+        this.updateBlock({
             slug: e.target.value,
         });
     },
 
-    saveReport() {
-        const reportId = this.props.params.reportId || '_new';
-        const report = this.props.reports[reportId];
+    saveBlock() {
+        const blockId = this.props.params.blockId || '_new';
+        const block = this.props.blocks[blockId];
 
-        if (reportId === '_new') {
-            this.props.dispatch(createReport(report));
+        if (blockId === '_new') {
+            this.props.dispatch(createBlock(block));
         }
         else {
-            this.props.dispatch(saveReport(reportId, report));
+            this.props.dispatch(saveBlock(blockId, block));
         }
     },
 
     render() {
-        const reportId = this.props.params.reportId || '_new';
-        let title = this.props.params.reportId || 'New Report';
+        const blockId = this.props.params.blockId || '_new';
+        let title = this.props.params.blockId || 'New Block';
 
-        let report = this.props.reports[reportId];
-        if (!report) {
-            report = {
+        let block = this.props.blocks[blockId];
+        if (!block) {
+            block = {
                 params: [],
                 models: [],
             };
         }
 
         let content;
-        if (!report || report.isFetching) {
+        if (!block || block.isFetching) {
             content = <Loader />;
         }
         else {
-            title = report.name || report.slug || title;
+            title = block.name || block.slug || title;
 
-            const paramLines = (report.params || []).map((param, i) =>
+            const paramLines = (block.params || []).map((param, i) =>
                  (<tr key={i}>
                     <td>
                         <FormControl
@@ -209,19 +209,19 @@ const EditReportPage = React.createClass({
                 </tr>)
             );
 
-            const modelLines = (report.models || []).map((model, i) => {
+            const modelLines = (block.models || []).map((model, i) => {
                 const endpoint = model.endpoint || '';
                 const params = model.params || {};
                 return (<tr key={i}>
                     <td>
-                        <Link to={{ pathname: `/edit/report/${reportId}/model/${i}` }}>
+                        <Link to={{ pathname: `/edit/block/${blockId}/model/${i}` }}>
                             #{i}
                         </Link>
                     </td>
                     <td>{endpoint}</td>
                     <td>{Object.keys(params).length}</td>
                     <td>
-                        <LinkContainer to={{ pathname: `/edit/report/${reportId}/model/${i}` }}>
+                        <LinkContainer to={{ pathname: `/edit/block/${blockId}/model/${i}` }}>
                             <Button>Edit</Button>
                         </LinkContainer>
                     </td>
@@ -230,13 +230,13 @@ const EditReportPage = React.createClass({
             });
 
             content = (<div>
-                <FormGroup controlId="reportName">
+                <FormGroup controlId="blockName">
                     <ControlLabel>Name</ControlLabel>
-                    <FormControl type="text" value={report.name} onChange={this.updateReportName} />
+                    <FormControl type="text" value={block.name} onChange={this.updateBlockName} />
                 </FormGroup>
-                <FormGroup controlId="reportSlug">
+                <FormGroup controlId="blockSlug">
                     <ControlLabel>Slug</ControlLabel>
-                    <FormControl type="text" value={report.slug} onChange={this.updateReportSlug} />
+                    <FormControl type="text" value={block.slug} onChange={this.updateBlockSlug} />
                 </FormGroup>
 
                 <h3>Params: </h3>
@@ -269,7 +269,7 @@ const EditReportPage = React.createClass({
                     </tbody>
                 </Table>
                 <h3>
-                    <Link to={{ pathname: `/edit/report/${reportId}/controller` }}>Controller</Link>
+                    <Link to={{ pathname: `/edit/block/${blockId}/controller` }}>Controller</Link>
                 </h3>
                 <ButtonGroup>
                     <Button bsStyle="primary" onClick={this.addParam}>
@@ -278,21 +278,21 @@ const EditReportPage = React.createClass({
                     <Button bsStyle="primary" onClick={this.addModel}>
                         <Glyphicon glyph="plus" /> Add Model
                     </Button>
-                    <Button bsStyle="primary" onClick={this.saveReport}>
+                    <Button bsStyle="primary" onClick={this.saveBlock}>
                         <Glyphicon glyph="hdd" /> Save
                     </Button>
                 </ButtonGroup>
             </div>);
         }
 
-        // New history without the report, because we know it's the current one.
+        // New history without the block, because we know it's the current one.
         const history = {
             view: this.props.history.view,
         };
 
         return (
             <div>
-                <PageHeader>Report Editer</PageHeader>
+                <PageHeader>Block Editer</PageHeader>
                 <EditNav history={history} />
                 <Panel header={title}>
                     {content}
@@ -304,9 +304,9 @@ const EditReportPage = React.createClass({
 
 const mapStateToProps = state =>
      ({
-         reports: state.reports,
+         blocks: state.blocks,
          history: state.history,
      })
 ;
 
-export default connect(mapStateToProps)(EditReportPage);
+export default connect(mapStateToProps)(EditBlockPage);

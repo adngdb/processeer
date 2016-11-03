@@ -7,28 +7,28 @@ import { LinkContainer } from 'react-router-bootstrap';
 /*
  * Props:
  *   views
- *   deleteReport
- *   fetchReports
+ *   deleteBlock
+ *   fetchBlocks
  */
-const Reports = React.createClass({
+const Blocks = React.createClass({
     componentWillMount() {
-        this.props.fetchReports();
+        this.props.fetchBlocks();
     },
 
     render() {
-        const reports = Object.keys(this.props.reports).map((id, i) => {
-            const report = this.props.reports[id];
-            const title = report.name || report.slug || id;
+        const blocks = Object.keys(this.props.blocks).map((id, i) => {
+            const block = this.props.blocks[id];
+            const title = block.name || block.slug || id;
             return (<tr key={i}>
                 <td>
-                    <Link to={{ pathname: `/edit/report/${id}` }}>{title}</Link>
+                    <Link to={{ pathname: `/edit/block/${id}` }}>{title}</Link>
                 </td>
                 <td>
-                    <LinkContainer to={{ pathname: `/edit/report/${id}` }}>
+                    <LinkContainer to={{ pathname: `/edit/block/${id}` }}>
                         <Button>Edit</Button>
                     </LinkContainer>
                 </td>
-                <td><Button onClick={() => this.props.deleteReport(id)}>Remove</Button></td>
+                <td><Button onClick={() => this.props.deleteBlock(id)}>Remove</Button></td>
             </tr>);
         });
 
@@ -42,11 +42,11 @@ const Reports = React.createClass({
                     </tr>
                 </thead>
                 <tbody>
-                    {reports}
+                    {blocks}
                 </tbody>
             </Table>
         );
     },
 });
 
-export default Reports;
+export default Blocks;

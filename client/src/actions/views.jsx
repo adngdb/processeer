@@ -1,6 +1,6 @@
 import history from './history.jsx';
 import { dbViews } from './../db.jsx';
-import { runReport } from '../actions.jsx';
+import { runBlock } from '../actions.jsx';
 
 
 // ----------------------------------------------------------------------------
@@ -51,7 +51,7 @@ function receiveViewMeta(id, view) {
     return {
         type: RECEIVE_VIEW_META,
         id,
-        reports: view.reports,
+        blocks: view.blocks,
         name: view.name,
         slug: view.slug,
     };
@@ -101,15 +101,15 @@ export function updateView(id, view) {
 }
 
 // ----------------------------------------------------------------------------
-function runReports(viewId, reports, input) {
+function runBlocks(viewId, blocks, input) {
     return (dispatch) => {
         let promise = Promise.resolve(input || {});
 
-        reports.forEach((reportId) => {
-            promise = promise.then(outputOfPreviousReport =>
-                 dispatch(runReport({
-                     id: reportId,
-                     input: outputOfPreviousReport,
+        blocks.forEach((blockId) => {
+            promise = promise.then(outputOfPreviousBlock =>
+                 dispatch(runBlock({
+                     id: blockId,
+                     input: outputOfPreviousBlock,
                  }))
             );
         });
@@ -124,7 +124,7 @@ function runReports(viewId, reports, input) {
 export function runView(view) {
     return (dispatch) => {
         dispatch(requestRunningView(view.id));
-        dispatch(runReports(view.id, view.reports, view.input));
+        dispatch(runBlocks(view.id, view.blocks, view.input));
     };
 }
 
@@ -152,12 +152,12 @@ function clearNewViewData() {
     };
 }
 
-export function createView(reports, name, slug) {
+export function createView(blocks, name, slug) {
     return (dispatch) => {
         dispatch(requestCreateView());
 
         const view = {
-            reports,
+            blocks,
             name,
             slug,
         };
@@ -190,14 +190,14 @@ function receiveViewSaved(view) {
     };
 }
 
-export function saveView(id, reports, name, slug) {
+export function saveView(id, blocks, name, slug) {
     return (dispatch) => {
         dispatch(requestSaveView(id));
 
         dbViews.get(id)
         .then((res) => {
             const view = Object.assign({}, res.data, {
-                reports,
+                blocks,
                 name,
                 slug,
             });

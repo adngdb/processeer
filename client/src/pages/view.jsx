@@ -4,7 +4,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
 import { fetchView, runView, removeViewContent, updateViewInput } from '../actions/views.jsx';
-import { fetchReport } from '../actions.jsx';
+import { fetchBlock } from '../actions.jsx';
 import View from '../components/view.jsx';
 import ViewInput from '../components/view-input.jsx';
 import Loader from '../components/loader.jsx';
@@ -26,9 +26,9 @@ const ViewPage = React.createClass({
         if (!view) {
             props.dispatch(fetchView(viewId));
         }
-        else if (view && view.reports.length) {
-            if (!props.reports[view.reports[0]]) {
-                props.dispatch(fetchReport(view.reports[0]));
+        else if (view && view.blocks.length) {
+            if (!props.blocks[view.blocks[0]]) {
+                props.dispatch(fetchBlock(view.blocks[0]));
             }
             else if (!view.isRunning && !view.isFetching && !view.content) {
                 props.dispatch(runView(view));
@@ -64,10 +64,10 @@ const ViewPage = React.createClass({
             content = <Loader />;
         }
         else {
-            if (view.reports.length) {
-                const firstReport = this.props.reports[view.reports[0]];
-                if (firstReport && !firstReport.isFetching) {
-                    params = <ViewInput report={firstReport} input={view.input} updateInput={this.updateInput} />;
+            if (view.blocks.length) {
+                const firstBlock = this.props.blocks[view.blocks[0]];
+                if (firstBlock && !firstBlock.isFetching) {
+                    params = <ViewInput block={firstBlock} input={view.input} updateInput={this.updateInput} />;
                 }
             }
 
@@ -93,7 +93,7 @@ const ViewPage = React.createClass({
 const mapStateToProps = state =>
      ({
          views: state.views,
-         reports: state.reports,
+         blocks: state.blocks,
      })
 ;
 

@@ -8,7 +8,7 @@ const db = new Kinto({
 });
 
 export const dbViews = db.collection('views');
-export const dbReports = db.collection('reports');
+export const dbBlocks = db.collection('blocks');
 
 dbViews.sync()
 .catch((err) => {
@@ -23,12 +23,12 @@ dbViews.sync()
 });
 dbViews.list().then(console.log.bind(console));
 
-dbReports.sync()
+dbBlocks.sync()
 .catch((err) => {
     // if (err.message.indexOf('flushed') > -1) {
-    //     return dbReports.resetSyncStatus()
-    //     .then(dbReports.sync.bind(dbReports));
+    //     return dbBlocks.resetSyncStatus()
+    //     .then(dbBlocks.sync.bind(dbBlocks));
     // }
     throw err;
 });
-dbReports.list().then(console.log.bind(console));
+dbBlocks.list().then(console.log.bind(console));

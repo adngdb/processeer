@@ -3,101 +3,101 @@
 import qs from 'qs';
 
 import history from './history.jsx';
-import { dbReports } from './db.jsx';
+import { dbBlocks } from './db.jsx';
 
 
 // ----------------------------------------------------------------------------
-export const RECEIVE_REPORT_META = 'RECEIVE_REPORT_META';
-function receiveReportMeta(id, report) {
+export const RECEIVE_BLOCK_META = 'RECEIVE_BLOCK_META';
+function receiveBlockMeta(id, block) {
     return {
-        type: RECEIVE_REPORT_META,
+        type: RECEIVE_BLOCK_META,
         id,
-        report,
+        block,
     };
 }
 
-export const FETCHING_REPORT_META = 'FETCHING_REPORT_META';
-function requestReport(id) {
+export const FETCHING_BLOCK_META = 'FETCHING_BLOCK_META';
+function requestBlock(id) {
     return {
-        type: FETCHING_REPORT_META,
+        type: FETCHING_BLOCK_META,
         id,
     };
 }
 
-export function fetchReport(id) {
+export function fetchBlock(id) {
     return (dispatch) => {
-        dispatch(requestReport(id));
-        return dbReports.get(id)
+        dispatch(requestBlock(id));
+        return dbBlocks.get(id)
         .then((data) => {
-            const report = Object.assign({}, data);
-            if (!report.data.params) {
-                report.data.params = [];
+            const block = Object.assign({}, data);
+            if (!block.data.params) {
+                block.data.params = [];
             }
-            if (!report.data.models) {
-                report.data.models = [];
+            if (!block.data.models) {
+                block.data.models = [];
             }
-            if (!report.data.controller) {
-                report.data.controller = '';
+            if (!block.data.controller) {
+                block.data.controller = '';
             }
-            dispatch(receiveReportMeta(
+            dispatch(receiveBlockMeta(
                 id,
-                report.data
+                block.data
             ));
-            return report.data;
+            return block.data;
         })
         .catch(console.log.bind(console));
     };
 }
 
 // ----------------------------------------------------------------------------
-export const REQUEST_REPORTS = 'REQUEST_REPORTS';
-function requestReports() {
+export const REQUEST_BLOCKS = 'REQUEST_BLOCKS';
+function requestBlocks() {
     return {
-        type: REQUEST_REPORTS,
+        type: REQUEST_BLOCKS,
     };
 }
 
-export const RECEIVE_REPORTS = 'RECEIVE_REPORTS';
-function receiveReports(reports) {
+export const RECEIVE_BLOCKS = 'RECEIVE_BLOCKS';
+function receiveBlocks(blocks) {
     return {
-        type: RECEIVE_REPORTS,
-        reports,
+        type: RECEIVE_BLOCKS,
+        blocks,
     };
 }
 
-export function fetchReports() {
+export function fetchBlocks() {
     return (dispatch) => {
-        dispatch(requestReports());
+        dispatch(requestBlocks());
 
-        dbReports.list()
-        .then(reports => dispatch(receiveReports(reports.data)))
+        dbBlocks.list()
+        .then(blocks => dispatch(receiveBlocks(blocks.data)))
         .catch(console.log.bind(console));
     };
 }
 
 // ----------------------------------------------------------------------------
-export const UPDATE_REPORT = 'UPDATE_REPORT';
-export function updateReport(id, report) {
+export const UPDATE_BLOCK = 'UPDATE_BLOCK';
+export function updateBlock(id, block) {
     return {
-        type: UPDATE_REPORT,
+        type: UPDATE_BLOCK,
         id,
-        report,
+        block,
     };
 }
 
-export const UPDATE_REPORT_CONTROLLER = 'UPDATE_REPORT_CONTROLLER';
-export function updateReportController(id, controller) {
+export const UPDATE_BLOCK_CONTROLLER = 'UPDATE_BLOCK_CONTROLLER';
+export function updateBlockController(id, controller) {
     return {
-        type: UPDATE_REPORT_CONTROLLER,
+        type: UPDATE_BLOCK_CONTROLLER,
         id,
         controller,
     };
 }
 
-export const UPDATE_REPORT_MODEL = 'UPDATE_REPORT_MODEL';
-export function updateReportModel(id, modelIndex, endpoint, params) {
+export const UPDATE_BLOCK_MODEL = 'UPDATE_BLOCK_MODEL';
+export function updateBlockModel(id, modelIndex, endpoint, params) {
     return {
-        type: UPDATE_REPORT_MODEL,
+        type: UPDATE_BLOCK_MODEL,
         id,
         modelIndex: parseInt(modelIndex, 10),
         endpoint,
@@ -105,10 +105,10 @@ export function updateReportModel(id, modelIndex, endpoint, params) {
     };
 }
 
-export const UPDATE_REPORT_PARAM = 'UPDATE_REPORT_PARAM';
-export function updateReportParam(id, paramIndex, param) {
+export const UPDATE_BLOCK_PARAM = 'UPDATE_BLOCK_PARAM';
+export function updateBlockParam(id, paramIndex, param) {
     return {
-        type: UPDATE_REPORT_PARAM,
+        type: UPDATE_BLOCK_PARAM,
         id,
         paramIndex,
         param,
@@ -116,38 +116,38 @@ export function updateReportParam(id, paramIndex, param) {
 }
 
 // ----------------------------------------------------------------------------
-export const REQUEST_CREATE_REPORT = 'REQUEST_CREATE_REPORT';
-function requestCreateReport() {
+export const REQUEST_CREATE_BLOCK = 'REQUEST_CREATE_BLOCK';
+function requestCreateBlock() {
     return {
-        type: REQUEST_CREATE_REPORT,
+        type: REQUEST_CREATE_BLOCK,
     };
 }
 
-export const RECEIVE_CREATED_REPORT = 'RECEIVE_CREATED_REPORT';
-function receiveReportCreated(report) {
+export const RECEIVE_CREATED_BLOCK = 'RECEIVE_CREATED_BLOCK';
+function receiveBlockCreated(block) {
     return {
-        type: RECEIVE_CREATED_REPORT,
-        id: report.id,
+        type: RECEIVE_CREATED_BLOCK,
+        id: block.id,
     };
 }
 
-export const CLEAR_NEW_REPORT_DATA = 'CLEAR_NEW_REPORT_DATA';
-function clearNewReportData() {
+export const CLEAR_NEW_BLOCK_DATA = 'CLEAR_NEW_BLOCK_DATA';
+function clearNewBlockData() {
     return {
-        type: CLEAR_NEW_REPORT_DATA,
+        type: CLEAR_NEW_BLOCK_DATA,
         id: '_new',
     };
 }
 
-export function createReport(report) {
+export function createBlock(block) {
     return (dispatch) => {
-        dispatch(requestCreateReport());
+        dispatch(requestCreateBlock());
 
-        dbReports.create(report)
+        dbBlocks.create(block)
         .then((res) => {
-            dispatch(receiveReportCreated(res.data));
-            dispatch(clearNewReportData());
-            history.push(`/edit/report/${res.data.id}`);
+            dispatch(receiveBlockCreated(res.data));
+            dispatch(clearNewBlockData());
+            history.push(`/edit/block/${res.data.id}`);
             return res.data;
         })
         .catch(console.log.bind(console));
@@ -155,42 +155,42 @@ export function createReport(report) {
 }
 
 // ----------------------------------------------------------------------------
-export const REQUEST_SAVE_REPORT = 'REQUEST_SAVE_REPORT';
-function requestSaveReport(id) {
+export const REQUEST_SAVE_BLOCK = 'REQUEST_SAVE_BLOCK';
+function requestSaveBlock(id) {
     return {
-        type: REQUEST_SAVE_REPORT,
+        type: REQUEST_SAVE_BLOCK,
         id,
     };
 }
 
-export const RECEIVE_SAVED_REPORT = 'RECEIVE_SAVED_REPORT';
-function receiveReportSaved(id) {
+export const RECEIVE_SAVED_BLOCK = 'RECEIVE_SAVED_BLOCK';
+function receiveBlockSaved(id) {
     return {
-        type: RECEIVE_SAVED_REPORT,
+        type: RECEIVE_SAVED_BLOCK,
         id,
     };
 }
 
-export function saveReport(id, report) {
+export function saveBlock(id, block) {
     return (dispatch) => {
-        dispatch(requestSaveReport(id));
+        dispatch(requestSaveBlock(id));
 
-        dbReports.get(id)
+        dbBlocks.get(id)
         .then((data) => {
-            const newReport = Object.assign({}, data.data);
-            newReport.params = report.params;
-            newReport.models = report.models;
-            newReport.controller = report.controller;
-            newReport.name = report.name;
-            newReport.slug = report.slug;
+            const newBlock = Object.assign({}, data.data);
+            newBlock.params = block.params;
+            newBlock.models = block.models;
+            newBlock.controller = block.controller;
+            newBlock.name = block.name;
+            newBlock.slug = block.slug;
 
-            dbReports.update(newReport)
+            dbBlocks.update(newBlock)
             .then((res) => {
-                dbReports.sync()
+                dbBlocks.sync()
                 .catch(console.log.bind(console));
                 return res;
             })
-            .then(() => dispatch(receiveReportSaved(id)))
+            .then(() => dispatch(receiveBlockSaved(id)))
             .catch(console.log.bind(console));
         })
         .catch(console.log.bind(console));
@@ -198,30 +198,30 @@ export function saveReport(id, report) {
 }
 
 // ----------------------------------------------------------------------------
-export const REQUEST_DELETE_REPORT = 'REQUEST_DELETE_REPORT';
-function requestDeleteReport(id) {
+export const REQUEST_DELETE_BLOCK = 'REQUEST_DELETE_BLOCK';
+function requestDeleteBlock(id) {
     return {
-        type: REQUEST_DELETE_REPORT,
+        type: REQUEST_DELETE_BLOCK,
         id,
     };
 }
 
-export const RECEIVE_REPORT_DELETED = 'RECEIVE_REPORT_DELETED';
-function receiveReportDeleted(id) {
+export const RECEIVE_BLOCK_DELETED = 'RECEIVE_BLOCK_DELETED';
+function receiveBlockDeleted(id) {
     return {
-        type: RECEIVE_REPORT_DELETED,
+        type: RECEIVE_BLOCK_DELETED,
         id,
     };
 }
 
-export function deleteReport(id) {
+export function deleteBlock(id) {
     return (dispatch) => {
-        dispatch(requestDeleteReport(id));
+        dispatch(requestDeleteBlock(id));
 
-        dbReports.delete(id)
+        dbBlocks.delete(id)
         .then(() => {
-            dbReports.sync()
-            .then(() => dispatch(receiveReportDeleted(id)))
+            dbBlocks.sync()
+            .then(() => dispatch(receiveBlockDeleted(id)))
             .catch(console.log.bind(console));
         })
         .catch(console.log.bind(console));
@@ -230,29 +230,29 @@ export function deleteReport(id) {
 
 // ----------------------------------------------------------------------------
 /**
- * Return an object containing the report and its parameters filled with the
+ * Return an object containing the block and its parameters filled with the
  * values passed as input.
  */
-function prepareInput(report, input) {
+function prepareInput(block, input) {
     const newInput = {};
 
-    report.params.forEach((param) => {
+    block.params.forEach((param) => {
         newInput[param.name] = input[param.name] || param.defaultValue;
     });
 
-    return { report, input: newInput };
+    return { block, input: newInput };
 }
 
 /**
- * Return an object containing the report, its parameters and the results of
- * fetching the models of that report.
+ * Return an object containing the block, its parameters and the results of
+ * fetching the models of that block.
  */
 function fetchModels(args) {
     const input = args.input;
-    const report = args.report;
+    const block = args.block;
 
     let count = 0;
-    const total = report.models.length;
+    const total = block.models.length;
     const results = [];
 
     return new Promise((resolve) => {
@@ -260,7 +260,7 @@ function fetchModels(args) {
             count += 1;
             if (count >= total) {
                 resolve({
-                    report,
+                    block,
                     params: input,
                     models: results,
                 });
@@ -271,7 +271,7 @@ function fetchModels(args) {
         // there are no models to fetch.
         finished();
 
-        report.models.forEach((model) => {
+        block.models.forEach((model) => {
             let url = model.endpoint;
             const params = [];
 
@@ -332,7 +332,7 @@ function fetchModels(args) {
 }
 
 function runController(args) {
-    const report = args.report;
+    const block = args.block;
     const params = args.params;
     const models = args.models;
 
@@ -342,7 +342,7 @@ function runController(args) {
     };
 
     return new Promise((resolve) => {
-        let controller = report.controller;
+        let controller = block.controller;
         controller += ';application.setInterface({execute: (data, cb) => cb(transform(data))});';
         const plugin = new jailed.DynamicPlugin(controller);
         plugin.whenConnected(() => {
@@ -354,17 +354,17 @@ function runController(args) {
 }
 
 /**
- * Return the output of a report.
+ * Return the output of a block.
  *
- * Fetches the report metadata, prepare its parameters based on the input,
+ * Fetches the block metadata, prepare its parameters based on the input,
  * fetches the models and then run the controller and return its output.
  */
-export function runReport(args) {
+export function runBlock(args) {
     const id = args.id;
     const input = args.input;
 
-    return dispatch => dispatch(fetchReport(id))
-        .then(report => prepareInput(report, input))
+    return dispatch => dispatch(fetchBlock(id))
+        .then(block => prepareInput(block, input))
         .then(fetchModels)
         .then(runController)
         .catch(console.log.bind(console));
