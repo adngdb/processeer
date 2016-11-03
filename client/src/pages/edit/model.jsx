@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, ButtonGroup, Glyphicon, ControlLabel, FormControl, FormGroup, PageHeader, Panel, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { createBlock, fetchBlock, updateBlockModel, saveBlock } from '../../actions.jsx';
+import { createBlock, fetchBlock, updateBlockModel, saveBlock } from '../../actions/blocks.jsx';
 import Loader from '../../components/loader.jsx';
 import EditNav from '../../components/edit_nav.jsx';
 

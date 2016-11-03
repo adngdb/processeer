@@ -9,7 +9,7 @@ import {
     UPDATE_BLOCK_CONTROLLER,
     UPDATE_BLOCK_MODEL,
     UPDATE_BLOCK_PARAM,
-} from './actions.jsx';
+} from './actions/blocks.jsx';
 import {
     VISIT_EDIT_VIEW_PAGE,
     VISIT_EDIT_BLOCK_PAGE,

@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
-import { fetchBlocks } from '../../actions.jsx';
+import { fetchBlocks } from '../../actions/blocks.jsx';
 import { visitEditViewPage } from '../../actions/history.jsx';
 import { createView, fetchView, saveView, updateView } from '../../actions/views.jsx';
 import Loader from '../../components/loader.jsx';

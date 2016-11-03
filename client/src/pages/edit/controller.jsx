@@ -7,7 +7,7 @@ import { Button, ButtonGroup, PageHeader, Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Codemirror from 'react-codemirror';
 
-import { createBlock, fetchBlock, updateBlockController, saveBlock } from '../../actions.jsx';
+import { createBlock, fetchBlock, updateBlockController, saveBlock } from '../../actions/blocks.jsx';
 import Loader from '../../components/loader.jsx';
 import EditNav from '../../components/edit_nav.jsx';
 

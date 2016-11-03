@@ -3,7 +3,7 @@
 import qs from 'qs';
 
 import history from './history.jsx';
-import { dbBlocks } from './db.jsx';
+import { dbBlocks } from '../db.jsx';
 
 
 // ----------------------------------------------------------------------------

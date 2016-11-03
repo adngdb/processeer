@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader, Panel } from 'react-bootstrap';
+import { PageHeader } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 

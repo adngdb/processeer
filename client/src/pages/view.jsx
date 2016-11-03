@@ -3,8 +3,8 @@ import { Button, ButtonGroup, Glyphicon, Panel } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
+import { fetchBlock } from '../actions/blocks.jsx';
 import { fetchView, runView, removeViewContent, updateViewInput } from '../actions/views.jsx';
-import { fetchBlock } from '../actions.jsx';
 import View from '../components/view.jsx';
 import ViewInput from '../components/view-input.jsx';
 import Loader from '../components/loader.jsx';

@@ -3,7 +3,7 @@ import { Button, PageHeader } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
-import { deleteBlock, fetchBlocks } from '../actions.jsx';
+import { deleteBlock, fetchBlocks } from '../actions/blocks.jsx';
 import { deleteView, fetchViews } from '../actions/views.jsx';
 import Views from '../components/views.jsx';
 import Blocks from '../components/blocks.jsx';

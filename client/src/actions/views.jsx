@@ -1,6 +1,6 @@
 import history from './history.jsx';
 import { dbViews } from './../db.jsx';
-import { runBlock } from '../actions.jsx';
+import { runBlock } from '../actions/blocks.jsx';
 
 
 // ----------------------------------------------------------------------------
