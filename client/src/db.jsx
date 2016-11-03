@@ -12,20 +12,23 @@ export const dbReports = db.collection('reports');
 
 dbViews.sync()
 .catch((err) => {
-    if (err.message.indexOf('flushed') > -1) {
-        return dbViews.resetSyncStatus()
-        .then(dbViews.sync.bind(dbViews));
-    }
+    // Use this code to synchronize the server with what the client has. Note
+    // this is dangerous and will erase the server! Quite useful for local
+    // development but might be removed later.
+    // if (err.message.indexOf('flushed') > -1) {
+    //     return dbViews.resetSyncStatus()
+    //     .then(dbViews.sync.bind(dbViews));
+    // }
     throw err;
 });
 dbViews.list().then(console.log.bind(console));
 
 dbReports.sync()
 .catch((err) => {
-    if (err.message.indexOf('flushed') > -1) {
-        return dbReports.resetSyncStatus()
-        .then(dbReports.sync.bind(dbReports));
-    }
+    // if (err.message.indexOf('flushed') > -1) {
+    //     return dbReports.resetSyncStatus()
+    //     .then(dbReports.sync.bind(dbReports));
+    // }
     throw err;
 });
 dbReports.list().then(console.log.bind(console));
