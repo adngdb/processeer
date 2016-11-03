@@ -2,7 +2,7 @@
 
 import qs from 'qs';
 
-import history from './history.jsx';
+import history from '../history.jsx';
 import { dbBlocks } from '../db.jsx';
 
 
@@ -150,6 +150,7 @@ export function createBlock(block) {
             history.push(`/edit/block/${res.data.id}`);
             return res.data;
         })
+        .then(() => dbBlocks.sync())
         .catch(console.log.bind(console));
     };
 }
@@ -185,12 +186,8 @@ export function saveBlock(id, block) {
             newBlock.slug = block.slug;
 
             dbBlocks.update(newBlock)
-            .then((res) => {
-                dbBlocks.sync()
-                .catch(console.log.bind(console));
-                return res;
-            })
             .then(() => dispatch(receiveBlockSaved(id)))
+            .then(() => dbBlocks.sync())
             .catch(console.log.bind(console));
         })
         .catch(console.log.bind(console));
@@ -219,11 +216,8 @@ export function deleteBlock(id) {
         dispatch(requestDeleteBlock(id));
 
         dbBlocks.delete(id)
-        .then(() => {
-            dbBlocks.sync()
-            .then(() => dispatch(receiveBlockDeleted(id)))
-            .catch(console.log.bind(console));
-        })
+        .then(() => dispatch(receiveBlockDeleted(id)))
+        .then(() => dbBlocks.sync())
         .catch(console.log.bind(console));
     };
 }

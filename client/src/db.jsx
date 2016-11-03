@@ -2,6 +2,7 @@
 
 const db = new Kinto({
     remote: 'http://localhost:8888/v1/',
+    bucket: 'spectateur',
     headers: {
         Authorization: `Basic ${btoa('user:pass')}`,
     },

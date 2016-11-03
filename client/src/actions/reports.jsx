@@ -1,4 +1,4 @@
-import history from './history.jsx';
+import history from '../history.jsx';
 import { dbReports } from './../db.jsx';
 import { runBlock } from '../actions/blocks.jsx';
 
@@ -167,8 +167,8 @@ export function createReport(blocks, name, slug) {
             dispatch(receiveReportCreated(res.data));
             dispatch(clearNewReportData());
             history.push(`/edit/report/${res.data.id}`);
-            return res.data;
         })
+        .then(() => dbReports.sync())
         .catch(console.log.bind(console));
     };
 }
@@ -202,8 +202,9 @@ export function saveReport(id, blocks, name, slug) {
                 slug,
             });
 
-            dbReports.update(report.data)
+            dbReports.update(report)
             .then(receiveReportSaved)
+            .then(() => dbReports.sync())
             .catch(console.log.bind(console));
         })
         .catch(console.log.bind(console));
@@ -232,11 +233,8 @@ export function deleteReport(id) {
         dispatch(requestDeleteReport(id));
 
         dbReports.delete(id)
-        .then(() => {
-            dbReports.sync()
-            .then(() => dispatch(receiveReportDeleted(id)))
-            .catch(console.log.bind(console));
-        })
+        .then(() => dispatch(receiveReportDeleted(id)))
+        .then(() => dbReports.sync())
         .catch(console.log.bind(console));
     };
 }
