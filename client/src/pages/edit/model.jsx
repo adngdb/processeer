@@ -182,7 +182,7 @@ const EditModelPage = React.createClass({
         }
 
         const history = {
-            view: this.props.history.view,
+            report: this.props.history.report,
             block: blockId,
         };
 

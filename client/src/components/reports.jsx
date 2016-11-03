@@ -6,29 +6,29 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 /*
  * Props:
- *   views
- *   deleteView
- *   fetchViews
+ *   reports
+ *   deleteReport
+ *   fetchReports
  */
-const Views = React.createClass({
+const Reports = React.createClass({
     componentWillMount() {
-        this.props.fetchViews();
+        this.props.fetchReports();
     },
 
     render() {
-        const views = Object.keys(this.props.views).map((id, i) => {
-            const view = this.props.views[id];
-            const title = view.name || view.slug || id;
+        const reports = Object.keys(this.props.reports).map((id, i) => {
+            const report = this.props.reports[id];
+            const title = report.name || report.slug || id;
             return (<tr key={i}>
                 <td>
-                    <Link to={{ pathname: `/view/${id}` }}>{title}</Link>
+                    <Link to={{ pathname: `/report/${id}` }}>{title}</Link>
                 </td>
                 <td>
-                    <LinkContainer to={{ pathname: `/edit/view/${id}` }}>
+                    <LinkContainer to={{ pathname: `/edit/report/${id}` }}>
                         <Button>Edit</Button>
                     </LinkContainer>
                 </td>
-                <td><Button onClick={() => this.props.deleteView(id)}>Remove</Button></td>
+                <td><Button onClick={() => this.props.deleteReport(id)}>Remove</Button></td>
             </tr>);
         });
 
@@ -42,11 +42,11 @@ const Views = React.createClass({
                     </tr>
                 </thead>
                 <tbody>
-                    {views}
+                    {reports}
                 </tbody>
             </Table>
         );
     },
 });
 
-export default Views;
+export default Reports;

@@ -13,7 +13,7 @@ const EditHomePage = React.createClass({
                 </PageHeader>
 
                 <p>
-                    <Link to="/view/c429363f-3217-4732-a701-83a83e065612">Example View</Link>
+                    <Link to="/report/c429363f-3217-4732-a701-83a83e065612">Example Report</Link>
                 </p>
             </div>
         );
@@ -22,7 +22,7 @@ const EditHomePage = React.createClass({
 
 const mapStateToProps = state =>
      ({
-         views: state.views,
+         reports: state.reports,
          blocks: state.blocks,
      })
 ;

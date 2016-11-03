@@ -1,20 +1,20 @@
 import { combineReducers } from 'redux';
 
-import { RECEIVE_CREATED_VIEW } from '../actions/views.jsx';
+import { RECEIVE_CREATED_REPORT } from '../actions/reports.jsx';
 
 import blocks from './blocks.jsx';
-import views from './views.jsx';
+import reports from './reports.jsx';
 import history from './history.jsx';
 
 
 function created(state = {
-    view: null,
+    report: null,
     block: null,
 }, action) {
     switch (action.type) {
-    case RECEIVE_CREATED_VIEW:
+    case RECEIVE_CREATED_REPORT:
         return Object.assign({}, state, {
-            view: action.id,
+            report: action.id,
         });
     default:
         return state;
@@ -23,7 +23,7 @@ function created(state = {
 
 
 const rootReducer = combineReducers({
-    views,
+    reports,
     blocks,
     history,
     created,

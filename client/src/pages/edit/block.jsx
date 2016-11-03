@@ -287,7 +287,7 @@ const EditBlockPage = React.createClass({
 
         // New history without the block, because we know it's the current one.
         const history = {
-            view: this.props.history.view,
+            report: this.props.history.report,
         };
 
         return (

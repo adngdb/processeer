@@ -6,7 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 /*
  * Props:
- *   views
+ *   reports
  *   deleteBlock
  *   fetchBlocks
  */

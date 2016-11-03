@@ -4,7 +4,7 @@ import Griddle from 'griddle-react';
 import { Line } from 'react-chartjs';
 
 
-const ViewContent = React.createClass({
+const ReportContent = React.createClass({
     render() {
         const content = this.props.content;
         let result;
@@ -33,4 +33,4 @@ const ViewContent = React.createClass({
     },
 });
 
-export default ViewContent;
+export default ReportContent;

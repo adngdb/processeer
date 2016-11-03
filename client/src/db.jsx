@@ -7,21 +7,21 @@ const db = new Kinto({
     },
 });
 
-export const dbViews = db.collection('views');
+export const dbReports = db.collection('reports');
 export const dbBlocks = db.collection('blocks');
 
-dbViews.sync()
+dbReports.sync()
 .catch((err) => {
     // Use this code to synchronize the server with what the client has. Note
     // this is dangerous and will erase the server! Quite useful for local
     // development but might be removed later.
     // if (err.message.indexOf('flushed') > -1) {
-    //     return dbViews.resetSyncStatus()
-    //     .then(dbViews.sync.bind(dbViews));
+    //     return dbReports.resetSyncStatus()
+    //     .then(dbReports.sync.bind(dbReports));
     // }
     throw err;
 });
-dbViews.list().then(console.log.bind(console));
+dbReports.list().then(console.log.bind(console));
 
 dbBlocks.sync()
 .catch((err) => {
