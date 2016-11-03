@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 
-import rootReducer from './reducers.jsx';
+import rootReducer from './reducers/root.jsx';
 
 import Layout from './pages/layout.jsx';
 import HomePage from './pages/home.jsx';
