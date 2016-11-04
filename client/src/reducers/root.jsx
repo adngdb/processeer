@@ -5,6 +5,7 @@ import { RECEIVE_CREATED_REPORT } from '../actions/reports.jsx';
 import blocks from './blocks.jsx';
 import reports from './reports.jsx';
 import history from './history.jsx';
+import user from './user.jsx';
 
 
 function created(state = {
@@ -26,7 +27,7 @@ const rootReducer = combineReducers({
     reports,
     blocks,
     history,
+    user,
     created,
 });
-
 export default rootReducer;

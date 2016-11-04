@@ -43,11 +43,9 @@ const HomePage = React.createClass({
     },
 });
 
-const mapStateToProps = state =>
-     ({
-         reports: state.reports,
-         blocks: state.blocks,
-     })
-;
+const mapStateToProps = state => ({
+    reports: state.reports,
+    blocks: state.blocks,
+});
 
 export default connect(mapStateToProps)(HomePage);

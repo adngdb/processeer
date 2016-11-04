@@ -1,6 +1,9 @@
 import history from '../history.jsx';
-import { dbReports } from './../db.jsx';
+import db from './../db.jsx';
 import { runBlock } from '../actions/blocks.jsx';
+
+
+const dbReports = db.collections.reports;
 
 
 // ----------------------------------------------------------------------------
