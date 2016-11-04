@@ -26,6 +26,7 @@ const HomePage = React.createClass({
                   reports={this.props.reports}
                   fetchReports={() => this.props.dispatch(fetchReports())}
                   deleteReport={id => this.props.dispatch(deleteReport(id))}
+                  user={this.props.user}
                 />
 
                 <LinkContainer to={{ pathname: '/edit/block/' }}>
@@ -37,17 +38,17 @@ const HomePage = React.createClass({
                   blocks={this.props.blocks}
                   fetchBlocks={() => this.props.dispatch(fetchBlocks())}
                   deleteBlock={id => this.props.dispatch(deleteBlock(id))}
+                  user={this.props.user}
                 />
             </div>
         );
     },
 });
 
-const mapStateToProps = state =>
-     ({
-         reports: state.reports,
-         blocks: state.blocks,
-     })
-;
+const mapStateToProps = state => ({
+    reports: state.reports,
+    blocks: state.blocks,
+    user: state.user,
+});
 
 export default connect(mapStateToProps)(HomePage);

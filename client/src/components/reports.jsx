@@ -9,6 +9,7 @@ import { LinkContainer } from 'react-router-bootstrap';
  *   reports
  *   deleteReport
  *   fetchReports
+ *   user
  */
 const Reports = React.createClass({
     componentWillMount() {

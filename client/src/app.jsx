@@ -8,6 +8,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
+import hello from 'hellojs';
 
 import rootReducer from './reducers/root.jsx';
 
@@ -23,6 +24,13 @@ import EditModelPage from './pages/edit/model.jsx';
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Init sign-in library.
+    hello.init({
+        github: '147ada1aa2aef9b32119',
+    }, {
+        redirect_uri: 'http://localhost:8080/redirect.html',
+    });
+
     const loggerMiddleware = createLogger();
 
     const createStoreWithMiddleware = applyMiddleware(

@@ -3,7 +3,10 @@
 import qs from 'qs';
 
 import history from '../history.jsx';
-import { dbBlocks } from '../db.jsx';
+import db from '../db.jsx';
+
+
+const dbBlocks = db.collections.blocks;
 
 
 // ----------------------------------------------------------------------------
