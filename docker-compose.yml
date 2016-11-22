@@ -28,4 +28,4 @@ web:
     VIRTUAL_HOST: mtgdraft.org
   volumes:
     - ./client/dist:/usr/share/nginx/html:ro
-    - ./conf/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ./client/conf/nginx.conf:/etc/nginx/nginx.conf:ro
