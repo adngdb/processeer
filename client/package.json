@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --content-base dist/ --history-api-fallback",
-    "build": "webpack --production --optimize-minimize --optimize-dedup --devtool hidden-sourcemap"
+    "build": "STORAGE_ENDPOINT_URL='https://storage.mtgdraft.org' webpack --production --optimize-minimize --optimize-dedup --devtool hidden-sourcemap"
   },
   "author": "Adrian Gaudebert <adrian@gaudebert.fr>",
   "license": "MIT",

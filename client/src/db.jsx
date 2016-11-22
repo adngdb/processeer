@@ -1,3 +1,5 @@
+/* global STORAGE_ENDPOINT_URL */
+
 import Kinto from 'kinto';
 
 
@@ -14,7 +16,7 @@ function createKintoInstance(userToken) {
     }
 
     const db = new Kinto({
-        remote: 'http://localhost:8888/v1/',
+        remote: `${STORAGE_ENDPOINT_URL}/v1/`,
         bucket: 'spectateur',
         headers,
     });
