@@ -1,5 +1,3 @@
-/* global STORAGE_ENDPOINT_URL */
-
 import Kinto from 'kinto';
 
 
@@ -16,7 +14,7 @@ function createKintoInstance(userToken) {
     }
 
     const db = new Kinto({
-        remote: `${STORAGE_ENDPOINT_URL}/v1/`,
+        remote: `${process.env.STORAGE_ENDPOINT_URL}/v1/`,
         bucket: 'processeer',
         headers,
     });

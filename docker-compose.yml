@@ -16,6 +16,7 @@ kinto:
     KINTO_STORAGE_URL: postgres://postgres:postgres@db/postgres
     KINTO_PERMISSION_BACKEND: kinto.core.permission.postgresql
     KINTO_PERMISSION_URL: postgres://postgres:postgres@db/postgres
+    KINTO_HTTP_HOST: storage.mtgdraft.org
 kinto-web:
   image: nginx
   links:

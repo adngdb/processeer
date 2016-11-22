@@ -37,9 +37,11 @@ module.exports = {
     plugins: [
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({
+            'process.env': {
                 // This has effect on the react lib size
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-            STORAGE_ENDPOINT_URL: JSON.stringify(process.env.STORAGE_ENDPOINT_URL || 'http://localhost:8888'),
+                NODE_ENV: JSON.stringify(process.env.ENV || 'development'),
+                STORAGE_ENDPOINT_URL: JSON.stringify(process.env.STORAGE_ENDPOINT_URL || 'http://localhost:8888'),
+            },
         }),
         new webpack.optimize.UglifyJsPlugin({
             minimize: true,
