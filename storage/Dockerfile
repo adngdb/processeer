@@ -1,6 +1,5 @@
 FROM kinto/kinto-server
 
-ADD ./conf/kinto.ini /etc/kinto/kinto.ini
+ADD . /code
 
-ENV PYTHONPATH "/code/;$PYTHONPATH"
-ADD ./kinto_github.py /code/kinto_github.py
+ENV PYTHONPATH="/code;$PYTHONPATH" KINTO_INI="/code/conf/kinto.ini"
