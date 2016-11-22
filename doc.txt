@@ -1,14 +1,14 @@
 Board: {
-    views: []
+    reports: []
 }
 
-View: {
-    reports: []
+Report: {
+    blocks: []
     input: {}
     slug: ""
 }
 
-Report: {
+Block: {
     params: []
     models: []
     controller: ""

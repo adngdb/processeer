@@ -3,16 +3,26 @@ db:
   environment:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres
-web:
+kinto:
   image: kinto/kinto-server
   links:
    - db
   ports:
    - "8888:8888"
   environment:
+    VIRTUAL_HOST: api.mtgdraft.org
     KINTO_CACHE_BACKEND: kinto.core.cache.postgresql
     KINTO_CACHE_URL: postgres://postgres:postgres@db/postgres
     KINTO_STORAGE_BACKEND: kinto.core.storage.postgresql
     KINTO_STORAGE_URL: postgres://postgres:postgres@db/postgres
     KINTO_PERMISSION_BACKEND: kinto.core.permission.postgresql
     KINTO_PERMISSION_URL: postgres://postgres:postgres@db/postgres
+web:
+  image: nginx
+  ports:
+    - "80:80"
+  environment:
+    VIRTUAL_HOST: mtgdraft.org
+  volumes:
+    - ./client/dist:/usr/share/nginx/html:ro
+    - ./conf/nginx.conf:/etc/nginx/nginx.conf:ro

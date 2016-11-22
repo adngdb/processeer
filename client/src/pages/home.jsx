@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, PageHeader } from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
@@ -13,9 +13,17 @@ const HomePage = React.createClass({
     render() {
         return (
             <div>
-                <PageHeader>
-                    Mozilla Reports Builder <small>User documentation</small>
-                </PageHeader>
+                <Jumbotron>
+                    <h1>Build <em>Your</em> Reports!</h1>
+                    <p>
+                        With Processeer, you can make powerful Reports using
+                        any public data. Build Blocks by querying APIs,
+                        transform the data, assemble your Blocks and enjoy!
+                    </p>
+                    <LinkContainer to={{ pathname: '/documentation/' }}>
+                        <Button bsStyle="primary">Get started</Button>
+                    </LinkContainer>
+                </Jumbotron>
 
                 <LinkContainer to={{ pathname: '/edit/report/' }}>
                     <Button bsStyle="primary">Create new report</Button>

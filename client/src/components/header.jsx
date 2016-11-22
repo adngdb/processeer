@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Glyphicon, Navbar, Nav, NavItem } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { IndexLinkContainer } from 'react-router-bootstrap';
 
@@ -11,7 +11,7 @@ export default function Header({ user, signin, signout }) {
         <Navbar>
             <Navbar.Header>
                 <Navbar.Brand>
-                    <Link to="/">Mozilla Reports Builder</Link>
+                    <Link to="/"><Glyphicon glyph="eye-open" /> Processeer</Link>
                 </Navbar.Brand>
                 <Navbar.Toggle />
             </Navbar.Header>

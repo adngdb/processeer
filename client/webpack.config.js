@@ -37,18 +37,18 @@ module.exports = {
     },
     plugins: [
         new webpack.NoErrorsPlugin(),
-        // new webpack.DefinePlugin({
-        //     'process.env': {
-        //         // This has effect on the react lib size
-        //         'NODE_ENV': JSON.stringify('production'),
-        //     },
-        // }),
-        // new webpack.optimize.UglifyJsPlugin({
-        //     minimize: true,
-        //     compressor: {
-        //         warnings: false
-        //     }
-        // }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                // This has effect on the react lib size
+                NODE_ENV: JSON.stringify('production'),
+            },
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            minimize: true,
+            compressor: {
+                warnings: false
+            }
+        }),
     ],
 
     debug: true,

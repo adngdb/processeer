@@ -9,7 +9,7 @@ const EditHomePage = React.createClass({
         return (
             <div>
                 <PageHeader>
-                    Mozilla Reports Builder <small>User documentation</small>
+                    Processeer <small>User documentation</small>
                 </PageHeader>
 
                 <p>

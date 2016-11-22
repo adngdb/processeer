@@ -3,18 +3,18 @@
 ## Important
 
 - Multi-users
-- Fork report
+- Fork block
 
 # Nice to have
 
-- Fork view
+- Fork report
 - Implement dashboards
-- Count of report in views
+- Count of blocks in views
 - Use slugs in URLs
 - Add kinto to package.json
 - Add jailed to package.json
 
-- Test creating a complete view from scratch
+- Test creating a complete report from scratch
 
 # Goals
 
