@@ -21,7 +21,7 @@ kinto-web:
   environment:
     VIRTUAL_HOST: storage.mtgdraft.org
   volumes:
-    - ./storage/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ./storage/conf/nginx.conf:/etc/nginx/nginx.conf:ro
 web:
   image: nginx
   environment:
