@@ -10,7 +10,7 @@ export default function Footer() {
             <a href="http://adrian.gaudebert.fr/home_en">
                 <Glyphicon glyph="user" /> Adrian
             </a> - {' '}
-            <a href="https://github.com/adngdb/tyrannoeil">
+            <a href="https://github.com/adngdb/processeer">
                 <Glyphicon glyph="education" /> Source code
             </a>
         </p>

@@ -17,7 +17,7 @@ const HomePage = React.createClass({
                     <h1>Build <em>Your</em> Reports!</h1>
                     <p>
                         With Processeer, you can make powerful Reports using
-                        any public data. Build Blocks by querying APIs,
+                        any publicly available data. Build Blocks by querying APIs,
                         transform the data, assemble your Blocks and enjoy!
                     </p>
                     <LinkContainer to={{ pathname: '/documentation/' }}>
@@ -31,10 +31,10 @@ const HomePage = React.createClass({
 
                 <h2>All Reports</h2>
                 <Reports
-                  reports={this.props.reports}
-                  fetchReports={() => this.props.dispatch(fetchReports())}
-                  deleteReport={id => this.props.dispatch(deleteReport(id))}
-                  user={this.props.user}
+                    reports={this.props.reports}
+                    fetchReports={() => this.props.dispatch(fetchReports())}
+                    deleteReport={id => this.props.dispatch(deleteReport(id))}
+                    user={this.props.user}
                 />
 
                 <LinkContainer to={{ pathname: '/edit/block/' }}>
@@ -43,10 +43,10 @@ const HomePage = React.createClass({
 
                 <h2>All Blocks</h2>
                 <Blocks
-                  blocks={this.props.blocks}
-                  fetchBlocks={() => this.props.dispatch(fetchBlocks())}
-                  deleteBlock={id => this.props.dispatch(deleteBlock(id))}
-                  user={this.props.user}
+                    blocks={this.props.blocks}
+                    fetchBlocks={() => this.props.dispatch(fetchBlocks())}
+                    deleteBlock={id => this.props.dispatch(deleteBlock(id))}
+                    user={this.props.user}
                 />
             </div>
         );
