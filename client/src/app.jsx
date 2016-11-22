@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { Router, Route, IndexRoute } from 'react-router';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -10,6 +10,7 @@ import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import hello from 'hellojs';
 
+import history from './history.jsx';
 import rootReducer from './reducers/root.jsx';
 
 import Layout from './pages/layout.jsx';
@@ -42,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     render((
         <Provider store={store}>
-            <Router history={hashHistory}>
+            <Router history={history}>
                 <Route path="/" component={Layout}>
                     <IndexRoute component={HomePage} />
                     <Route path="report/:reportId" component={ReportPage} />
