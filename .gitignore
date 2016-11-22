@@ -1,5 +1,6 @@
 backend/env
 node_modules
+client/.env
 client/dist/bundle.js.map
 
 *.pyc

@@ -23,7 +23,19 @@ function createKintoInstance(userToken) {
     collections.reports = db.collection('reports');
 
     // Synchronize collections.
-    collections.blocks.sync();
+    collections.blocks.sync({ strategy: Kinto.syncStrategy.SERVER_WINS })
+    .then((res) => {
+        if (res.ok) {
+            return res;
+        }
+
+        // If conflicts, take remote version and sync again.
+        return Promise.all(
+            res.conflicts.map(conflict => collections.blocks.resolve(conflict, conflict.remote))
+        )
+        .then(() => collections.blocks.sync());
+    })
+    .catch(console.error.bind(console));
     // DEBUG - activate this to re-synchronize a flushed server.
     // .catch((err) => {
     //     if (err.message.indexOf('flushed') >= 0) {
@@ -32,7 +44,19 @@ function createKintoInstance(userToken) {
     //     }
     //     throw err;
     // });
-    collections.reports.sync();
+    collections.reports.sync({ strategy: Kinto.syncStrategy.SERVER_WINS })
+    .then((res) => {
+        if (res.ok) {
+            return res;
+        }
+
+        // If conflicts, take remote version and sync again.
+        return Promise.all(
+            res.conflicts.map(conflict => collections.reports.resolve(conflict, conflict.remote))
+        )
+        .then(() => collections.reports.sync());
+    })
+    .catch(console.error.bind(console));
     // DEBUG - activate this to re-synchronize a flushed server.
     // .catch((err) => {
     //     if (err.message.indexOf('flushed') >= 0) {

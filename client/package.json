@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --content-base dist/ --history-api-fallback",
-    "build": "STORAGE_ENDPOINT_URL='http://storage.mtgdraft.org' ENV=production webpack --production --optimize-minimize --optimize-occurrence-order --optimize-dedupe --devtool cheap-source-map"
+    "build": "ENV=production STORAGE_ENDPOINT_URL='http://storage.mtgdraft.org' GITHUB_CLIENT_PUBLIC_ID=147ada1aa2aef9b32119 webpack --production --optimize-minimize --optimize-occurrence-order --optimize-dedupe --devtool cheap-source-map"
   },
   "author": "Adrian Gaudebert <adrian@gaudebert.fr>",
   "license": "MIT",
@@ -27,7 +27,8 @@
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.9",
-    "webpack-dev-server": "^1.16.2"
+    "webpack-dev-server": "^1.16.2",
+    "webpack-dotenv-plugin": "^1.4.0"
   },
   "dependencies": {
     "bootstrap": "^3.3.6",

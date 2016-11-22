@@ -27,7 +27,7 @@ import EditModelPage from './pages/edit/model.jsx';
 document.addEventListener('DOMContentLoaded', () => {
     // Init sign-in library.
     hello.init({
-        github: '147ada1aa2aef9b32119',
+        github: process.env.GITHUB_CLIENT_PUBLIC_ID,
     }, {
         redirect_uri: '/redirect.html',
     });
