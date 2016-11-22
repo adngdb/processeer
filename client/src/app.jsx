@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hello.init({
         github: '147ada1aa2aef9b32119',
     }, {
-        redirect_uri: 'http://localhost:8080/redirect.html',
+        redirect_uri: '/redirect.html',
     });
 
     const loggerMiddleware = createLogger();
