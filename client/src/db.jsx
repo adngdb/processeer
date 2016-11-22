@@ -25,22 +25,24 @@ function createKintoInstance(userToken) {
     collections.reports = db.collection('reports');
 
     // Synchronize collections.
-    collections.blocks.sync()
-    .catch((err) => {
-        if (err.message.indexOf('flushed') >= 0) {
-            return collections.blocks.resetSyncStatus()
-            .then(() => collections.blocks.sync());
-        }
-        throw err;
-    });
-    collections.reports.sync()
-    .catch((err) => {
-        if (err.message.indexOf('flushed') >= 0) {
-            return collections.reports.resetSyncStatus()
-            .then(() => collections.reports.sync());
-        }
-        throw err;
-    });
+    collections.blocks.sync();
+    // DEBUG - activate this to re-synchronize a flushed server.
+    // .catch((err) => {
+    //     if (err.message.indexOf('flushed') >= 0) {
+    //         return collections.blocks.resetSyncStatus()
+    //         .then(() => collections.blocks.sync());
+    //     }
+    //     throw err;
+    // });
+    collections.reports.sync();
+    // DEBUG - activate this to re-synchronize a flushed server.
+    // .catch((err) => {
+    //     if (err.message.indexOf('flushed') >= 0) {
+    //         return collections.reports.resetSyncStatus()
+    //         .then(() => collections.reports.sync());
+    //     }
+    //     throw err;
+    // });
 }
 
 
