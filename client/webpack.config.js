@@ -40,6 +40,7 @@ module.exports = {
             'process.env': {
                 // This has effect on the react lib size
                 NODE_ENV: JSON.stringify(process.env.ENV || 'development'),
+                ENV: JSON.stringify(process.env.ENV || 'development'),
                 STORAGE_ENDPOINT_URL: JSON.stringify(process.env.STORAGE_ENDPOINT_URL || 'http://localhost:8888'),
             },
         }),
