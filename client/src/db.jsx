@@ -17,7 +17,7 @@ function createKintoInstance(userToken) {
 
     const db = new Kinto({
         remote: `${STORAGE_ENDPOINT_URL}/v1/`,
-        bucket: 'spectateur',
+        bucket: 'processeer',
         headers,
     });
 
