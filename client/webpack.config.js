@@ -49,7 +49,7 @@ module.exports = {
         }),
     ],
 
-    debug: true,
+    debug: false,
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
