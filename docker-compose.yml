@@ -18,6 +18,8 @@ kinto:
     KINTO_PERMISSION_URL: postgres://postgres:postgres@db/postgres
 kinto-web:
   image: nginx
+  links:
+    - kinto
   environment:
     VIRTUAL_HOST: storage.mtgdraft.org
   volumes:
