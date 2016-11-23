@@ -14,7 +14,7 @@ const ReportContent = React.createClass({
                  (
                     <div key={i}>
                         <h3>{ set.title }</h3>
-                        <Griddle results={set.data} />
+                        <Griddle results={set.data} {...set.options} />
                     </div>
                 )
             );
