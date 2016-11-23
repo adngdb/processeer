@@ -11,6 +11,17 @@ import Blocks from '../components/blocks.jsx';
 
 const HomePage = React.createClass({
     render() {
+        let createReportLink = null;
+        let createBlockLink = null;
+        if (this.props.user.authenticated) {
+            createReportLink = (<LinkContainer to={{ pathname: '/edit/report/' }}>
+                <Button bsStyle="primary">Create new report</Button>
+            </LinkContainer>);
+            createBlockLink = (<LinkContainer to={{ pathname: '/edit/block/' }}>
+                <Button bsStyle="primary">Create new block</Button>
+            </LinkContainer>);
+        }
+
         return (
             <div>
                 <Jumbotron>
@@ -25,9 +36,7 @@ const HomePage = React.createClass({
                     </LinkContainer>
                 </Jumbotron>
 
-                <LinkContainer to={{ pathname: '/edit/report/' }}>
-                    <Button bsStyle="primary">Create new report</Button>
-                </LinkContainer>
+                {createReportLink}
 
                 <h2>All Reports</h2>
                 <Reports
@@ -37,9 +46,7 @@ const HomePage = React.createClass({
                     user={this.props.user}
                 />
 
-                <LinkContainer to={{ pathname: '/edit/block/' }}>
-                    <Button bsStyle="primary">Create new block</Button>
-                </LinkContainer>
+                {createBlockLink}
 
                 <h2>All Blocks</h2>
                 <Blocks

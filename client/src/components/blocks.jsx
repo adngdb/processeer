@@ -16,19 +16,29 @@ const Blocks = React.createClass({
     },
 
     render() {
+        if (Object.keys(this.props.blocks).length === 0) {
+            return (<p>No blocks yet. </p>);
+        }
+
         const blocks = Object.keys(this.props.blocks).map((id, i) => {
             const block = this.props.blocks[id];
             const title = block.name || block.slug || id;
+
+            let editLink = null;
+            let removeLink = null;
+            if (this.props.user.authenticated) {
+                editLink = (<LinkContainer to={{ pathname: `/edit/block/${id}` }}>
+                    <Button>Edit</Button>
+                </LinkContainer>);
+                removeLink = <Button onClick={() => this.props.deleteBlock(id)}>Remove</Button>;
+            }
+
             return (<tr key={i}>
                 <td>
                     <Link to={{ pathname: `/edit/block/${id}` }}>{title}</Link>
                 </td>
-                <td>
-                    <LinkContainer to={{ pathname: `/edit/block/${id}` }}>
-                        <Button>Edit</Button>
-                    </LinkContainer>
-                </td>
-                <td><Button onClick={() => this.props.deleteBlock(id)}>Remove</Button></td>
+                <td>{editLink}</td>
+                <td>{removeLink}</td>
             </tr>);
         });
 
