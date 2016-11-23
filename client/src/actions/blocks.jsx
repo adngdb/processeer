@@ -266,7 +266,9 @@ function fetchModels(args) {
 
         // Call finished() right away to account for the case where
         // there are no models to fetch.
-        finished();
+        if (total === 0) {
+            finished();
+        }
 
         block.models.forEach((model) => {
             let url = model.endpoint;
