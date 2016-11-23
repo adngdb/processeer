@@ -1,3 +1,0 @@
-http put localhost:8888/v1/buckets/spectateur -v --auth 'user:pass'
-echo '{"permissions": {"record:create": ["system.Authenticated"], "read": ["system.Everyone"]}}' | http put localhost:8888/v1/buckets/spectateur/collections/blocks -v --auth 'user:pass'
-echo '{"permissions": {"record:create": ["system.Authenticated"], "read": ["system.Everyone"]}}' | http put localhost:8888/v1/buckets/spectateur/collections/reports -v --auth 'user:pass'
