@@ -231,7 +231,7 @@ export function deleteBlock(id) {
  * values passed as input.
  */
 function prepareInput(block, input) {
-    const newInput = {};
+    const newInput = Object.assign({}, input);
 
     block.params.forEach((param) => {
         newInput[param.name] = input[param.name] || param.defaultValue;
