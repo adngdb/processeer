@@ -9,10 +9,10 @@ curl -XPUT 'localhost:8888/v1/buckets/processeer' --user $AUTH
 curl -XPUT 'localhost:8888/v1/buckets/processeer/collections/blocks' \
     --user $AUTH \
     -H "Content-Type: application/json" \
-    -d '{"permissions": {"record:create": ["system.Authenticated"], "read": ["system.Everyone"]}}'
+    -d '{"permissions": {"write": ["system.Authenticated"], "read": ["system.Everyone"]}}'
 
 # Create a collection for reports with restricted permissions.
 curl -XPUT 'localhost:8888/v1/buckets/processeer/collections/reports' \
     --user $AUTH \
     -H "Content-Type: application/json" \
-    -d '{"permissions": {"record:create": ["system.Authenticated"], "read": ["system.Everyone"]}}'
+    -d '{"permissions": {"write": ["system.Authenticated"], "read": ["system.Everyone"]}}'
