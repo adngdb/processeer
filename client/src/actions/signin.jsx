@@ -1,5 +1,7 @@
 import hello from 'hellojs';
 
+import { fetchReports } from './reports.jsx';
+import { fetchBlocks } from './blocks.jsx';
 import db from '../db.jsx';
 
 
@@ -12,7 +14,6 @@ function requestSignInGithub() {
 
 export const RECEIVE_USER_TOKEN_GITHUB = 'RECEIVE_USER_TOKEN_GITHUB';
 function receiveGithubToken(token) {
-    db.setUserToken(token);
     return {
         type: RECEIVE_USER_TOKEN_GITHUB,
         token,
@@ -34,6 +35,18 @@ function receiveSignedOut() {
     };
 }
 
+function onGithubTokenReceived(token) {
+    return (dispatch) => {
+        dispatch(receiveGithubToken(token));
+
+        // Setting a token will re-synchronize the database. We thus want to
+        // refresh the lists of reports and blocks once that's done.
+        db.setUserToken(token)
+        .then(dispatch(fetchReports()))
+        .then(dispatch(fetchBlocks()));
+    };
+}
+
 function requestGithubUsername() {
     return (dispatch) => {
         hello('github').api('me')
@@ -49,7 +62,7 @@ export function signInGithub() {
 
         hello('github').login()
         .then((res) => {
-            dispatch(receiveGithubToken(res.authResponse.access_token));
+            dispatch(onGithubTokenReceived(res.authResponse.access_token));
             dispatch(requestGithubUsername());
         }, console.log.bind(console));
     };
@@ -58,7 +71,7 @@ export function signInGithub() {
 export function signOutGithub() {
     return (dispatch) => {
         hello('github').logout()
-        .then((res) => {
+        .then(() => {
             dispatch(receiveSignedOut());
         }, console.log.bind(console));
     };
@@ -71,7 +84,7 @@ export function verifyUserSignedIn() {
         const currentTime = (new Date()).getTime() / 1000;
         if (auth && auth.access_token && auth.expires > currentTime) {
             // A user is already signed in, signal it.
-            dispatch(receiveGithubToken(auth.access_token));
+            dispatch(onGithubTokenReceived(auth.access_token));
             dispatch(requestGithubUsername());
         }
     };
