@@ -1,9 +1,11 @@
 db:
   image: postgres
+  restart: always
   environment:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres
 kinto:
+  restart: always
   build: ./storage
   links:
    - db
@@ -19,6 +21,7 @@ kinto:
     KINTO_HTTP_HOST: storage.processeer.io
 kinto-web:
   image: nginx
+  restart: always
   links:
     - kinto
   environment:
@@ -27,6 +30,7 @@ kinto-web:
     - ./storage/conf/nginx.conf:/etc/nginx/nginx.conf:ro
 web:
   image: nginx
+  restart: always
   environment:
     VIRTUAL_HOST: processeer.io
   volumes:
