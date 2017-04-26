@@ -188,7 +188,7 @@ const EditModelPage = React.createClass({
 
         return (
             <div>
-                <PageHeader>Model Editer</PageHeader>
+                <PageHeader>Model Editor</PageHeader>
                 <EditNav history={history} />
                 {content}
             </div>

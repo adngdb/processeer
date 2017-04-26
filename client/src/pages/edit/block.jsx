@@ -292,7 +292,7 @@ const EditBlockPage = React.createClass({
 
         return (
             <div>
-                <PageHeader>Block Editer</PageHeader>
+                <PageHeader>Block Editor</PageHeader>
                 <EditNav history={history} />
                 <Panel header={title}>
                     {content}

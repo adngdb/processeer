@@ -159,7 +159,7 @@ const EditReportPage = React.createClass({
 
         return (
             <div>
-                <PageHeader>Report Editer</PageHeader>
+                <PageHeader>Report Editor</PageHeader>
                 <Panel header={title}>
                     {content}
                 </Panel>

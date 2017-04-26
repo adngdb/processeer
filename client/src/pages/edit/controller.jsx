@@ -95,7 +95,7 @@ application.setInterface({transform: transform});`;
 
         return (
             <div>
-                <PageHeader>Controller Editer</PageHeader>
+                <PageHeader>Controller Editor</PageHeader>
                 <EditNav history={history} />
                 {content}
             </div>
