@@ -3,7 +3,7 @@ import db from './../db.jsx';
 import { runBlock } from '../actions/blocks.jsx';
 
 
-const dbReports = db.collections.reports;
+const dbReports = () => db.collections.reports;
 
 
 // ----------------------------------------------------------------------------
@@ -26,7 +26,7 @@ export function fetchReports() {
     return (dispatch) => {
         dispatch(requestReports());
 
-        dbReports.list()
+        dbReports().listRecords()
         .then(reports => dispatch(receiveReports(reports.data)))
         .catch(console.log.bind(console));
     };
@@ -64,7 +64,7 @@ export function fetchReport(id) {
     return (dispatch) => {
         dispatch(requestReportMeta(id));
 
-        dbReports.get(id)
+        dbReports().getRecord(id)
         .then((report) => {
             dispatch(receiveReportMeta(
                 id,
@@ -165,13 +165,12 @@ export function createReport(blocks, name, slug) {
             slug,
         };
 
-        dbReports.create(report)
+        dbReports().createRecord(report)
         .then((res) => {
             dispatch(receiveReportCreated(res.data));
             dispatch(clearNewReportData());
             history.push(`/edit/report/${res.data.id}`);
         })
-        .then(() => dbReports.sync())
         .catch(console.log.bind(console));
     };
 }
@@ -197,7 +196,7 @@ export function saveReport(id, blocks, name, slug) {
     return (dispatch) => {
         dispatch(requestSaveReport(id));
 
-        dbReports.get(id)
+        dbReports().getRecord(id)
         .then((res) => {
             const report = Object.assign({}, res.data, {
                 blocks,
@@ -205,9 +204,8 @@ export function saveReport(id, blocks, name, slug) {
                 slug,
             });
 
-            dbReports.update(report)
+            dbReports().updateRecord(report)
             .then(receiveReportSaved)
-            .then(() => dbReports.sync())
             .catch(console.log.bind(console));
         })
         .catch(console.log.bind(console));
@@ -235,9 +233,8 @@ export function deleteReport(id) {
     return (dispatch) => {
         dispatch(requestDeleteReport(id));
 
-        dbReports.delete(id)
+        dbReports().deleteRecord(id)
         .then(() => dispatch(receiveReportDeleted(id)))
-        .then(() => dbReports.sync())
         .catch(console.log.bind(console));
     };
 }

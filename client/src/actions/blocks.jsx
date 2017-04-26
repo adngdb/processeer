@@ -6,7 +6,7 @@ import history from '../history.jsx';
 import db from '../db.jsx';
 
 
-const dbBlocks = db.collections.blocks;
+const dbBlocks = () => db.collections.blocks;
 
 
 // ----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ function requestBlock(id) {
 export function fetchBlock(id) {
     return (dispatch) => {
         dispatch(requestBlock(id));
-        return dbBlocks.get(id)
+        return dbBlocks().getRecord(id)
         .then((data) => {
             const block = Object.assign({}, data);
             if (!block.data.params) {
@@ -72,7 +72,7 @@ export function fetchBlocks() {
     return (dispatch) => {
         dispatch(requestBlocks());
 
-        dbBlocks.list()
+        dbBlocks().listRecords()
         .then(blocks => dispatch(receiveBlocks(blocks.data)))
         .catch(console.log.bind(console));
     };
@@ -146,14 +146,16 @@ export function createBlock(block) {
     return (dispatch) => {
         dispatch(requestCreateBlock());
 
-        dbBlocks.create(block)
+        const record = Object.assign({}, block);
+        delete record.id;
+
+        dbBlocks().createRecord(record)
         .then((res) => {
             dispatch(receiveBlockCreated(res.data));
             dispatch(clearNewBlockData());
             history.push(`/edit/block/${res.data.id}`);
             return res.data;
         })
-        .then(() => dbBlocks.sync())
         .catch(console.log.bind(console));
     };
 }
@@ -179,7 +181,7 @@ export function saveBlock(id, block) {
     return (dispatch) => {
         dispatch(requestSaveBlock(id));
 
-        dbBlocks.get(id)
+        dbBlocks().getRecord(id)
         .then((data) => {
             const newBlock = Object.assign({}, data.data);
             newBlock.params = block.params;
@@ -188,9 +190,8 @@ export function saveBlock(id, block) {
             newBlock.name = block.name;
             newBlock.slug = block.slug;
 
-            dbBlocks.update(newBlock)
+            dbBlocks().updateRecord(newBlock)
             .then(() => dispatch(receiveBlockSaved(id)))
-            .then(() => dbBlocks.sync())
             .catch(console.log.bind(console));
         })
         .catch(console.log.bind(console));
@@ -218,9 +219,8 @@ export function deleteBlock(id) {
     return (dispatch) => {
         dispatch(requestDeleteBlock(id));
 
-        dbBlocks.delete(id)
+        dbBlocks().deleteRecord(id)
         .then(() => dispatch(receiveBlockDeleted(id)))
-        .then(() => dbBlocks.sync())
         .catch(console.log.bind(console));
     };
 }
