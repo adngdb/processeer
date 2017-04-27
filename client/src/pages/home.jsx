@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Jumbotron } from 'react-bootstrap';
+import { Button, Glyphicon, Jumbotron } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
@@ -16,12 +16,20 @@ const HomePage = React.createClass({
         let allBlocks = null;
 
         if (this.props.user.authenticated) {
-            createReportLink = (<LinkContainer to={{ pathname: '/edit/report/' }}>
-                <Button bsStyle="primary">Create new report</Button>
-            </LinkContainer>);
-            createBlockLink = (<LinkContainer to={{ pathname: '/edit/block/' }}>
-                <Button bsStyle="primary">Create new block</Button>
-            </LinkContainer>);
+            createReportLink = (
+                <LinkContainer to={{ pathname: '/edit/report/' }} className="pull-right">
+                    <Button bsStyle="primary">
+                        <Glyphicon glyph="stats" /> Create new report
+                    </Button>
+                </LinkContainer>
+            );
+            createBlockLink = (
+                <LinkContainer to={{ pathname: '/edit/block/' }} className="pull-right">
+                    <Button bsStyle="primary">
+                        <Glyphicon glyph="tasks" /> Create new block
+                    </Button>
+                </LinkContainer>
+            );
             allBlocks = (<section>
                 {createBlockLink}
                 <h2>All Blocks</h2>
