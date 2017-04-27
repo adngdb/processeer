@@ -124,9 +124,9 @@ const EditReportPage = React.createClass({
                     <FormControl value={report.name} onChange={this.updateReportName} />
                 </FormGroup>
                 <p>Blocks: </p>
-                <ul>
+                <ol>
                     {links}
-                </ul>
+                </ol>
                 <ButtonGroup>
                     <Button bsStyle="primary" onClick={this.openBlockPicker}>
                         <Glyphicon glyph="plus" /> Add Block

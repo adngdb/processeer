@@ -75,13 +75,20 @@ const ReportPage = React.createClass({
             content = <Report report={report} />;
         }
 
+        let editBtn = null;
+        if (this.props.user.authenticated) {
+            editBtn = (
+                <LinkContainer to={{ pathname: `/edit/report/${reportId}` }}>
+                    <Button><Glyphicon glyph="edit" /> Edit</Button>
+                </LinkContainer>
+            );
+        }
+
         return (
             <Panel header={title}>
                 <ButtonGroup>
                     <Button onClick={this.runReport}><Glyphicon glyph="refresh" /> Run</Button>
-                    <LinkContainer to={{ pathname: `/edit/report/${reportId}` }}>
-                        <Button><Glyphicon glyph="edit" /> Edit</Button>
-                    </LinkContainer>
+                    {editBtn}
                 </ButtonGroup>
                 {params}
                 {content}
@@ -90,11 +97,10 @@ const ReportPage = React.createClass({
     },
 });
 
-const mapStateToProps = state =>
-     ({
-         reports: state.reports,
-         blocks: state.blocks,
-     })
-;
+const mapStateToProps = state => ({
+    reports: state.reports,
+    blocks: state.blocks,
+    user: state.user,
+});
 
 export default connect(mapStateToProps)(ReportPage);

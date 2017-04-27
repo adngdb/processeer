@@ -13,6 +13,8 @@ const HomePage = React.createClass({
     render() {
         let createReportLink = null;
         let createBlockLink = null;
+        let allBlocks = null;
+
         if (this.props.user.authenticated) {
             createReportLink = (<LinkContainer to={{ pathname: '/edit/report/' }}>
                 <Button bsStyle="primary">Create new report</Button>
@@ -20,6 +22,16 @@ const HomePage = React.createClass({
             createBlockLink = (<LinkContainer to={{ pathname: '/edit/block/' }}>
                 <Button bsStyle="primary">Create new block</Button>
             </LinkContainer>);
+            allBlocks = (<section>
+                {createBlockLink}
+                <h2>All Blocks</h2>
+                <Blocks
+                  blocks={this.props.blocks}
+                  fetchBlocks={() => this.props.dispatch(fetchBlocks())}
+                  deleteBlock={id => this.props.dispatch(deleteBlock(id))}
+                  user={this.props.user}
+                />
+            </section>);
         }
 
         return (
@@ -40,21 +52,13 @@ const HomePage = React.createClass({
 
                 <h2>All Reports</h2>
                 <Reports
-                    reports={this.props.reports}
-                    fetchReports={() => this.props.dispatch(fetchReports())}
-                    deleteReport={id => this.props.dispatch(deleteReport(id))}
-                    user={this.props.user}
+                  reports={this.props.reports}
+                  fetchReports={() => this.props.dispatch(fetchReports())}
+                  deleteReport={id => this.props.dispatch(deleteReport(id))}
+                  user={this.props.user}
                 />
 
-                {createBlockLink}
-
-                <h2>All Blocks</h2>
-                <Blocks
-                    blocks={this.props.blocks}
-                    fetchBlocks={() => this.props.dispatch(fetchBlocks())}
-                    deleteBlock={id => this.props.dispatch(deleteBlock(id))}
-                    user={this.props.user}
-                />
+                {allBlocks}
             </div>
         );
     },
