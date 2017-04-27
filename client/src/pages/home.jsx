@@ -51,9 +51,11 @@ const HomePage = React.createClass({
                         any publicly available data. Build Blocks by querying APIs,
                         transform the data, assemble your Blocks and enjoy!
                     </p>
-                    <LinkContainer to={{ pathname: '/documentation/' }}>
-                        <Button bsStyle="primary">Get started</Button>
-                    </LinkContainer>
+                    <a href="https://github.com/adngdb/processeer#processeer" target="_blank" rel="noopener noreferrer">
+                        <Button bsStyle="primary">
+                            <Glyphicon glyph="new-window" /> Get started
+                        </Button>
+                    </a>
                 </Jumbotron>
 
                 {createReportLink}

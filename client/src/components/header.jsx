@@ -16,11 +16,11 @@ export default function Header({ user, signin, signout }) {
                 <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
-                <Nav>
-                    <IndexLinkContainer to="/">
-                        <NavItem>Documentation</NavItem>
-                    </IndexLinkContainer>
-                </Nav>
+                <Navbar.Text>
+                    <a href="https://github.com/adngdb/processeer#processeer" target="_blank" rel="noopener noreferrer">
+                        <Glyphicon glyph="new-window" /> Documentation
+                    </a>
+                </Navbar.Text>
                 <Navbar.Text pullRight>
                     <UserSignin user={user} signin={signin} signout={signout} />
                 </Navbar.Text>
