@@ -20,7 +20,6 @@ import ReportPage from './pages/report.jsx';
 import EditHomePage from './pages/edit/home.jsx';
 import EditReportPage from './pages/edit/report.jsx';
 import EditBlockPage from './pages/edit/block.jsx';
-import EditControllerPage from './pages/edit/controller.jsx';
 import EditModelPage from './pages/edit/model.jsx';
 
 
@@ -54,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <Route path="report/:reportId" component={EditReportPage} />
                     <Route path="block/" component={EditBlockPage} />
                     <Route path="block/:blockId" component={EditBlockPage} />
-                    <Route path="block/:blockId/controller" component={EditControllerPage} />
                     <Route path="block/:blockId/model/:modelIndex" component={EditModelPage} />
                 </Route>
             </Router>

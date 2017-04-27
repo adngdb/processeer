@@ -1,13 +1,14 @@
 import React from 'react';
-import { Button, ButtonGroup, ControlLabel, FormControl, FormGroup, Glyphicon, PageHeader, Panel, Table } from 'react-bootstrap';
+import { Button, ControlLabel, FormControl, FormGroup, Glyphicon, PageHeader, Panel, Table } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
-import { createBlock, fetchBlock, updateBlock, saveBlock, updateBlockParam } from '../../actions/blocks.jsx';
+import { createBlock, fetchBlock, updateBlockController, updateBlock, saveBlock, updateBlockParam } from '../../actions/blocks.jsx';
 import { visitEditBlockPage } from '../../actions/history.jsx';
-import Loader from '../../components/loader.jsx';
+import BlockController from '../../components/block-controller.jsx';
 import EditNav from '../../components/edit_nav.jsx';
+import Loader from '../../components/loader.jsx';
 
 
 const EditBlockPage = React.createClass({
@@ -127,6 +128,11 @@ const EditBlockPage = React.createClass({
         }));
     },
 
+    updateController(newCode) {
+        const blockId = this.props.params.blockId;
+        this.props.dispatch(updateBlockController(blockId, newCode));
+    },
+
     updateBlock(data) {
         const blockId = this.props.params.blockId || '_new';
         this.props.dispatch(updateBlock(blockId, data));
@@ -229,7 +235,10 @@ const EditBlockPage = React.createClass({
                     <FormControl type="text" value={block.name} onChange={this.updateBlockName} />
                 </FormGroup>
 
-                <h3>Params: </h3>
+                <Button bsStyle="primary" onClick={this.addParam} className="pull-right">
+                    <Glyphicon glyph="plus" /> Add Param
+                </Button>
+                <h3>Params</h3>
                 <Table striped hover>
                     <thead>
                         <tr>
@@ -243,7 +252,11 @@ const EditBlockPage = React.createClass({
                         {paramLines}
                     </tbody>
                 </Table>
-                <h3>Models: </h3>
+
+                <Button bsStyle="primary" onClick={this.addModel} className="pull-right">
+                    <Glyphicon glyph="plus" /> Add Model
+                </Button>
+                <h3>Models</h3>
                 <Table striped hover>
                     <thead>
                         <tr>
@@ -258,20 +271,10 @@ const EditBlockPage = React.createClass({
                         {modelLines}
                     </tbody>
                 </Table>
-                <h3>
-                    <Link to={{ pathname: `/edit/block/${blockId}/controller` }}>Controller</Link>
-                </h3>
-                <ButtonGroup>
-                    <Button bsStyle="primary" onClick={this.addParam}>
-                        <Glyphicon glyph="plus" /> Add Param
-                    </Button>
-                    <Button bsStyle="primary" onClick={this.addModel}>
-                        <Glyphicon glyph="plus" /> Add Model
-                    </Button>
-                    <Button bsStyle="primary" onClick={this.saveBlock}>
-                        <Glyphicon glyph="hdd" /> Save
-                    </Button>
-                </ButtonGroup>
+
+                <BlockController
+                  updateController={this.updateController}
+                >{ block.controller }</BlockController>
             </div>);
         }
 
@@ -282,6 +285,9 @@ const EditBlockPage = React.createClass({
 
         return (
             <div>
+                <Button bsStyle="primary" onClick={this.saveBlock} className="pull-right">
+                    <Glyphicon glyph="hdd" /> Save
+                </Button>
                 <PageHeader>Block Editor</PageHeader>
                 <EditNav history={history} />
                 <Panel header={title}>
