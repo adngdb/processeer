@@ -7,7 +7,7 @@ import ReportContent from './report-content.jsx';
 const Report = React.createClass({
     render() {
         const report = this.props.report;
-        const title = report.title || report.name || report.slug || report.id;
+        const title = report.title || report.name || report.id;
 
         let content;
         if (report.isRunning) {

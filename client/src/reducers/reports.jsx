@@ -21,7 +21,6 @@ function report(state = {
     id: null,
     blocks: [],
     name: '',
-    slug: '',
     input: {},
     title: '',
     content: '',
@@ -48,7 +47,6 @@ function report(state = {
             id: action.id,
             blocks: action.blocks,
             name: action.name,
-            slug: action.slug,
         });
     case REQUEST_REPORT_META:
         return Object.assign({}, state, {
@@ -65,7 +63,6 @@ function report(state = {
             didInvalidate: false,
             blocks: [],
             name: '',
-            slug: '',
         });
     case UPDATE_REPORT_INPUT:
         return Object.assign({}, state, {

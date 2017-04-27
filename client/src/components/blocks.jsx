@@ -22,7 +22,7 @@ const Blocks = React.createClass({
 
         const blocks = Object.keys(this.props.blocks).map((id, i) => {
             const block = this.props.blocks[id];
-            const title = block.name || block.slug || id;
+            const title = block.name || id;
 
             let editLink = null;
             let removeLink = null;

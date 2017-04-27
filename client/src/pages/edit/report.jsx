@@ -47,10 +47,6 @@ const EditReportPage = React.createClass({
         this.updateReport({ name: e.target.value });
     },
 
-    updateReportSlug(e) {
-        this.updateReport({ slug: e.target.value });
-    },
-
     saveReport() {
         const reportId = this.props.params.reportId || '_new';
         const report = this.props.reports[reportId];
@@ -58,16 +54,14 @@ const EditReportPage = React.createClass({
         if (reportId === '_new') {
             this.props.dispatch(createReport(
                 report.blocks,
-                report.name,
-                report.slug
+                report.name
             ));
         }
         else {
             this.props.dispatch(saveReport(
                 reportId,
                 report.blocks,
-                report.name,
-                report.slug
+                report.name
             ));
         }
     },
@@ -114,13 +108,13 @@ const EditReportPage = React.createClass({
             content = <Loader />;
         }
         else {
-            title = report.name || report.slug || title;
+            title = report.name || title;
 
             const links = report.blocks.map((id, i) => {
                 const block = this.props.blocks[id];
                 title = id;
                 if (block) {
-                    title = block.name || block.slug || id;
+                    title = block.name || id;
                 }
                 return <li key={i}><Link to={{ pathname: `/edit/block/${id}` }}>{title}</Link></li>;
             });
@@ -128,10 +122,6 @@ const EditReportPage = React.createClass({
                 <FormGroup controlId="reportName">
                     <ControlLabel>Name</ControlLabel>
                     <FormControl value={report.name} onChange={this.updateReportName} />
-                </FormGroup>
-                <FormGroup controlId="reportSlug">
-                    <ControlLabel>Slug</ControlLabel>
-                    <FormControl value={report.slug} onChange={this.updateReportSlug} />
                 </FormGroup>
                 <p>Blocks: </p>
                 <ul>

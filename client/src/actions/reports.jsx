@@ -56,7 +56,6 @@ function receiveReportMeta(id, report) {
         id,
         blocks: report.blocks,
         name: report.name,
-        slug: report.slug,
     };
 }
 
@@ -155,14 +154,13 @@ function clearNewReportData() {
     };
 }
 
-export function createReport(blocks, name, slug) {
+export function createReport(blocks, name) {
     return (dispatch) => {
         dispatch(requestCreateReport());
 
         const report = {
             blocks,
             name,
-            slug,
         };
 
         dbReports().createRecord(report)
@@ -192,7 +190,7 @@ function receiveReportSaved(report) {
     };
 }
 
-export function saveReport(id, blocks, name, slug) {
+export function saveReport(id, blocks, name) {
     return (dispatch) => {
         dispatch(requestSaveReport(id));
 
@@ -201,7 +199,6 @@ export function saveReport(id, blocks, name, slug) {
             const report = Object.assign({}, res.data, {
                 blocks,
                 name,
-                slug,
             });
 
             dbReports().updateRecord(report)

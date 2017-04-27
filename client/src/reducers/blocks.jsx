@@ -50,7 +50,6 @@ function block(state = {
     models: [],
     controller: '',
     name: '',
-    slug: '',
     title: '',
     content: '',
 }, action) {
@@ -67,7 +66,6 @@ function block(state = {
             models: action.block.models,
             controller: action.block.controller,
             name: action.block.name,
-            slug: action.block.slug,
         });
     case UPDATE_BLOCK:
         return Object.assign({}, state, action.block);

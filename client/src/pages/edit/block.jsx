@@ -138,12 +138,6 @@ const EditBlockPage = React.createClass({
         });
     },
 
-    updateBlockSlug(e) {
-        this.updateBlock({
-            slug: e.target.value,
-        });
-    },
-
     saveBlock() {
         const blockId = this.props.params.blockId || '_new';
         const block = this.props.blocks[blockId];
@@ -173,7 +167,7 @@ const EditBlockPage = React.createClass({
             content = <Loader />;
         }
         else {
-            title = block.name || block.slug || title;
+            title = block.name || title;
 
             const paramLines = (block.params || []).map((param, i) =>
                  (<tr key={i}>
@@ -233,10 +227,6 @@ const EditBlockPage = React.createClass({
                 <FormGroup controlId="blockName">
                     <ControlLabel>Name</ControlLabel>
                     <FormControl type="text" value={block.name} onChange={this.updateBlockName} />
-                </FormGroup>
-                <FormGroup controlId="blockSlug">
-                    <ControlLabel>Slug</ControlLabel>
-                    <FormControl type="text" value={block.slug} onChange={this.updateBlockSlug} />
                 </FormGroup>
 
                 <h3>Params: </h3>

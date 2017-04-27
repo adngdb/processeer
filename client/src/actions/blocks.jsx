@@ -188,7 +188,6 @@ export function saveBlock(id, block) {
             newBlock.models = block.models;
             newBlock.controller = block.controller;
             newBlock.name = block.name;
-            newBlock.slug = block.slug;
 
             dbBlocks().updateRecord(newBlock)
             .then(() => dispatch(receiveBlockSaved(id)))

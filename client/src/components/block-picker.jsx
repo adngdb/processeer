@@ -12,7 +12,7 @@ const BlockPicker = React.createClass({
     render() {
         const blocks = Object.keys(this.props.blocks).map((id, i) => {
             const block = this.props.blocks[id];
-            const title = block.name || block.slug || id;
+            const title = block.name || id;
             return <li key={i}><a href="#" onClick={e => this.pickBlock(e, id)}>{title}</a></li>;
         });
 

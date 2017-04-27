@@ -23,7 +23,7 @@ const Reports = React.createClass({
 
         const reports = Object.keys(this.props.reports).map((id, i) => {
             const report = this.props.reports[id];
-            const title = report.name || report.slug || id;
+            const title = report.name || id;
 
             let editLink = null;
             let removeLink = null;

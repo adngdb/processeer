@@ -71,7 +71,7 @@ const ReportPage = React.createClass({
                 }
             }
 
-            title = report.name || report.slug || title;
+            title = report.name || title;
             content = <Report report={report} />;
         }
 
