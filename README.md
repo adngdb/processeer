@@ -29,7 +29,7 @@ and displayed using front-end libraries, depending on the format of that data.
 
 ### Supported Outputs
 
-#### Table
+#### Table :: [example](http://processeer.io/report/bc84673a-0ffb-4f09-a5ad-e2275103c4df)
 
 Displays data as a table. Uses [Griddle](https://griddlegriddle.github.io/Griddle/) ([documentation](https://griddlegriddle.github.io/Griddle/quickstart.html)).
 
@@ -54,7 +54,7 @@ Displays data as a table. Uses [Griddle](https://griddlegriddle.github.io/Griddl
 See [Griddle documentation about properties](https://griddlegriddle.github.io/Griddle/properties.html)
 for a list of options you can pass to customize your table.
 
-#### Tables
+#### Tables :: [example](http://processeer.io/report/1323f70d-3e33-498c-9689-35eb2a1d592a)
 
 Same as Table, but it will show several tables instead of just one.
 
@@ -80,7 +80,7 @@ Same as Table, but it will show several tables instead of just one.
 }
 ```
 
-#### Line Chart
+#### Line Chart :: [example](http://processeer.io/report/1d1673fa-72e8-45e7-ab38-d250e9dbdab8)
 
 Displays a line chart. Uses [Chart.js](http://www.chartjs.org/) ([documentation](http://www.chartjs.org/docs/)).
 
@@ -105,16 +105,20 @@ for a list of options to customize your datasets.
 
 ## Installation
 
+Processeer runs in a docker environment. You need docker and docker-compose to run it locally. [Example nginx configuration files](https://github.com/adngdb/processeer/tree/master/storage/conf) are provided for a production installation.
+
+To run Processeer locally, run the following commands:
+
 ```bash
 cd processeer
 
-# Create a Kinto instance
+# Create a Kinto instance.
 docker-compose up kinto -d
 
-# Set up permissions in Kinto
+# Set up permissions in Kinto (only the first time).
 source storage/init.sh
 
-# Start the web site
+# Start the web site.
 cd client
 npm start
 ```
