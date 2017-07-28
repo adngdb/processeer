@@ -5,6 +5,17 @@ fetching data from public APIs and transforming that data into anything you
 like using the power of JavaScript. It then takes care of nicely displaying
 that data for you, in tables or charts for example.
 
+## Important notes
+
+This is an **alpha version**. It has some features, the ones I deemed the
+most important, but lacks many more that would make it a truly good tool
+(the main missing feature is forking, the second main missing feature is an
+actual permission system). It is **probably not secured**, as I haven't done
+much to verify that it is. The custom JavaScript is executed using the
+[jailed library](https://github.com/asvd/jailed), which supposedly is secured,
+but there might be a lot of other ways to attack the website. Please please
+do not use it for sensitive things.
+
 ## Core Concepts
 
 ### Blocks
