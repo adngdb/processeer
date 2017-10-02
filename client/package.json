@@ -39,7 +39,7 @@
     "griddle-react": "^0.4.1",
     "hellojs": "^1.14.0",
     "history": "^2.0.1",
-    "kinto-http": "^4.3.2",
+    "kinto-http": "^4.3.3",
     "qs": "^6.3.0",
     "react": "^0.14.3",
     "react-bootstrap": "^0.30.7",
