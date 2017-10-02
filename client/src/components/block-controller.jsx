@@ -11,17 +11,19 @@ const BlockController = function (props) {
     let controller = props.children;
 
     if (!controller) {
-        controller = `let transform = (data, callback) => {
+        controller = `let transform = (data) => {
     // Add your code here.
+    // 'data' is an object containing:
+    //   * models: array of objects, each item being the return value of the corresponding model
+    //   * input: object containing the values passed as parameters to this Block
 
-    let td = {
+    // Always return an object at the end of this function.
+    return {
         type: 'table',
         title: 'My block title',
         data: [],
     };
-    callback(td);
-};
-application.setInterface({transform: transform});`;
+};`;
     }
 
     const options = {
