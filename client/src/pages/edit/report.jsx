@@ -78,6 +78,17 @@ const EditReportPage = React.createClass({
         this.props.dispatch(updateReport(reportId, newReport));
     },
 
+    removeBlock(id) {
+        const reportId = this.props.params.reportId || '_new';
+        const report = this.props.reports[reportId];
+
+        const newReport = {
+            blocks: report.blocks.filter(blockId => blockId !== id),
+        };
+
+        this.props.dispatch(updateReport(reportId, newReport));
+    },
+
     openBlockPicker() {
         const reportId = this.props.params.reportId || '_new';
         this.props.dispatch(updateReport(reportId, {
@@ -116,7 +127,13 @@ const EditReportPage = React.createClass({
                 if (block) {
                     title = block.name || id;
                 }
-                return <li key={i}><Link to={{ pathname: `/edit/block/${id}` }}>{title}</Link></li>;
+                return (<li key={i}>
+                    <Link to={{ pathname: `/edit/block/${id}` }}>{title}</Link>
+                    { ' ' }
+                    <Button onClick={() => this.removeBlock(id)}>
+                        <Glyphicon glyph="remove" />
+                    </Button>
+                </li>);
             });
             content = (<div>
                 <FormGroup controlId="reportName">
