@@ -8,7 +8,7 @@ services:
     restart: always
     environment:
       KINTO_HTTP_HOST: storage.processeer.io
-     ports:
+    ports:
       - "8888"
   kinto-web:
     image: nginx
