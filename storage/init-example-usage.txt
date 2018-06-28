@@ -1,0 +1,1 @@
+KINTO_ADMIN_USER=admin KINTO_ADMIN_PASSWORD=admin ./init.sh

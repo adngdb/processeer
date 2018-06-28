@@ -1,0 +1,23 @@
+db:
+  restart: always
+kinto:
+  restart: always
+  environment:
+    KINTO_HTTP_HOST: storage.processeer.io
+kinto-web:
+  image: nginx
+  restart: always
+  links:
+    - kinto
+  environment:
+    VIRTUAL_HOST: storage.processeer.io
+  volumes:
+    - ./storage/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+web:
+  image: nginx
+  restart: always
+  environment:
+    VIRTUAL_HOST: processeer.io
+  volumes:
+    - ./client/dist:/usr/share/nginx/html:ro
+    - ./client/conf/nginx.conf:/etc/nginx/nginx.conf:ro

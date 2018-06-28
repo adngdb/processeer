@@ -4,3 +4,5 @@ client/.env
 client/dist/bundle.js.map
 
 *.pyc
+
+docker-compose.secrets.yml
