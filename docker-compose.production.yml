@@ -1,5 +1,7 @@
 db:
   restart: always
+  volumes:
+    - /var/data/processeer/database:/var/lib/postgresql/data
 kinto:
   restart: always
   environment:
