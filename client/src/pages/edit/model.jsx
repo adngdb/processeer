@@ -7,37 +7,37 @@ import Loader from '../../components/loader.jsx';
 import EditNav from '../../components/edit_nav.jsx';
 
 
-const EditModelPage = React.createClass({
+class EditModelPage extends React.Component {
     componentWillMount() {
         this.checkBlock(this.props);
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
         this.checkBlock(nextProps);
-    },
+    }
 
     checkBlock(props) {
-        const blockId = props.params.blockId;
+        const blockId = props.match.params.blockId;
 
         if (!props.blocks[blockId]) {
             props.dispatch(fetchBlock(blockId));
         }
-    },
+    }
 
     getBlock() {
-        const blockId = this.props.params.blockId;
+        const blockId = this.props.match.params.blockId;
         return this.props.blocks[blockId];
-    },
+    }
 
     getModel() {
         const block = this.getBlock();
-        const modelIndex = this.props.params.modelIndex;
+        const modelIndex = this.props.match.params.modelIndex;
         return block.models[modelIndex];
-    },
+    }
 
     updateModel(data) {
-        const blockId = this.props.params.blockId;
-        const modelIndex = this.props.params.modelIndex;
+        const blockId = this.props.match.params.blockId;
+        const modelIndex = this.props.match.params.modelIndex;
         const model = this.getModel();
 
         const endpoint = data.endpoint || model.endpoint;
@@ -49,13 +49,13 @@ const EditModelPage = React.createClass({
             endpoint,
             params
         ));
-    },
+    }
 
     updateModelEndpoint(e) {
         this.updateModel({
             endpoint: e.target.value,
         });
-    },
+    }
 
     updateModelParamKey(e) {
         const model = this.getModel();
@@ -65,7 +65,7 @@ const EditModelPage = React.createClass({
 
         params[paramIndex].key = e.target.value;
         this.updateModel({ params });
-    },
+    }
 
     updateModelParamValue(e) {
         const model = this.getModel();
@@ -75,10 +75,10 @@ const EditModelPage = React.createClass({
 
         params[paramIndex].value = e.target.value;
         this.updateModel({ params });
-    },
+    }
 
     saveModel() {
-        const blockId = this.props.params.blockId;
+        const blockId = this.props.match.params.blockId;
         const block = this.props.blocks[blockId];
 
         if (blockId === '_new') {
@@ -87,7 +87,7 @@ const EditModelPage = React.createClass({
         else {
             this.props.dispatch(saveBlock(blockId, block));
         }
-    },
+    }
 
     addParam() {
         const model = this.getModel();
@@ -96,7 +96,7 @@ const EditModelPage = React.createClass({
         // Add a new, empty parameter.
         params.push({ key: '', value: '' });
         this.updateModel({ params });
-    },
+    }
 
     removeParam(index) {
         const model = this.getModel();
@@ -104,11 +104,11 @@ const EditModelPage = React.createClass({
 
         params.splice(index, 1);
         this.updateModel({ params });
-    },
+    }
 
     render() {
-        const blockId = this.props.params.blockId;
-        const modelIndex = this.props.params.modelIndex;
+        const blockId = this.props.match.params.blockId;
+        const modelIndex = this.props.match.params.modelIndex;
         const block = this.props.blocks[blockId];
 
         let content;
@@ -127,7 +127,7 @@ const EditModelPage = React.createClass({
                           type="text"
                           value={entry.key}
                           data-index={i}
-                          onChange={this.updateModelParamKey}
+                          onChange={this.updateModelParamKey.bind(this)}
                         />
                     </td>
                     <td>
@@ -135,7 +135,7 @@ const EditModelPage = React.createClass({
                           type="text"
                           value={entry.value}
                           data-index={i}
-                          onChange={this.updateModelParamValue}
+                          onChange={this.updateModelParamValue.bind(this)}
                         />
                     </td>
                     <td>
@@ -153,7 +153,7 @@ const EditModelPage = React.createClass({
                         <FormControl
                           type="text"
                           value={model.endpoint}
-                          onChange={this.updateModelEndpoint}
+                          onChange={this.updateModelEndpoint.bind(this)}
                         />
                     </FormGroup>
                     <h2>Parameters</h2>
@@ -170,10 +170,10 @@ const EditModelPage = React.createClass({
                         </tbody>
                     </Table>
                     <ButtonGroup>
-                        <Button onClick={this.addParam}>
+                        <Button onClick={this.addParam.bind(this)}>
                             <Glyphicon glyph="plus" /> Add Param
                         </Button>
-                        <Button bsStyle="primary" onClick={this.saveModel}>
+                        <Button bsStyle="primary" onClick={this.saveModel.bind(this)}>
                             <Glyphicon glyph="hdd" /> Save
                         </Button>
                     </ButtonGroup>
@@ -193,8 +193,9 @@ const EditModelPage = React.createClass({
                 {content}
             </div>
         );
-    },
-});
+    }
+}
+
 
 const mapStateToProps = state =>
      ({

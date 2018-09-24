@@ -3,6 +3,7 @@ import {
     RECEIVE_BLOCKS,
     RECEIVE_BLOCK_META,
     RECEIVE_BLOCK_DELETED,
+    RECEIVE_CREATED_BLOCK,
     UPDATE_BLOCK,
     UPDATE_BLOCK_CONTROLLER,
     UPDATE_BLOCK_MODEL,
@@ -59,6 +60,7 @@ function block(state = {
             isFetching: true,
         });
     case RECEIVE_BLOCK_META:
+    case RECEIVE_CREATED_BLOCK:
         return Object.assign({}, state, {
             isFetching: false,
             id: action.id,
@@ -68,7 +70,7 @@ function block(state = {
             name: action.block.name,
         });
     case UPDATE_BLOCK:
-        return Object.assign({}, state, action.block);
+        return Object.assign({}, state, action.block, {id: action.id});
     case UPDATE_BLOCK_CONTROLLER:
         return Object.assign({}, state, {
             id: action.id,
@@ -103,6 +105,7 @@ export default function blocks(state = {}, action) {
     switch (action.type) {
     case FETCHING_BLOCK_META:
     case RECEIVE_BLOCK_META:
+    case RECEIVE_CREATED_BLOCK:
     case UPDATE_BLOCK:
     case UPDATE_BLOCK_CONTROLLER:
     case UPDATE_BLOCK_MODEL:

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Table } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
 
@@ -10,10 +10,10 @@ import { LinkContainer } from 'react-router-bootstrap';
  *   deleteBlock
  *   fetchBlocks
  */
-const Blocks = React.createClass({
+export default class Blocks extends React.Component {
     componentWillMount() {
         this.props.fetchBlocks();
-    },
+    }
 
     render() {
         if (Object.keys(this.props.blocks).length === 0) {
@@ -56,7 +56,5 @@ const Blocks = React.createClass({
                 </tbody>
             </Table>
         );
-    },
-});
-
-export default Blocks;
+    }
+}

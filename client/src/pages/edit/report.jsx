@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, ButtonGroup, FormGroup, FormControl, ControlLabel, Glyphicon, PageHeader, Panel } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
@@ -11,18 +11,18 @@ import Loader from '../../components/loader.jsx';
 import BlockPicker from '../../components/block-picker.jsx';
 
 
-const EditReportPage = React.createClass({
+class EditReportPage extends React.Component {
     componentWillMount() {
         this.props.dispatch(fetchBlocks());
         this.checkReport(this.props);
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
         this.checkReport(nextProps);
-    },
+    }
 
     checkReport(props) {
-        const reportId = props.params.reportId;
+        const reportId = props.match.params.reportId;
 
         if (!reportId) {
             return;
@@ -35,20 +35,20 @@ const EditReportPage = React.createClass({
         if (!props.reports[reportId]) {
             props.dispatch(fetchReport(reportId));
         }
-    },
+    }
 
     updateReport(data) {
-        const reportId = this.props.params.reportId || '_new';
+        const reportId = this.props.match.params.reportId || '_new';
 
         this.props.dispatch(updateReport(reportId, data));
-    },
+    }
 
     updateReportName(e) {
         this.updateReport({ name: e.target.value });
-    },
+    }
 
     saveReport() {
-        const reportId = this.props.params.reportId || '_new';
+        const reportId = this.props.match.params.reportId || '_new';
         const report = this.props.reports[reportId];
 
         if (reportId === '_new') {
@@ -64,10 +64,10 @@ const EditReportPage = React.createClass({
                 report.name
             ));
         }
-    },
+    }
 
     addBlock(id) {
-        const reportId = this.props.params.reportId || '_new';
+        const reportId = this.props.match.params.reportId || '_new';
         const report = this.props.reports[reportId];
 
         const newReport = {
@@ -76,10 +76,10 @@ const EditReportPage = React.createClass({
         newReport.blocks.push(id);
 
         this.props.dispatch(updateReport(reportId, newReport));
-    },
+    }
 
     removeBlock(id) {
-        const reportId = this.props.params.reportId || '_new';
+        const reportId = this.props.match.params.reportId || '_new';
         const report = this.props.reports[reportId];
 
         const newReport = {
@@ -87,25 +87,25 @@ const EditReportPage = React.createClass({
         };
 
         this.props.dispatch(updateReport(reportId, newReport));
-    },
+    }
 
     openBlockPicker() {
-        const reportId = this.props.params.reportId || '_new';
+        const reportId = this.props.match.params.reportId || '_new';
         this.props.dispatch(updateReport(reportId, {
             isPickingBlock: true,
         }));
-    },
+    }
 
     closeBlockPicker() {
-        const reportId = this.props.params.reportId || '_new';
+        const reportId = this.props.match.params.reportId || '_new';
         this.props.dispatch(updateReport(reportId, {
             isPickingBlock: false,
         }));
-    },
+    }
 
     render() {
-        const reportId = this.props.params.reportId || '_new';
-        let title = this.props.params.reportId || 'New Report';
+        const reportId = this.props.match.params.reportId || '_new';
+        let title = this.props.match.params.reportId || 'New Report';
 
         let report = this.props.reports[reportId];
         if (!report) {
@@ -138,17 +138,17 @@ const EditReportPage = React.createClass({
             content = (<div>
                 <FormGroup controlId="reportName">
                     <ControlLabel>Name</ControlLabel>
-                    <FormControl value={report.name} onChange={this.updateReportName} />
+                    <FormControl value={report.name} onChange={this.updateReportName.bind(this)} />
                 </FormGroup>
                 <p>Blocks: </p>
                 <ol>
                     {links}
                 </ol>
                 <ButtonGroup>
-                    <Button bsStyle="primary" onClick={this.openBlockPicker}>
+                    <Button bsStyle="primary" onClick={this.openBlockPicker.bind(this)}>
                         <Glyphicon glyph="plus" /> Add Block
                     </Button>
-                    <Button bsStyle="primary" onClick={this.saveReport}>
+                    <Button bsStyle="primary" onClick={this.saveReport.bind(this)}>
                         <Glyphicon glyph="hdd" /> Save
                     </Button>
                     <LinkContainer to={{ pathname: `/report/${reportId}` }}>
@@ -158,8 +158,8 @@ const EditReportPage = React.createClass({
                 <BlockPicker
                   blocks={this.props.blocks}
                   show={report.isPickingBlock}
-                  onHide={this.closeBlockPicker}
-                  addBlock={this.addBlock}
+                  onHide={this.closeBlockPicker.bind(this)}
+                  addBlock={this.addBlock.bind(this)}
                 />
             </div>);
         }
@@ -167,13 +167,17 @@ const EditReportPage = React.createClass({
         return (
             <div>
                 <PageHeader>Report Editor</PageHeader>
-                <Panel header={title}>
-                    {content}
+                <Panel>
+                    <Panel.Heading>{ title }</Panel.Heading>
+                    <Panel.Body>
+                        {content}
+                    </Panel.Body>
                 </Panel>
             </div>
         );
-    },
-});
+    }
+}
+
 
 const mapStateToProps = state =>
      ({

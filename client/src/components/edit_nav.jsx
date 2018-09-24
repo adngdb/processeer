@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const EditNav = React.createClass({
+export default class EditNav extends React.Component {
     render() {
         let backToBlock = null;
         let backToReport = null;
@@ -28,7 +28,5 @@ const EditNav = React.createClass({
             {backToBlock}
             {backToReport}
         </div>);
-    },
-});
-
-export default EditNav;
+    }
+}

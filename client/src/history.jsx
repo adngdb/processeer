@@ -1,5 +1,6 @@
-import { browserHistory, hashHistory } from 'react-router';
+import { createBrowserHistory } from 'history';
 
 
-const history = (process.env.ENV === 'production') ? browserHistory : hashHistory;
+const history = createBrowserHistory();
+
 export default history;

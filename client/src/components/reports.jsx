@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Table } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
 
@@ -11,14 +11,14 @@ import { LinkContainer } from 'react-router-bootstrap';
  *   fetchReports
  *   user
  */
-const Reports = React.createClass({
+export default class Reports extends React.Component {
     componentWillMount() {
         this.props.fetchReports();
-    },
+    }
 
     render() {
         if (Object.keys(this.props.reports).length === 0) {
-            return (<p>No reports yet. </p>);
+            return <p>No reports yet. </p>;
         }
 
         const reports = Object.keys(this.props.reports).map((id, i) => {
@@ -43,21 +43,17 @@ const Reports = React.createClass({
             </tr>);
         });
 
-        return (
-            <Table>
-                <thead>
-                    <tr>
-                        <td>Name</td>
-                        <td />
-                        <td />
-                    </tr>
-                </thead>
-                <tbody>
-                    {reports}
-                </tbody>
-            </Table>
-        );
-    },
-});
-
-export default Reports;
+        return <Table>
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td />
+                    <td />
+                </tr>
+            </thead>
+            <tbody>
+                {reports}
+            </tbody>
+        </Table>;
+    }
+}

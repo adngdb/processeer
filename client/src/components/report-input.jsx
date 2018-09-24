@@ -2,13 +2,13 @@ import React from 'react';
 import { Col, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
 
 
-const ReportInput = React.createClass({
+export default class ReportInput extends React.Component {
     updateReportInput(e) {
         const key = e.target.dataset.param;
         const value = e.target.value;
 
         this.props.updateInput(key, value);
-    },
+    }
 
     render() {
         const params = this.props.block.params || [];
@@ -28,7 +28,5 @@ const ReportInput = React.createClass({
         return (<Form horizontal>
             {ui}
         </Form>);
-    },
-});
-
-export default ReportInput;
+    }
+}

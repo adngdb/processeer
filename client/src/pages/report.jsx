@@ -4,23 +4,28 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
 import { fetchBlock } from '../actions/blocks.jsx';
-import { fetchReport, runReport, removeReportContent, updateReportInput } from '../actions/reports.jsx';
+import {
+    fetchReport,
+    runReport,
+    removeReportContent,
+    updateReportInput
+} from '../actions/reports.jsx';
 import Report from '../components/report.jsx';
 import ReportInput from '../components/report-input.jsx';
 import Loader from '../components/loader.jsx';
 
 
-const ReportPage = React.createClass({
+class ReportPage extends React.Component {
     componentWillMount() {
         this.checkReport(this.props);
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
         this.checkReport(nextProps);
-    },
+    }
 
     checkReport(props) {
-        const reportId = props.params.reportId;
+        const reportId = props.match.params.reportId;
         const report = props.reports[reportId];
 
         if (!report) {
@@ -34,26 +39,26 @@ const ReportPage = React.createClass({
                 props.dispatch(runReport(report));
             }
         }
-    },
+    }
 
     runReport() {
-        const reportId = this.props.params.reportId;
+        const reportId = this.props.match.params.reportId;
         const report = this.props.reports[reportId];
 
         this.props.dispatch(removeReportContent(reportId));
         this.props.dispatch(runReport(report));
-    },
+    }
 
     updateInput(key, value) {
-        const reportId = this.props.params.reportId;
+        const reportId = this.props.match.params.reportId;
         const input = this.props.reports[reportId].input || {};
 
         input[key] = value;
         this.props.dispatch(updateReportInput(reportId, input));
-    },
+    }
 
     render() {
-        const reportId = this.props.params.reportId;
+        const reportId = this.props.match.params.reportId;
         const report = this.props.reports[reportId];
 
         let title = 'Report';
@@ -67,7 +72,7 @@ const ReportPage = React.createClass({
             if (report.blocks.length) {
                 const firstBlock = this.props.blocks[report.blocks[0]];
                 if (firstBlock && !firstBlock.isFetching) {
-                    params = <ReportInput block={firstBlock} input={report.input} updateInput={this.updateInput} />;
+                    params = <ReportInput block={firstBlock} input={report.input} updateInput={this.updateInput.bind(this)} />;
                 }
             }
 
@@ -85,17 +90,21 @@ const ReportPage = React.createClass({
         }
 
         return (
-            <Panel header={title}>
-                <ButtonGroup>
-                    <Button onClick={this.runReport}><Glyphicon glyph="refresh" /> Run</Button>
-                    {editBtn}
-                </ButtonGroup>
-                {params}
-                {content}
+            <Panel>
+                <Panel.Heading>{ title }</Panel.Heading>
+                <Panel.Body>
+                    <ButtonGroup>
+                        <Button onClick={this.runReport.bind(this)}><Glyphicon glyph="refresh" /> Run</Button>
+                        {editBtn}
+                    </ButtonGroup>
+                    {params}
+                    {content}
+                </Panel.Body>
             </Panel>
         );
-    },
-});
+    }
+}
+
 
 const mapStateToProps = state => ({
     reports: state.reports,

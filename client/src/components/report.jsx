@@ -4,7 +4,7 @@ import Loader from './loader.jsx';
 import ReportContent from './report-content.jsx';
 
 
-const Report = React.createClass({
+export default class Report extends React.Component {
     render() {
         const report = this.props.report;
         const title = report.title || report.name || report.id;
@@ -23,7 +23,5 @@ const Report = React.createClass({
                 { content }
             </div>
         );
-    },
-});
-
-export default Report;
+    }
+}

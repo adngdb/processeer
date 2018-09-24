@@ -9,7 +9,7 @@ import Reports from '../components/reports.jsx';
 import Blocks from '../components/blocks.jsx';
 
 
-const HomePage = React.createClass({
+class HomePage extends React.Component {
     render() {
         let createReportLink = null;
         let createBlockLink = null;
@@ -71,8 +71,9 @@ const HomePage = React.createClass({
                 {allBlocks}
             </div>
         );
-    },
-});
+    }
+}
+
 
 const mapStateToProps = state => ({
     reports: state.reports,

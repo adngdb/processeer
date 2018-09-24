@@ -4,14 +4,19 @@ import 'codemirror/mode/javascript/javascript';
 
 import React from 'react';
 import { Panel } from 'react-bootstrap';
-import Codemirror from 'react-codemirror';
+import { Controlled as CodeMirror } from 'react-codemirror2';
 
 
-const BlockController = function (props) {
-    let controller = props.children;
+export default class BlockController extends React.Component {
+    onChange = (editor, data, value) => {
+        this.props.updateController(value);
+    }
 
-    if (!controller) {
-        controller = `let transform = (data) => {
+    render() {
+        let controller = this.props.children;
+
+        if (!controller) {
+            controller = `let transform = (data) => {
     // Add your code here.
     // 'data' is an object containing:
     //   * models: array of objects, each item being the return value of the corresponding model
@@ -24,27 +29,24 @@ const BlockController = function (props) {
         data: [],
     };
 };`;
-    }
+        }
 
-    const options = {
-        mode: 'javascript',
-        lineNumbers: true,
-        indentUnit: 4,
-    };
+        const options = {
+            mode: 'javascript',
+            lineNumbers: true,
+            indentUnit: 4,
+        };
 
-    return (
-        <section>
+        return <section>
             <h3>Controller</h3>
             <Panel>
-                <Codemirror
+                <CodeMirror
                   value={controller}
                   options={options}
-                  onChange={props.updateController}
+                  onBeforeChange={this.onChange}
                   fill
                 />
             </Panel>
-        </section>
-    );
-};
-
-export default BlockController;
+        </section>;
+    }
+}

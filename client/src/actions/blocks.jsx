@@ -131,6 +131,7 @@ function receiveBlockCreated(block) {
     return {
         type: RECEIVE_CREATED_BLOCK,
         id: block.id,
+        block,
     };
 }
 
@@ -147,6 +148,7 @@ export function createBlock(block) {
         dispatch(requestCreateBlock());
 
         const record = Object.assign({}, block);
+        console.log(record);
         delete record.id;
 
         dbBlocks().createRecord(record)

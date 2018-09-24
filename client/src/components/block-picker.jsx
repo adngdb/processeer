@@ -2,12 +2,12 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
 
-const BlockPicker = React.createClass({
+export default class BlockPicker extends React.Component {
     pickBlock(e, id) {
         e.preventDefault();
         this.props.onHide();
         this.props.addBlock(id);
-    },
+    }
 
     render() {
         const blocks = Object.keys(this.props.blocks).map((id, i) => {
@@ -32,7 +32,5 @@ const BlockPicker = React.createClass({
                 </Modal.Footer>
             </Modal>
         );
-    },
-});
-
-export default BlockPicker;
+    }
+}

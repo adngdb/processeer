@@ -1,10 +1,10 @@
 import React from 'react';
 import { PageHeader } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 
-const EditHomePage = React.createClass({
+class EditHomePage extends React.Component {
     render() {
         return (
             <div>
@@ -17,8 +17,8 @@ const EditHomePage = React.createClass({
                 </p>
             </div>
         );
-    },
-});
+    }
+}
 
 const mapStateToProps = state =>
      ({

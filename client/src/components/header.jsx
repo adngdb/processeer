@@ -1,6 +1,6 @@
 import React from 'react';
 import { Glyphicon, Navbar, Nav, NavItem } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { IndexLinkContainer } from 'react-router-bootstrap';
 
 import UserSignin from './user-signin.jsx';
