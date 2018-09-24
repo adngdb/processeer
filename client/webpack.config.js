@@ -54,7 +54,9 @@ module.exports = {
     },
     plugins: [
         new webpack.NoEmitOnErrorsPlugin(),
-        new DotenvPlugin(),
+        new DotenvPlugin({
+            path: process.env.ENV === 'development' ? path.resolve(__dirname, './.env.development') : false,
+        }),
         new webpack.DefinePlugin({
             'process.env': {
                 // This has effect on the react lib size

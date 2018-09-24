@@ -5,8 +5,8 @@
   "repository": "https://github.com/adngdb/processeer",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ENV=development webpack-dev-server --content-base dist/ --history-api-fallback  --mode=development",
-    "build": "ENV=production STORAGE_ENDPOINT_URL='http://storage.processeer.io' GITHUB_CLIENT_PUBLIC_ID=147ada1aa2aef9b32119 webpack --mode=production --optimize-minimize --optimize-occurrence-order --optimize-dedupe --devtool cheap-source-map"
+    "start": "ENV=development webpack-dev-server --content-base dist/ --history-api-fallback  --mode development",
+    "build": "webpack --mode production --optimize-minimize --optimize-occurrence-order --optimize-dedupe --devtool cheap-source-map"
   },
   "author": "Adrian Gaudebert <adrian@gaudebert.fr>",
   "license": "MIT",
