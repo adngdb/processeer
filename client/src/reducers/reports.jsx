@@ -8,7 +8,6 @@ import {
     REQUEST_REPORT_META,
     REQUEST_RUNNING_REPORT,
     UPDATE_REPORT,
-    UPDATE_REPORT_META,
     UPDATE_REPORT_INPUT,
 } from '../actions/reports.jsx';
 
@@ -40,7 +39,6 @@ function report(state = {
     case UPDATE_REPORT:
         return Object.assign({}, state, action.report);
     case RECEIVE_REPORT_META:
-    case UPDATE_REPORT_META:
         return Object.assign({}, state, {
             isFetching: false,
             didInvalidate: false,
@@ -77,7 +75,6 @@ export default function reports(state = {}, action) {
     let newReports;
     switch (action.type) {
     case RECEIVE_REPORT_CONTENT:
-    case UPDATE_REPORT_META:
     case RECEIVE_REPORT_META:
     case REQUEST_REPORT_META:
     case REQUEST_RUNNING_REPORT:

@@ -1,24 +1,26 @@
-Jailed — safe yet flexible sandbox
-==================================
+Jailed — flexible JS sandbox
+============================
 
 Jailed is a small JavaScript library for running untrusted code in a
-sandbox.
-
+sandbox. The library is written in vanilla-js and has no dependencies.
 
 With Jailed you can:
 
-- Load an untrusted code into a secure sandbox, so the code cannot
-  break down the main application;
+- Load an untrusted code into a secure sandbox;
 
-- Export the precise set of functions into the sandbox, so that the
-  code may perform certain actions to the main application simply by
-  calling those functions (without a need for messaging), but strictly
-  within the set of privilliges explicitly defined by what was
-  exported.
+- Export a set of external functions into the sandbox.
 
-The code is executed as a *plugin*, a special instance running in a
-Web-Worker inside a sandboxed frame (in case of web-browser
-environment), or as a restricted subprocess (in Node.js).
+The untrusted code may then interract with the main application by
+directly calling those functions, but the application owner decides
+which functions to export, and therefore what will be allowed for the
+untrusted code to perform.
+
+The code is executed as a *plugin*, a special instance running as a
+restricted subprocess (in Node.js), or in a web-worker inside a
+sandboxed frame (in case of web-browser environment). The iframe is
+created locally, so that you don't need to host it on a separate
+(sub)domain.
+
 
 You can use Jailed to:
 
@@ -32,22 +34,17 @@ You can use Jailed to:
 
 - Initiate and interrupt the execution anytime;
 
-- Control the execution against a hangup or too long calculation
-  times;
+- *[Demo](http://asvd.github.io/jailed/demos/web/console/)* safely
+   execute user-submitted code;
 
-- Perform heavy calculations in a separate thread
-  *[Demo](https://asvd.github.io/jailed/demos/web/circle/)*
-
-- Delegate to a 3rd-party code the precise set of functions to
-  harmlessly operate on the part of your application
-  *[Demo](https://asvd.github.io/jailed/demos/web/banner/)*
-
-- Safely execute user-submitted code
-  *[Demo](https://asvd.github.io/jailed/demos/web/console/)*
-
-- Export the particular set of functions in both directions, and
-  invoke those at the opposite site (without a need for manual
-  messaging) thus building any custom API and set of permissions.
+- *[Demo](http://asvd.github.io/jailed/demos/web/banner/)* embed
+  3rd-party code and provide it the precise set of functions to
+  harmlessly operate on the part of your application;
+  
+- Export the particular set of application functions into the sandbox
+  (or in the opposite direction), and let those functions be invoked
+  from the other site (without a need for manual messaging) thus
+  building any custom API and set of permissions.
 
 
 For instance:
@@ -92,59 +89,18 @@ callback is in fact a short-term exported function and behaves in the
 same way, particularly it may invoke a newer callback in reply.
 
 
-### Security
-
-This is how the sandbox is built:
-
-##### In Node.js:
-
-- A Node.js subprocess is created by the Jailed library;
-
-- the subprocess (down)loads the file containing an untrusted code as
-  a string (or, in case of `DynamicPlugin`, simply uses the provided
-  string with code)
-
-- then `"use strict";` is appended to the head of that code (in order
-  to prevent breaking the sandbox using `arguments.callee.caller`);
-
-- finally the code is executed using `vm.runInNewContext()` method,
-  where the provided sandbox only exposes some basic methods like
-  `setTimeout()`, and the `application` object for messaging with the
-  application site.
-
-
-##### In a web-browser:
-
-- a [sandboxed
-iframe](http://www.html5rocks.com/en/tutorials/security/sandboxed-iframes/)
-is created with its `sandbox` attribute only set to `"allow-scripts"`
-(to prevent the content of the frame from accessing anything of the
-main application origin);
-
-- then a web-worker is started inside that frame;
-
-- finaly the code is loaded by the worker and executed.
-
-*Note: when Jailed library is loaded from the local source (its path
- starts with `file://`), the `"allow-same-origin"` permission is added
- to the `sandbox` attribute of the iframe. Local installations are
- mostly used for testing, and without that permission it would not be
- possible to load the plugin code from a local file. This means that
- the plugin code has an access to the local filesystem, and to some
- origin-shared things like IndexedDB (though the main application page
- is still not accessible from the worker). Therefore if you need to
- safely execute untrusted code on a local system, reuse the Jailed
- library in Node.js.*
-
-
-
 ### Installation
 
-For the web-browser environment — download the
-[distribution](https://github.com/asvd/jailed/releases/download/v0.2.0/jailed-0.2.0.tar.gz)
-*8 kb*, unpack it and load the `jailed.js` in a preferrable way. That
-is an UMD module, thus for instance it may simply be loaded as a plain
-JavaScript file using the `<script>` tag:
+For the web-browser environment — download and unpack the
+[distribution](https://github.com/asvd/jailed/releases/download/v0.3.1/jailed-0.3.1.tar.gz), or install it using [Bower](http://bower.io/):
+
+```sh
+$ bower install jailed
+```
+
+Load the `jailed.js` in a preferrable way. That is an UMD module, thus
+for instance it may simply be loaded as a plain JavaScript file using
+the `<script>` tag:
 
 ```html
 <script src="jailed/jailed.js"></script>
@@ -163,8 +119,7 @@ var jailed = require('jailed');
 ```
 
 Optionally you may load the script from the
-[distribution](https://github.com/asvd/jailed/releases/download/v0.2.0/jailed-0.2.0.tar.gz)
-*8 kb*:
+[distribution](https://github.com/asvd/jailed/releases/download/v0.3.1/jailed-0.3.1.tar.gz):
 
 ```js
 var jailed = require('path/to/jailed.js');
@@ -320,7 +275,7 @@ Therefore:
 
 - If you need to load a plugin and supply it with a set of exported
   functions, simply provide those functions into the plugin
-  constructor, and then access those at `applictaion.remote` property
+  constructor, and then access those at `application.remote` property
   on the plugin site — the exported functions are already prepared
   when the plugin code is exectued.
 
@@ -363,4 +318,64 @@ provides similar `whenFailed()` and `whenDisconnected()` methods:
 Just like as for `whenConnected()` method, those two methods may also
 be used several times or even after the event has actually been fired.
 
+
+### Compatibility
+
+Jailed was tested and should work in Node.js, and in the following
+browsers:
+
+- Internet Explorer 10+, Edge
+- Firefox 26+
+- Opera 12+
+- Safari 6+
+- Chrome 10+
+
+
+### Security
+
+This is how the sandbox is built:
+
+##### In Node.js:
+
+- A Node.js subprocess is created by the Jailed library;
+
+- the subprocess (down)loads the file containing an untrusted code as
+  a string (or, in case of `DynamicPlugin`, simply uses the provided
+  string with code)
+
+- then `"use strict";` is appended to the head of that code (in order
+  to prevent breaking the sandbox using `arguments.callee.caller`);
+
+- finally the code is executed using `vm.runInNewContext()` method,
+  where the provided sandbox only exposes some basic methods like
+  `setTimeout()`, and the `application` object for messaging with the
+  application site.
+
+
+##### In a web-browser:
+
+- a [sandboxed
+iframe](http://www.html5rocks.com/en/tutorials/security/sandboxed-iframes/)
+is created with its `sandbox` attribute only set to `"allow-scripts"`
+(to prevent the content of the frame from accessing anything of the
+main application origin);
+
+- then a web-worker is started inside that frame;
+
+- finally the code is loaded by the worker and executed.
+
+*Note: when Jailed library is loaded from the local source (its path
+ starts with `file://`), the `"allow-same-origin"` permission is added
+ to the `sandbox` attribute of the iframe. Local installations are
+ mostly used for testing, and without that permission it would not be
+ possible to load the plugin code from a local file. This means that
+ the plugin code has an access to the local filesystem, and to some
+ origin-shared things like IndexedDB (though the main application page
+ is still not accessible from the worker). Therefore if you need to
+ safely execute untrusted code on a local system, reuse the Jailed
+ library in Node.js.*
+
+
+
+follow me on twitter: https://twitter.com/asvd0
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Griddle from 'griddle-react';
-import { Line } from 'react-chartjs';
+import { Line } from 'react-chartjs-2';
 
 
 const ReportContent = React.createClass({
@@ -23,7 +23,7 @@ const ReportContent = React.createClass({
             result = <Griddle results={content.data} {...content.options} />;
         }
         else if (content.type === 'chart' || content.type === 'chart:line') {
-            result = <Line data={content.data} width="800" height="400" />;
+            result = <Line data={content.data} options={content.data.options || {}} width={800} height={400} />;
         }
         else {
             result = JSON.stringify(content);

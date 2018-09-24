@@ -19,7 +19,7 @@ self.connection = {};
         var m = e.data.data;
         switch (m.type) {
         case 'import':
-        case 'importJailed':  // already jailed in the Worker
+        case 'importJailed':  // already jailed in the iframe
             importScript(m.url);
             break;
         case 'execute':
@@ -39,15 +39,22 @@ self.connection = {};
      */
     var importScript = function(url) {
         var error = null;
+
+        // importScripts does not throw an exception in old webkits
+        // (Opera 15.0), but we can determine a failure by the
+        // returned value which must be undefined in case of success
+        var returned = true;
         try {
-            importScripts(url);
+            returned = importScripts(url);
         } catch (e) {
             error = e;
         }
 
-        if (error) {
-           self.postMessage({type: 'importFailure', url: url});
-           throw error;
+        if (error || typeof returned != 'undefined') {
+            self.postMessage({type: 'importFailure', url: url});
+            if (error) {
+                throw error;
+            }
         } else {
            self.postMessage({type: 'importSuccess', url: url});
         }
@@ -57,8 +64,8 @@ self.connection = {};
 
     /**
      * Executes the given code in a jailed environment. For web
-     * implementation, we're already jailed in the worker, so simply
-     * eval()
+     * implementation, we're already jailed in the iframe and the
+     * worker, so simply eval()
      * 
      * @param {String} code code to execute
      */

@@ -1,42 +1,59 @@
-var webpack = require('webpack');
-var DotenvPlugin = require('webpack-dotenv-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const DotenvPlugin = require('dotenv-webpack');
 
 
 module.exports = {
+    entry: './src/app.jsx',
     target: 'web',
     cache: true,
-    entry: './src/app.jsx',
     output: {
-        path: './dist',
+        path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
     },
 
+    optimization: {
+        minimize: true,
+    },
+
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loader: 'babel',
-                query: {
-                    presets: ['react', 'es2015'],
-                },
+                loader: 'babel-loader',
             },
             {
                 test: /\.css$/,
-                loader: 'style!css',
+                use: [
+                    { loader: 'style-loader' },
+                    { loader: 'css-loader' },
+                ]
             },
             {
                 test: /\.html$/,
-                loader: 'html',
+                loader: 'html-loader',
             },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-            { test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000' },
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' },
+            {
+                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'file-loader',
+            },
+            {
+                test: /\.(woff|woff2)$/,
+                loader: 'url-loader?prefix=font/&limit=5000',
+            },
+            {
+                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url-loader?limit=10000&mimetype=application/octet-stream',
+            },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url-loader?limit=10000&mimetype=image/svg+xml',
+            },
         ],
     },
     plugins: [
-        new webpack.NoErrorsPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
         new DotenvPlugin(),
         new webpack.DefinePlugin({
             'process.env': {
@@ -44,15 +61,8 @@ module.exports = {
                 NODE_ENV: JSON.stringify(process.env.ENV || 'development'),
             },
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            minimize: true,
-            compressor: {
-                warnings: false,
-            },
-        }),
     ],
 
-    debug: false,
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
