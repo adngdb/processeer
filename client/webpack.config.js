@@ -56,7 +56,7 @@ module.exports = {
     plugins: [
         new webpack.NoEmitOnErrorsPlugin(),
         new DotenvPlugin({
-            path: process.env.ENV === 'development' ? path.resolve(__dirname, './.env.development') : false,
+            path: process.env.ENV === 'development' ? path.resolve(__dirname, './.env.development') : path.resolve(__dirname, './.env'),
         }),
         new webpack.DefinePlugin({
             'process.env': {
