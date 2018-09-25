@@ -40,9 +40,9 @@ and displayed using front-end libraries, depending on the format of that data.
 
 ### Supported Outputs
 
-#### Table :: [example](http://processeer.io/report/bc84673a-0ffb-4f09-a5ad-e2275103c4df)
+#### Table :: [example](http://processeer.io/report/89df2c14-886f-4847-8599-9ea622e36dac)
 
-Displays data as a table. Uses [Griddle](https://griddlegriddle.github.io/Griddle/) ([documentation](https://griddlegriddle.github.io/Griddle/quickstart.html)).
+Displays data as a table. Uses React Table ([documentation](https://react-table.js.org/)).
 
 ```json
 {
@@ -62,10 +62,10 @@ Displays data as a table. Uses [Griddle](https://griddlegriddle.github.io/Griddl
 }
 ```
 
-See [Griddle documentation about properties](https://griddlegriddle.github.io/Griddle/properties.html)
+See [React Table's documentation about properties](https://react-table.js.org/)
 for a list of options you can pass to customize your table.
 
-#### Tables :: [example](http://processeer.io/report/1323f70d-3e33-498c-9689-35eb2a1d592a)
+#### Tables :: [example](http://processeer.io/report/8290e71b-f502-4fd3-b92e-52f4bae4673c)
 
 Same as Table, but it will show several tables instead of just one.
 
@@ -91,7 +91,7 @@ Same as Table, but it will show several tables instead of just one.
 }
 ```
 
-#### Line Chart :: [example](http://processeer.io/report/1d1673fa-72e8-45e7-ab38-d250e9dbdab8)
+#### Line Chart :: [example](http://processeer.io/report/a125b734-61ce-4e33-bab1-7b0fec66de69)
 
 Displays a line chart. Uses [Chart.js](http://www.chartjs.org/) ([documentation](http://www.chartjs.org/docs/)).
 
@@ -111,7 +111,7 @@ Displays a line chart. Uses [Chart.js](http://www.chartjs.org/) ([documentation]
 }
 ```
 
-See the [Chart.js documentation about Line Charts](http://www.chartjs.org/docs/#line-chart-dataset-structure)
+See the [Chart.js documentation about Line Charts](http://www.chartjs.org/docs/latest/charts/line.html)
 for a list of options to customize your datasets.
 
 ## Installation
