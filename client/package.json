@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ENV=development webpack-dev-server --content-base dist/ --history-api-fallback  --mode development",
-    "build": "webpack --mode production --optimize-minimize --optimize-occurrence-order --optimize-dedupe --devtool cheap-source-map"
+    "build": "ENV=production webpack --mode production --optimize-minimize --optimize-occurrence-order --optimize-dedupe --devtool cheap-source-map"
   },
   "author": "Adrian Gaudebert <adrian@gaudebert.fr>",
   "license": "MIT",
