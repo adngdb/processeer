@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const DotenvPlugin = require('dotenv-webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 module.exports = {
@@ -63,6 +64,7 @@ module.exports = {
                 NODE_ENV: JSON.stringify(process.env.ENV || 'development'),
             },
         }),
+        // new BundleAnalyzerPlugin(),
     ],
 
     devtool: 'inline-source-map',
